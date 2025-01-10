@@ -31,7 +31,7 @@ public class BaoMat_view extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 700); // Tăng kích thước khung
 		setLocationRelativeTo(null);
-
+			// hi
 		// Sử dụng BorderLayout cho contentPane để giữ tiêu đề phía trên và phần nhập
 		// liệu ở giữa
 		contentPane = new RoundedPanel(10);
