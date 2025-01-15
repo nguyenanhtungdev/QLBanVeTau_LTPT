@@ -8,7 +8,7 @@ import other.PrimaryButton;
 import other.RoundPassField;
 import java.awt.BorderLayout;
 
-public class BaoMat_view extends JFrame {
+public class BaoMat_View extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private RoundedPanel contentPane;
 	private RoundPassField currentPasswordField;
@@ -19,7 +19,7 @@ public class BaoMat_view extends JFrame {
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(() -> {
 			try {
-				BaoMat_view frame = new BaoMat_view();
+				BaoMat_View frame = new BaoMat_View();
 				frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -27,7 +27,7 @@ public class BaoMat_view extends JFrame {
 		});
 	}
 
-	public BaoMat_view() {
+	public BaoMat_View() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 700); // Tăng kích thước khung
 		setLocationRelativeTo(null);

@@ -308,7 +308,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		qLHoaDon_view.addButtonInDSHD(e -> inDSHD());
 	}
 
-	////// HoaDon_view
+	// HoaDon_view
 	public void inDSHD() {
 		PrinterUtils.print(new Printable() {
 			@Override

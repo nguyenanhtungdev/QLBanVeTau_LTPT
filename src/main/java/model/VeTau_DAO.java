@@ -38,10 +38,11 @@ public class VeTau_DAO {
 				LocalDateTime ngayHetHan = resultSet.getTimestamp("ngayHetHan").toLocalDateTime();
 				boolean daHuy = resultSet.getBoolean("daHuy");
 				String maKH = resultSet.getString("maKH");
+				boolean isKhuHoi = resultSet.getBoolean("isKhuHoi");
 
 				GheTau gheTau = new GheTau(resultSet.getString("maGheTau"));
 
-				list.add(new VeTau(maVeTau, loaiVe, ngayHetHan, daHuy, gheTau, new KhachHang(maKH)));
+				list.add(new VeTau(maVeTau, loaiVe, ngayHetHan, daHuy, gheTau, isKhuHoi, new KhachHang(maKH)));
 			}
 
 			return list;
@@ -95,10 +96,11 @@ public class VeTau_DAO {
 				LocalDateTime ngayHetHan = resultSet.getTimestamp("ngayHetHan").toLocalDateTime();
 				boolean daHuy = resultSet.getBoolean("daHuy");
 				String maKH = resultSet.getString("maKH");
+				boolean isKhuHoi = resultSet.getBoolean("isKhuHoi");
 
 				GheTau gheTau = new GheTau(resultSet.getString("maGheTau"));
 
-				return new VeTau(maVeTau, loaiVe, ngayHetHan, daHuy, gheTau, new KhachHang(maKH));
+				return new VeTau(maVeTau, loaiVe, ngayHetHan, daHuy, gheTau, isKhuHoi, new KhachHang(maKH));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

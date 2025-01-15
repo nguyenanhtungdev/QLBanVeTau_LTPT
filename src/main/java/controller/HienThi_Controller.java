@@ -34,6 +34,7 @@ public class HienThi_Controller {
 		ArrayList<View> dsViewCaiDat = CaiDat_Controller.getInstance().getViewList();
 		
 		QuanLy_Controller.getInstance().addView(taiKhoan.getNhanVien().getTenChucVu().trim());
+		BanVeTau_Controller.getInstance().setNhanVien(taiKhoan.getNhanVien());
 
 		for (View view : dsViewBanVe) {
 			homeView.addView(view.getName(), (JPanel) view.getContentPane());

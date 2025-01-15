@@ -43,6 +43,7 @@ import javax.swing.Box;
 import java.awt.BorderLayout;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 
 public class ThanhToan_View extends View {
 
@@ -71,6 +72,7 @@ public class ThanhToan_View extends View {
 	private PrimaryButton btn_ThemKhuyenMai;
 	private PrimaryButton btn_ThemGhiChu;
 	private JComboBox comboBox_LoaiHD;
+	private JCheckBox chekBox_Invetau;
 	
 	public void addSuKienThanhToan(ActionListener listener, KeyListener keyListener) {
 		btn_QuayLai.addActionListener(listener);
@@ -292,10 +294,15 @@ public class ThanhToan_View extends View {
 		btn_ThemGhiChu.setAlignmentX(0.0f);
 		panel_26.add(btn_ThemGhiChu);
 		
-		JPanel panel_23 = new JPanel();
-		panel_23.setBackground(Color.WHITE);
-		panel_20.add(panel_23);
-		panel_23.setLayout(new BoxLayout(panel_23, BoxLayout.X_AXIS));
+		JPanel panel_6 = new JPanel();
+		panel_6.setBackground(Color.WHITE);
+		panel_20.add(panel_6);
+		panel_6.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 35));
+		
+		chekBox_Invetau = new JCheckBox("In vé tàu");
+		panel_6.add(chekBox_Invetau);
+		chekBox_Invetau.setBackground(Color.WHITE);
+		chekBox_Invetau.setFont(new Font("Arial", Font.PLAIN, 18));
 
 		JPanel panel_Right = new JPanel();
 		panel_Right.setPreferredSize(new Dimension(440, 0)); 
@@ -648,6 +655,9 @@ public class ThanhToan_View extends View {
 	}
 	public JComboBox getComboBox_LoaiHD() {
 		return comboBox_LoaiHD;
+	}
+	public JCheckBox getChekBox_Invetau() {
+		return chekBox_Invetau;
 	}
 	
 }

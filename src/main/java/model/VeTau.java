@@ -10,18 +10,20 @@ public class VeTau {
 	private LocalDateTime ngayHetHan;
 	private boolean daHuy;
 	private GheTau gheTau;
+	private boolean isKhuHoi;
 	private KhachHang khachHang;
 
 	public VeTau() {
 	}
 
-	public VeTau(String maVeTau, boolean loaiVe, LocalDateTime ngayHetHan, boolean daHuy, GheTau gheTau, KhachHang khachHang) {
+	public VeTau(String maVeTau, boolean loaiVe, LocalDateTime ngayHetHan, boolean daHuy, GheTau gheTau, boolean isKhuHoi,KhachHang khachHang) {
 		setMaVeTau(maVeTau);
 		this.loaiVe = loaiVe;
 		this.ngayHetHan = ngayHetHan;
 		this.daHuy = daHuy;
 		this.gheTau = gheTau;
 		this.khachHang = khachHang;
+		this.isKhuHoi = isKhuHoi;
 	}
 
 	public VeTau(String maVeTau) {
@@ -33,15 +35,12 @@ public class VeTau {
 	}
 
 	public void setMaVeTau(String maVeTau) {
-		int y = Year.now().getValue();
-		String yy = String.valueOf(y).substring(2);
-		if (maVeTau != null && maVeTau.matches("^VT" + yy + "\\d{4}")) {
+		if (maVeTau != null && !maVeTau.matches("^VT") && !maVeTau.matches("\\d{4}$")) {
 			this.maVeTau = maVeTau;
 		} else {
 			throw new IllegalArgumentException(
 					"Mã vé tàu phải có dạng 'VTYYXXXX' với YY là 2 chữ số cuối năm hiện tại và XXXX là các chữ số.");
 		}
-
 	}
 
 	public boolean isLoaiVe() {
@@ -76,6 +75,14 @@ public class VeTau {
 		return khachHang = KhachHang_DAO.getInstance().getByMaKhachHang(khachHang.getMaKhachHang());
 	}
 	
+	public boolean isKhuHoi() {
+		return isKhuHoi;
+	}
+
+	public void setKhuHoi(boolean isKhuHoi) {
+		this.isKhuHoi = isKhuHoi;
+	}
+
 	public void setGheTau(GheTau gheTau) {
 		this.gheTau = gheTau;
 	}
@@ -87,6 +94,7 @@ public class VeTau {
 	@Override
 	public String toString() {
 		return "VeTau [maVeTau=" + maVeTau + ", loaiVe=" + loaiVe + ", ngayHetHan=" + ngayHetHan + ", daHuy=" + daHuy
-				+ ", gheTau=" + gheTau + ", khachHang=" + khachHang + "]";
+				+ ", gheTau=" + gheTau + ", isKhuHoi=" + isKhuHoi + ", khachHang=" + khachHang + "]";
 	}
+
 }

@@ -99,7 +99,7 @@ import model.VeTau;
 import model.VeTau_DAO;
 import other.RoundedPanel;
 import other.ShortcutManager;
-import view.BaoMat_view;
+import view.BaoMat_View;
 import view.DoiTraVe_View;
 import view.ThanhToan_View;
 import view.ThongTinVe;
@@ -170,6 +170,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	private String ghiChu = "";
 	private String phuongThucThanhToan = "TienMat";
 	private String maHoaDon = null;
+	private NhanVien nhanVien;
 
 	public ArrayList<View> getViewList() {
 		return pageList;
@@ -208,6 +209,10 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		chonGhe_View.getLblSoTrang().setText("trang: " + soTrang);
 		chonGhe_View.getLblSoChuyenTau().setText("Tổng số chuyến tàu: " + soChuyenTau);
 
+	}
+	
+	public void setNhanVien(NhanVien nhanVien) {
+		this.nhanVien = nhanVien;
 	}
 
 	private void themSuKien() {
@@ -261,7 +266,9 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		trainPanel.removeAll();
 		for (int i = currentIndex; i < Math.min(currentIndex + ITEMS_PER_PAGE, dsChuyenTaus.size()); i++) {
 			ChuyenTau chuyenTau = dsChuyenTaus.get(i);
-			trainPanel.add(createTau(chuyenTau));
+			if (chuyenTau.getThoiGianKhoiHanh().isAfter(LocalDateTime.now())) {
+				trainPanel.add(createTau(chuyenTau));
+			}
 		}
 		trainPanel.revalidate();
 		trainPanel.repaint();
@@ -1654,11 +1661,6 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	private void themDataThanhToan() {
 		themDataThanhToanInput();
 		themDataThanhToantable();
-		taoVeTau();
-	}
-
-	private void taoVeTau() {
-
 	}
 
 	private void themDataThanhToantable() {
@@ -1705,8 +1707,8 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 
 	private void themDataThanhToanInput() {
 		JTable jTable = veTau_Page.getDanhSachVeTau();
-		thanhToan_Page.getLbl_MaNV().setText("NV00001");
-		thanhToan_Page.getLbl_HoTenNV().setText("Nguyễn Anh Tùng");
+		thanhToan_Page.getLbl_MaNV().setText(nhanVien.getMaNV());
+		thanhToan_Page.getLbl_HoTenNV().setText(nhanVien.getHoTenNV());
 		thanhToan_Page.getLbl_MaKH().setText((String) jTable.getValueAt(0, 4));
 		thanhToan_Page.getLbl_HoTenKH().setText((String) jTable.getValueAt(0, 5));
 		thanhToan_Page.getLbl_SoDT().setText((String) jTable.getValueAt(0, 6));
@@ -2243,7 +2245,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 						JOptionPane.INFORMATION_MESSAGE);
 				timKiemHoaDon();
 				thongTinVe.setVisible(false);
-				
+
 			} else {
 				JOptionPane.showMessageDialog(null, "Thêm phiếu hoàn tiền thất bại!", "Thông báo",
 						JOptionPane.ERROR_MESSAGE);
@@ -2304,7 +2306,9 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 				if (response == JOptionPane.YES_OPTION) {
 					JOptionPane.showMessageDialog(null, "Thu thanh toán thành công!", "Thông báo",
 							JOptionPane.INFORMATION_MESSAGE);
-					inVeTau(maHoaDon);
+					if (thanhToan_Page.getChekBox_Invetau().isSelected()) {
+						inVeTau(maHoaDon);
+					}
 					resetSauThanhToan();
 					thanhToan_Page.setVisible(false);
 				}

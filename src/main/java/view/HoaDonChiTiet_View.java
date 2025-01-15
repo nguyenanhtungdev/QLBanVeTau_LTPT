@@ -68,25 +68,6 @@ public class HoaDonChiTiet_View extends JFrame implements Printable {
 	private DetailRow loaiKhachHang;
 	private DetailRow hinhThucThanhToan;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HoaDonChiTiet_View frame = new HoaDonChiTiet_View();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public HoaDonChiTiet_View() {
 		setTitle("Hoá Đơn Chi Tiết");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -282,7 +263,7 @@ public class HoaDonChiTiet_View extends JFrame implements Printable {
 		panel_1.setBackground(Color.WHITE);
 		panel.add(panel_1);
 
-		btnInCTHD = new PrimaryButton("In danh sách hoá đơn", "/Image/print.png");
+		btnInCTHD = new PrimaryButton("In danh sách hoá đơn", "/Image/printer.png");
 		btnInCTHD.setText("In hoá đơn");
 		btnInCTHD.setVerticalTextPosition(SwingConstants.CENTER);
 		btnInCTHD.setHorizontalTextPosition(SwingConstants.RIGHT);

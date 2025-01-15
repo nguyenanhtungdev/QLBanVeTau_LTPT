@@ -424,7 +424,7 @@ public class QuanLyHoaDon_View extends View implements Printable {
 		btnXemCT.setBorder(new EmptyBorder(4, 10, 4, 10));
 		panelXemCT.add(btnXemCT);
 
-		btnInDS = new PrimaryButton("In danh sách HD", "/Image/print.png");
+		btnInDS = new PrimaryButton("In danh sách HD", "/Image/printer.png");
 		btnInDS.setBorder(new EmptyBorder(4, 10, 4, 10));
 		btnInDS.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnInDS.setPreferredSize(new Dimension(230, 35));
