@@ -42,8 +42,6 @@ public class PhieuHoanTien {
 	}
 
 	public void setNgayHoanTien(LocalDateTime ngayHoanTien) {
-		// Ràng buộc: phải là ngày hiện tại hoặc ngày trong quá khứ, không được ở tương
-		// lai
 		if (ngayHoanTien.isBefore(LocalDateTime.now()) || ngayHoanTien.isEqual(LocalDateTime.now())) {
 			this.ngayHoanTien = ngayHoanTien;
 		} else {
@@ -60,11 +58,7 @@ public class PhieuHoanTien {
 	}
 
 	public void setLyDoHoanTien(String lyDoHoanTien) {
-		if (lyDoHoanTien != null && !lyDoHoanTien.trim().isEmpty() && lyDoHoanTien.length() <= 255) {
-			this.lyDoHoanTien = lyDoHoanTien;
-		} else {
-			throw new IllegalArgumentException("Lý do hoàn trả không hợp lệ!");
-		}
+		this.lyDoHoanTien = lyDoHoanTien;
 	}
 
 	public String getGhiChu() {
@@ -102,7 +96,6 @@ public class PhieuHoanTien {
 		this.khachHang = khachHang;
 	}
 
-	// Phương thức tính số tiền hoàn trả
 	public double tinhSoTienHoanTra(double tongTienThanhToan) {
 		return tongTienThanhToan * (tiLeHoanTien / 100);
 	}

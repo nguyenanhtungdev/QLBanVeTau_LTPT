@@ -520,7 +520,7 @@ public class VeTau_View extends View {
 		panel_5.add(scrollPane);
 
 		JPanel panel_bottom = new JPanel();
-		panel_bottom.setBorder(new EmptyBorder(0, 10, 0, 50));
+		panel_bottom.setBorder(new EmptyBorder(0, 10, 0, 10));
 		panel_bottom.setPreferredSize(new Dimension(0, 60));
 		panel_bottom.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
 		panel_bottom.setBackground(Color.WHITE);
@@ -576,7 +576,7 @@ public class VeTau_View extends View {
 		JPanel panel_7 = new JPanel();
 		panel_7.setBackground(Color.WHITE);
 		panel_bottom.add(panel_7);
-		panel_7.setLayout(new FlowLayout(FlowLayout.RIGHT, 15, 5));
+		panel_7.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
 		btn_HuyBo = new DangerPrimaryButton("Hủy bỏ", "/Image/icon_delete.png");
 //		btn_HuyBo.setBorder(new EmptyBorder(6, 20, 6, 20));

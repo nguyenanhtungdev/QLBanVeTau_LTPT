@@ -186,22 +186,22 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		pageList.add(hoanTien_view = new DoiTraVe_View("Đổi trả vé", "/Image/icon_ThanhToan.png"));
 		thanhToan_Page = new ThanhToan_View("Thanh toán", "/Image/armchair.png");
 
-		hienThiThongTinVe();
+//		hienThiThongTinVe();
 		initController();
 	}
 
-	public void hienThiThongTinVe() {
-		hoanTien_view.getDanhSachVeTable().getSelectionModel().addListSelectionListener(e -> {
-			if (!e.getValueIsAdjusting()) {
-				int selectedRow = hoanTien_view.getDanhSachVeTable().getSelectedRow();
-				if (selectedRow != -1) {
-					hoanTien_view.getXacNhanButton().setEnabled(true);
-				} else {
-					hoanTien_view.getXacNhanButton().setEnabled(false);
-				}
-			}
-		});
-	}
+//	public void hienThiThongTinVe() {
+//		hoanTien_view.getDanhSachVeTable().getSelectionModel().addListSelectionListener(e -> {
+//			if (!e.getValueIsAdjusting()) {
+//				int selectedRow = hoanTien_view.getDanhSachVeTable().getSelectedRow();
+//				if (selectedRow != -1) {
+//					hoanTien_view.getXacNhanButton().setEnabled(true);
+//				} else {
+//					hoanTien_view.getXacNhanButton().setEnabled(false);
+//				}
+//			}
+//		});
+//	}
 
 	private void initController() throws SQLException {
 		themSuKien();
@@ -210,7 +210,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		chonGhe_View.getLblSoChuyenTau().setText("Tổng số chuyến tàu: " + soChuyenTau);
 
 	}
-	
+
 	public void setNhanVien(NhanVien nhanVien) {
 		this.nhanVien = nhanVien;
 	}
@@ -1465,11 +1465,10 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 
 	// Xử lý hoàn vé
 	private boolean timKiemHoaDon() {
-		String soDienThoaiOrCCCD = hoanTien_view.getSoDienThoaiRadioButton().isSelected()
-				? hoanTien_view.getSoDienThoaiField().getText()
-				: hoanTien_view.getCccdField().getText();
-
-		ArrayList<HoaDon> hoaDons = HoaDon_DAO.getInstance().getHoaDonBySoDienThoaiOrCCCD(soDienThoaiOrCCCD);
+		String soDienThoaiOrMaVe = hoanTien_view.getRdbtnMaVeTau().isSelected()
+				? hoanTien_view.getTxtMaVeTau().getText().trim()
+				: hoanTien_view.getTxtSDT().getText().trim();
+		ArrayList<HoaDon> hoaDons = HoaDon_DAO.getInstance().getHoaDonBySoDienThoaiOrCCCD(soDienThoaiOrMaVe);
 		DefaultTableModel tableModel = (DefaultTableModel) hoanTien_view.getDanhSachVeTable().getModel();
 		tableModel.setRowCount(0);
 
@@ -1486,6 +1485,10 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		}
 
 		return !hoaDons.isEmpty();
+	}
+
+	private void lamMoiLblViewHoanTien() {
+		hoanTien_view.getLbl_TongSoVe().setText(hoanTien_view.getDanhSachVeTable().getRowCount() + "");
 	}
 
 	// mới thêm vào
@@ -1543,13 +1546,30 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		String formattedNgayHoanTien = ngayHoanTien.format(outputFormatter);
 		LocalDateTime finalNgayHoanTien = LocalDateTime.parse(formattedNgayHoanTien, outputFormatter);
 //		    String lyDoChinh =  thongTinVe. .getSelectedItem().toString();
-		String lyDoHoanTien = thongTinVe.getLyDoNgoaiLeTextArea().getText();
+		String lyDoHoanTien = getLyDoHoanTien();
 		String ghiChu = thongTinVe.getGhiChuLabel().getValue();
 		float tiLeHoanTien = Float.parseFloat(thongTinVe.getTiLeHoanTienField().getText().replace("%", ""));
 		KhachHang khachHang = new KhachHang(thongTinVe.getMaKhachHangLabel().getValue());
 
 		return new PhieuHoanTien(maPhieuHoanTien, finalNgayHoanTien, (tiLeHoanTien / 100), lyDoHoanTien, ghiChu,
 				khachHang);
+	}
+
+	private String getLyDoHoanTien() {
+		if (thongTinVe.getCheckBox_1().isSelected()) {
+			return "Thay đổi lịch trình cá nhân";
+		} else if (thongTinVe.getCheckBox_2().isSelected()) {
+			return "Sự cố do hãng tàu";
+		} else if (thongTinVe.getCheckBox_3().isSelected()) {
+			if (!thongTinVe.getLydoHoanTienField().getText().equals(""))
+				return thongTinVe.getLydoHoanTienField().getText();
+			else {
+				JOptionPane.showMessageDialog(null, "Lý do khác không được để trống!", "Thông báo",
+						JOptionPane.INFORMATION_MESSAGE);
+				return null;
+			}
+		}
+		return "trống";
 	}
 
 	private boolean themPhieuHoanTienMoi(PhieuHoanTien phieuHoanTien) {
@@ -1563,14 +1583,17 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	}
 
 	private void lamMoiDoiTraVe() {
-		hoanTien_view.getTenKhachHangField().setText("");
-		hoanTien_view.getSoDienThoaiField().setText("");
-		hoanTien_view.getSoDienThoaiRadioButton().setSelected(false);
-		hoanTien_view.getCccdRadioButton().setSelected(false);
-		hoanTien_view.getCccdField().setText("");
+		hoanTien_view.getTxtMaVeTau().setText("");
+		hoanTien_view.getTxtSDT().setText("");
+		hoanTien_view.getTxtLocDanhSach().setText("");
+		hoanTien_view.getComboBoxLocDs().setSelectedIndex(0);
+		hoanTien_view.getLbl_TongSoVe().setText("0");
+		hoanTien_view.getLbl_TongSoVeDoi().setText("0");
+		hoanTien_view.getLbl_TongSoVeHoanTra().setText("0");
+		hoanTien_view.getRdbtnMaVeTau().setSelected(true);
+		hoanTien_view.getTxtSDT().setEnabled(false);
+		hoanTien_view.getTxtMaVeTau().setEditable(true);
 		((DefaultTableModel) hoanTien_view.getDanhSachVeTable().getModel()).setRowCount(0);
-		hoanTien_view.getTenKhachHangField().requestFocus();
-		hoanTien_view.getXacNhanButton().setVisible(false);
 	}
 
 	private boolean thayDoiTrangThaiDaHuy(String maKH, String maHoaDon) {
@@ -1636,7 +1659,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		hoanTienContent.append(String.format("Ten khach hang: %s\n", thongTinVe.getTenKhachHangLabel().getValue()));
 		hoanTienContent.append(String.format("Ngay hoan tien: %s\n", thongTinVe.getNgayHoanTienLabel().getValue()));
 		hoanTienContent.append("---------------------------------\n");
-		hoanTienContent.append(String.format("Ly do hoan tra: %s\n", thongTinVe.getLyDoNgoaiLeTextArea().getText()));
+		hoanTienContent.append(String.format("Ly do hoan tra: %s\n", thongTinVe.getLydoHoanTienField().getText()));
 		hoanTienContent.append(String.format("Ti le hoan tien: %s\n", thongTinVe.getTiLeHoanTienField().getText()));
 		hoanTienContent.append(String.format("So tien hoan tra: %s\n", thongTinVe.getTienHoanField().getText()));
 		hoanTienContent.append(String.format("Ghi chu: %s\n", thongTinVe.getGhiChuLabel().getValue()));
@@ -1649,12 +1672,6 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		hoanTienContent.append("\n");
 
 		return hoanTienContent.toString();
-	}
-
-	public void showPhieuHoanTienPreview() {
-		String formattedPhieuHoanTien = formatPhieuHoanTien();
-		JOptionPane.showMessageDialog(null, formattedPhieuHoanTien, "Xem trước biên lai",
-				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	// Xử lý thanh toán
@@ -2232,11 +2249,10 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		// Xử lý sự kiện hoàn vé
 		else if (obj.equals(hoanTien_view.getTimKiemButton())) {
 			if (!timKiemHoaDon()) {
-				JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn nào!", "Thông báo",
+				JOptionPane.showMessageDialog(null, "Không tìm thấy vé tàu nào!", "Thông báo",
 						javax.swing.JOptionPane.INFORMATION_MESSAGE);
-			} else {
-				hoanTien_view.getXacNhanButton().setVisible(true);
 			}
+			lamMoiLblViewHoanTien();
 
 		} else if (obj.equals(thongTinVe.getHoanVeButton())) {
 			PhieuHoanTien phieuHoanTien = taoPhieuHoanTien();
@@ -2250,13 +2266,11 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 				JOptionPane.showMessageDialog(null, "Thêm phiếu hoàn tiền thất bại!", "Thông báo",
 						JOptionPane.ERROR_MESSAGE);
 			}
-
 		} else if (obj.equals(hoanTien_view.getLamMoiButton())) {
 			lamMoiDoiTraVe();
-		} else if (obj.equals(hoanTien_view.getXacNhanButton())) {
+		} else if (obj.equals(hoanTien_view.getBtn_TraVe())) {
 			int selectedRow = hoanTien_view.getDanhSachVeTable().getSelectedRow();
 			if (selectedRow != -1) {
-
 				// Hiển thị cửa sổ thông tin vé tàu
 				thongTinVe.getMaHoaDonLabel()
 						.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 1).toString());
@@ -2269,13 +2283,13 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 				thongTinVe.getNgayHoanTienLabel().setValue(LocalDateTime.now().format(formatterNgayGio));
 				thongTinVe.getSoTienDaThanhToanLabel()
 						.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 5).toString());
-				thongTinVe.getSoDienThoaiLabel().setValue(hoanTien_view.getSoDienThoaiField().getText());
+				thongTinVe.getSoDienThoaiLabel().setValue(hoanTien_view.getTxtSDT().getText());
 				String maHD = hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 1).toString();
 				double tienHoan = tinhTienHoanVe(maHD);
 				double tiLeHoanTien = tinhTiLeHoanTien(maHD);
-				if (tiLeHoanTien == 0) {
-					thongTinVe.getLyDoNgoaiLeTextArea().setText("Thời gian trả vé đã hết hạn");
-				}
+//				if (tiLeHoanTien == 0) {
+//					thongTinVe.getLyDoNgoaiLeTextArea().setText("Thời gian trả vé đã hết hạn");
+//				}
 				thongTinVe.getTiLeHoanTienField().setText(tiLeHoanTien * 100 + "%");
 				thongTinVe.getTienHoanField().setText(String.format("%,.0f ₫", tienHoan));
 				thongTinVe.setVisible(true);
@@ -2291,8 +2305,28 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 				JOptionPane.showMessageDialog(null, "Không thể in phiếu hoàn tiền!", "Thông báo",
 						JOptionPane.ERROR_MESSAGE);
 			}
-		} else if (obj.equals(thongTinVe.getHoanVeButton_1())) {
-			showPhieuHoanTienPreview();
+		} else if (obj.equals(thongTinVe.getBtnQuayLai())) {
+			thongTinVe.setVisible(false);
+			;
+		} else if (obj.equals(hoanTien_view.getRdbtnMaVeTau())) {
+			hoanTien_view.getTxtSDT().setEnabled(false);
+			hoanTien_view.getTxtSDT().setText("");
+			hoanTien_view.getTxtMaVeTau().setEditable(true);
+			hoanTien_view.getTableModel().setRowCount(0);
+			lamMoiLblViewHoanTien();
+		} else if (obj.equals(hoanTien_view.getRdbtnSDT())) {
+			hoanTien_view.getTxtSDT().setEnabled(true);
+			hoanTien_view.getTxtMaVeTau().setText("");
+			hoanTien_view.getTxtMaVeTau().setEditable(false);
+			hoanTien_view.getTableModel().setRowCount(0);
+			lamMoiLblViewHoanTien();
+		} else if (obj.equals(thongTinVe.getCheckBox_3())) {
+			if (thongTinVe.getCheckBox_3().isSelected()) {
+				thongTinVe.getLydoHoanTienField().setEnabled(true);
+			} else {
+				thongTinVe.getLydoHoanTienField().setEnabled(false);
+				thongTinVe.getLydoHoanTienField().setText("");
+			}
 		}
 
 		// Xử lý sự kiện thanh toán

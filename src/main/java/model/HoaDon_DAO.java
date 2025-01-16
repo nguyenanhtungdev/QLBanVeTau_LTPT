@@ -28,7 +28,7 @@ public class HoaDon_DAO {
 	}
 
 	// Lấy hóa đơn theo số điện thoại hoặc CCCD
-	public ArrayList<HoaDon> getHoaDonBySoDienThoaiOrCCCD(String soDienThoaiOrCCCD) {
+	public ArrayList<HoaDon> getHoaDonBySoDienThoaiOrCCCD(String soDienThoaiOrMaVeTau) {
 		ArrayList<HoaDon> hoaDons = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -40,10 +40,10 @@ public class HoaDon_DAO {
 					+ "JOIN KhachHang kh ON hd.maKH = kh.maKH "
 					+ "JOIN ChiTiet_HoaDon cthd ON hd.maHoaDon = cthd.maHoaDon "
 					+ "JOIN VeTau vt ON cthd.maVeTau = vt.maVeTau "
-					+ "WHERE (kh.soDienThoai = ? OR kh.CCCD = ?) AND vt.daHuy = 0";
+					+ "WHERE (kh.soDienThoai = ? OR vt.maVeTau = ?) AND vt.daHuy = 0";
 			ps = con.prepareStatement(sql);
-			ps.setString(1, soDienThoaiOrCCCD);
-			ps.setString(2, soDienThoaiOrCCCD);
+			ps.setString(1, soDienThoaiOrMaVeTau);
+			ps.setString(2, soDienThoaiOrMaVeTau);
 
 			rs = ps.executeQuery();
 
