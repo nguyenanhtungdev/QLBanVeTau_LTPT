@@ -48,7 +48,7 @@ public class DoiTraVe_View extends View {
 		btn_TraVe.addActionListener(listener);
 		lamMoiButton.addActionListener(listener);
 		danhSachVeTable.addMouseListener(mouseListener);
-
+		btn_DoiVe.addActionListener(listener);
 	}
 
 	public DoiTraVe_View(String name, String iconPath) {
@@ -313,7 +313,7 @@ public class DoiTraVe_View extends View {
 		panel_center.add(panel_Table);
 		panel_Table.setLayout(new BoxLayout(panel_Table, BoxLayout.X_AXIS));
 
-		String[] columnNames = { "STT", "Mã vé tàu", "Tên Khách Hàng", "Ngày mua vé","Trạng thái",
+		String[] columnNames = { "STT", "Mã hóa đơn", "Mã khách hàng", "Tên khách hàng","Ngày mua",
 				"Thành Tiền" };
 		tableModel = new DefaultTableModel(columnNames, 0) {
 			@Override

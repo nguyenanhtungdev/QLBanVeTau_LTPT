@@ -63,6 +63,8 @@ import constant.ColorConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -101,13 +103,14 @@ import other.RoundedPanel;
 import other.ShortcutManager;
 import view.BaoMat_View;
 import view.DoiTraVe_View;
+import view.HomeView;
 import view.ThanhToan_View;
 import view.ThongTinVe;
 import view.ChonGhe_View;
 import view.VeTau_View;
 import view.View;
 
-public class BanVeTau_Controller implements ActionListener, MouseListener, FocusListener, KeyListener {
+public class BanVeTau_Controller implements ActionListener, MouseListener, FocusListener, KeyListener, ItemListener {
 
 	private static BanVeTau_Controller instance;
 
@@ -219,7 +222,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		chonGhe_View.addNextButtonListener(e -> nextPage());
 		chonGhe_View.addPrevButtonListener(e -> prevPage());
 		chonGhe_View.addSuKien(this);
-		thongTinVe.addSuKien(this);
+		thongTinVe.addSuKien(this, this);
 		hoanTien_view.addSuKien(this, this);
 		veTau_Page.addSuKien(this, this, this); // Gọi hàm thêm sự kiện cho lớp Vé tàu tạm thời
 		veTau_Page.addSuKienTable(this);
@@ -917,6 +920,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		updateTrangThaiThemVeTau();
 		JOptionPane.showMessageDialog(null, "Đã chọn nhanh " + soLuongGhe + " ghế thành công!", "Thông báo",
 				JOptionPane.INFORMATION_MESSAGE);
+		HienThi_Controller.getInstance().getHomeView().showView("Vé tàu");
 		return true;
 	}
 
@@ -1487,11 +1491,57 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		return !hoaDons.isEmpty();
 	}
 
+	private void resetDoiVe() {
+		chonGhe_View.getBtn_QuayLai_1().setVisible(false);
+		chonGhe_View.getBtn_HoanTat().setVisible(false);
+		chonGhe_View.getLbl_ThongBao().setVisible(false);
+		chonGhe_View.getLbl_TongSoVeTamThoi().setVisible(true);
+	}
+
+	private void resetDoiVe_1() {
+		chonGhe_View.getBtn_QuayLai_1().setVisible(true);
+		chonGhe_View.getBtn_HoanTat().setVisible(true);
+		chonGhe_View.getLbl_ThongBao().setVisible(true);
+		chonGhe_View.getLbl_TongSoVeTamThoi().setVisible(false);
+	}
+
 	private void lamMoiLblViewHoanTien() {
 		hoanTien_view.getLbl_TongSoVe().setText(hoanTien_view.getDanhSachVeTable().getRowCount() + "");
 	}
 
-	// mới thêm vào
+	private void xuLyTraVe() {
+		int selectedRow = hoanTien_view.getDanhSachVeTable().getSelectedRow();
+		if (selectedRow != -1) {
+			// Hiển thị cửa sổ thông tin vé tàu
+			thongTinVe.getMaHoaDonLabel()
+					.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 1).toString());
+			thongTinVe.getMaKhachHangLabel()
+					.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 2).toString());
+			thongTinVe.getTenKhachHangLabel()
+					.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 3).toString());
+			thongTinVe.getNgayMuaLabel()
+					.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 4).toString());
+			thongTinVe.getNgayHoanTienLabel().setValue(LocalDateTime.now().format(formatterNgayGio));
+			thongTinVe.getSoTienDaThanhToanLabel()
+					.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 5).toString());
+			thongTinVe.getSoDienThoaiLabel().setValue(hoanTien_view.getTxtSDT().getText());
+			String maHD = hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 1).toString();
+			double tiLeHoanTien = tinhTiLeHoanTien(maHD);
+			if (tiLeHoanTien != 0) {
+				double tienHoan = tinhTienHoanVe(maHD);
+				thongTinVe.getTiLeHoanTienField().setText(tiLeHoanTien * 100 + "%");
+				thongTinVe.getTienHoanField().setText(String.format("%,.0f ₫", tienHoan));
+				thongTinVe.setVisible(true);
+				return;
+			}
+			JOptionPane.showMessageDialog(null, "Đã quá thời gian hoàn vé, không thể hoàn vé!", "Thông báo",
+					JOptionPane.ERROR_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn vé tàu!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+	}
+
 	private static double tinhTienHoaDon(String maHD) {
 		double tongTien = 0;
 		List<ChiTiet_HoaDon> dsChiTiet = ChiTiet_HoaDon_DAO.getInstance().getByMaHoaDon(maHD);
@@ -1508,11 +1558,14 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	}
 
 	private static boolean kiemTraThoiGianMuaVe(LocalDateTime thoiGian) {
-
 		LocalDateTime now = LocalDateTime.now();
-		Duration duration = Duration.between(thoiGian, now);
 
-		return duration.toHours() > 24;
+		if (thoiGian.isAfter(now)) {
+			return false;
+		}
+
+		Duration duration = Duration.between(thoiGian, now);
+		return duration.toHours() <= 24;
 	}
 
 	private static double tinhTiLeHoanTien(String maHD) {
@@ -1546,21 +1599,21 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		String formattedNgayHoanTien = ngayHoanTien.format(outputFormatter);
 		LocalDateTime finalNgayHoanTien = LocalDateTime.parse(formattedNgayHoanTien, outputFormatter);
 //		    String lyDoChinh =  thongTinVe. .getSelectedItem().toString();
-		String lyDoHoanTien = getLyDoHoanTien();
 		String ghiChu = thongTinVe.getGhiChuLabel().getValue();
+		String lyDoHoanTien = getLyDoHoanTien();
 		float tiLeHoanTien = Float.parseFloat(thongTinVe.getTiLeHoanTienField().getText().replace("%", ""));
 		KhachHang khachHang = new KhachHang(thongTinVe.getMaKhachHangLabel().getValue());
 
-		return new PhieuHoanTien(maPhieuHoanTien, finalNgayHoanTien, (tiLeHoanTien / 100), lyDoHoanTien, ghiChu,
-				khachHang);
+		return new PhieuHoanTien(maPhieuHoanTien, finalNgayHoanTien, (tiLeHoanTien / 100),
+				lyDoHoanTien == null ? "trống" : lyDoHoanTien, ghiChu, khachHang);
 	}
 
 	private String getLyDoHoanTien() {
-		if (thongTinVe.getCheckBox_1().isSelected()) {
-			return "Thay đổi lịch trình cá nhân";
-		} else if (thongTinVe.getCheckBox_2().isSelected()) {
-			return "Sự cố do hãng tàu";
-		} else if (thongTinVe.getCheckBox_3().isSelected()) {
+		if (thongTinVe.getRdbtn_1().isSelected()) {
+			return thongTinVe.getRdbtn_1().getText();
+		} else if (thongTinVe.getRdbtn_2().isSelected()) {
+			return thongTinVe.getRdbtn_2().getText();
+		} else if (thongTinVe.getRdbtn_3().isSelected()) {
 			if (!thongTinVe.getLydoHoanTienField().getText().equals(""))
 				return thongTinVe.getLydoHoanTienField().getText();
 			else {
@@ -2269,32 +2322,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		} else if (obj.equals(hoanTien_view.getLamMoiButton())) {
 			lamMoiDoiTraVe();
 		} else if (obj.equals(hoanTien_view.getBtn_TraVe())) {
-			int selectedRow = hoanTien_view.getDanhSachVeTable().getSelectedRow();
-			if (selectedRow != -1) {
-				// Hiển thị cửa sổ thông tin vé tàu
-				thongTinVe.getMaHoaDonLabel()
-						.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 1).toString());
-				thongTinVe.getMaKhachHangLabel()
-						.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 2).toString());
-				thongTinVe.getTenKhachHangLabel()
-						.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 3).toString());
-				thongTinVe.getNgayMuaLabel()
-						.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 4).toString());
-				thongTinVe.getNgayHoanTienLabel().setValue(LocalDateTime.now().format(formatterNgayGio));
-				thongTinVe.getSoTienDaThanhToanLabel()
-						.setValue(hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 5).toString());
-				thongTinVe.getSoDienThoaiLabel().setValue(hoanTien_view.getTxtSDT().getText());
-				String maHD = hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 1).toString();
-				double tienHoan = tinhTienHoanVe(maHD);
-				double tiLeHoanTien = tinhTiLeHoanTien(maHD);
-//				if (tiLeHoanTien == 0) {
-//					thongTinVe.getLyDoNgoaiLeTextArea().setText("Thời gian trả vé đã hết hạn");
-//				}
-				thongTinVe.getTiLeHoanTienField().setText(tiLeHoanTien * 100 + "%");
-				thongTinVe.getTienHoanField().setText(String.format("%,.0f ₫", tienHoan));
-				thongTinVe.setVisible(true);
-
-			}
+			xuLyTraVe();
 		} else if (obj.equals(thongTinVe.getInPDFButton())) {
 			String maPhieuHoanTien = PhieuHoanTien_DAO.getInstance()
 					.getMaPhieuHoanTienByMaHoaDon(thongTinVe.getMaHoaDonLabel().getValue());
@@ -2320,13 +2348,24 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 			hoanTien_view.getTxtMaVeTau().setEditable(false);
 			hoanTien_view.getTableModel().setRowCount(0);
 			lamMoiLblViewHoanTien();
-		} else if (obj.equals(thongTinVe.getCheckBox_3())) {
-			if (thongTinVe.getCheckBox_3().isSelected()) {
-				thongTinVe.getLydoHoanTienField().setEnabled(true);
+		} else if (obj.equals(hoanTien_view.getBtn_DoiVe())) {
+			if (hoanTien_view.getDanhSachVeTable().getRowCount() > 0) {
+				if (hoanTien_view.getDanhSachVeTable().getSelectedRow() >= 0) {
+					resetDoiVe_1();
+					HienThi_Controller.getInstance().getHomeView().showView("Chọn ghế");
+				} else {
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn vé tàu!", "Thông báo",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			} else {
-				thongTinVe.getLydoHoanTienField().setEnabled(false);
-				thongTinVe.getLydoHoanTienField().setText("");
+				JOptionPane.showMessageDialog(null, "Danh sách trống!", "Thông báo", JOptionPane.ERROR_MESSAGE);
 			}
+		} else if (obj.equals(chonGhe_View.getBtn_QuayLai_1())) {
+			resetDoiVe();
+			HienThi_Controller.getInstance().getHomeView().showView("Đổi trả vé");
+		} else if (obj.equals(chonGhe_View.getBtn_HoanTat())) {
+			resetDoiVe();
+			HienThi_Controller.getInstance().getHomeView().showView("Đổi trả vé");
 		}
 
 		// Xử lý sự kiện thanh toán
@@ -2513,6 +2552,19 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 				}
 			} else if (length > 10) {
 				txtNgaySinh.setText(text.substring(0, 10));
+			}
+		}
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		Object obj = e.getSource();
+		if (obj.equals(thongTinVe.getRdbtn_3())) {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				thongTinVe.getLydoHoanTienField().setEnabled(true);
+			} else if (e.getStateChange() == ItemEvent.DESELECTED) {
+				thongTinVe.getLydoHoanTienField().setEnabled(false);
+				thongTinVe.getLydoHoanTienField().setText("");
 			}
 		}
 	}

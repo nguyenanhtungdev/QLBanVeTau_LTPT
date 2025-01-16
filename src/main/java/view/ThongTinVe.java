@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -78,16 +79,16 @@ public class ThongTinVe extends JFrame {
 	private DetailRow maKhachHangLabel;
 	private PrimaryButton btnQuayLai;
 	private JPanel panel_3;
-	private JCheckBox checkBox_1;
 	private JPanel panel_4;
-	private JCheckBox checkBox_2;
-	private JCheckBox checkBox_3;
+	private JRadioButton rdbtn_1;
+	private JRadioButton rdbtn_3;
+	private JRadioButton rdbtn_2;
 
-	public void addSuKien(ActionListener listener) {
+	public void addSuKien(ActionListener listener, ItemListener itemListener) {
 		hoanVeButton.addActionListener(listener);
 		btnQuayLai.addActionListener(listener);
 		inPDFButton.addActionListener(listener);
-		checkBox_3.addActionListener(listener);
+		rdbtn_3.addItemListener(itemListener);
 	}
 
 	public ThongTinVe() {
@@ -204,22 +205,26 @@ public class ThongTinVe extends JFrame {
 		contentPanel.add(panel_4);
 		panel_4.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
-		checkBox_1 = new JCheckBox("Thay đổi lịch trình cá nhân");
-		checkBox_1.setBackground(Color.WHITE);
-		checkBox_1.setFont(new Font("Arial", Font.PLAIN, 16));
-		panel_4.add(checkBox_1);
+		rdbtn_1 = new JRadioButton("Thay đổi lịch trình cá nhân");
+		rdbtn_1.setBackground(Color.WHITE);
+		rdbtn_1.setFont(new Font("Arial", Font.PLAIN, 16));
+		panel_4.add(rdbtn_1);
 
-		checkBox_2 = new JCheckBox("Sự cố do hãng tàu");
-		checkBox_2.setBackground(Color.WHITE);
-		checkBox_2.setFont(new Font("Arial", Font.PLAIN, 16));
-		panel_4.add(checkBox_2);
+		rdbtn_2 = new JRadioButton("Sự cố do hãng tàu");
+		rdbtn_2.setFont(new Font("Arial", Font.PLAIN, 16));
+		rdbtn_2.setBackground(Color.WHITE);
+		panel_4.add(rdbtn_2);
 
-		checkBox_3 = new JCheckBox("Lý do khác");
-		checkBox_3.setBackground(Color.WHITE);
-		checkBox_3.setFont(new Font("Arial", Font.PLAIN, 16));
-		panel_4.add(checkBox_3);
+		rdbtn_3 = new JRadioButton("Lý do khác");
+		rdbtn_3.setFont(new Font("Arial", Font.PLAIN, 16));
+		rdbtn_3.setBackground(Color.WHITE);
+		panel_4.add(rdbtn_3);
 
 		contentPanel.add(Box.createVerticalStrut(10));
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(rdbtn_1);
+		buttonGroup.add(rdbtn_2);
+		buttonGroup.add(rdbtn_3);
 
 		ghiChuLabel = new DetailRow("Ghi chú: ", "");
 		ghiChuLabel.getRowPanel().setFont(new Font("Arial", Font.PLAIN, 18));
@@ -443,16 +448,16 @@ public class ThongTinVe extends JFrame {
 		return soTienDaThanhToanField;
 	}
 
-	public JCheckBox getCheckBox_1() {
-		return checkBox_1;
+	public JRadioButton getRdbtn_1() {
+		return rdbtn_1;
 	}
 
-	public JCheckBox getCheckBox_2() {
-		return checkBox_2;
+	public JRadioButton getRdbtn_3() {
+		return rdbtn_3;
 	}
 
-	public JCheckBox getCheckBox_3() {
-		return checkBox_3;
+	public JRadioButton getRdbtn_2() {
+		return rdbtn_2;
 	}
 
 	public JTextField getTienHoanField() {

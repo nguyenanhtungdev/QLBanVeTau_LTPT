@@ -115,4 +115,9 @@ public class HienThi_Controller {
 	public void setTaiKhoan(TaiKhoan taiKhoan) {
 		this.taiKhoan = taiKhoan;
 	}
+
+	public HomeView getHomeView() {
+		return homeView;
+	}
+	
 }
