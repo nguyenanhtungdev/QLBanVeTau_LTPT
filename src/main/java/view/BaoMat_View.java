@@ -15,7 +15,7 @@ public class BaoMat_View extends JFrame {
 	private RoundPassField newPasswordField;
 	private RoundPassField confirmPasswordField;
 	private PrimaryButton btnUpdatePassword;
-
+	//Tung
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(() -> {
 			try {
