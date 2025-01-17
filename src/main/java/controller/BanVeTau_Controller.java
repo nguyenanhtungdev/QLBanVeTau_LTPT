@@ -54,6 +54,8 @@ import javax.swing.Timer;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
@@ -110,7 +112,8 @@ import view.ChonGhe_View;
 import view.VeTau_View;
 import view.View;
 
-public class BanVeTau_Controller implements ActionListener, MouseListener, FocusListener, KeyListener, ItemListener {
+public class BanVeTau_Controller
+		implements ActionListener, MouseListener, FocusListener, KeyListener, ItemListener, PropertyChangeListener {
 
 	private static BanVeTau_Controller instance;
 
@@ -125,7 +128,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	}
 
 	private static int ITEMS_PER_PAGE = 5;
-	private int currentIndex = 0, soChuyenTau, soTrang = 1;
+	private int currentIndex = 0, soChuyenTau = 0, soTrang = 1;
 	private ChonGhe_View chonGhe_View;
 	private VeTau_View veTau_Page;
 	private ThanhToan_View thanhToan_Page;
@@ -154,6 +157,9 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	private double tongTienVeTauTamThoi = 0;
 	private NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 	private int tongSoVeChieuDi = 0;
+	private int soVeDoiTra = 0;
+	private int soVeMotChieu = 0;
+	private int soVeKhuHoi = 0;
 	private int tongSoVeChieuVe = 0;
 	private boolean isBtnTiepTheoClick = false;
 	// hoàn tiền view
@@ -182,7 +188,6 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	// Hàm khởi tạo
 	public BanVeTau_Controller() throws SQLException {
 		this.danhSachChuyenTau = ChuyenTau_DAO.getInstance().getAll();
-		this.soChuyenTau = danhSachChuyenTau.size();
 
 		pageList.add(chonGhe_View = new ChonGhe_View("Chọn ghế", "/Image/armchair.png"));
 		pageList.add(veTau_Page = new VeTau_View("Vé tàu", "/Image/tabler-icon-ticket.png"));
@@ -221,7 +226,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	private void themSuKien() {
 		chonGhe_View.addNextButtonListener(e -> nextPage());
 		chonGhe_View.addPrevButtonListener(e -> prevPage());
-		chonGhe_View.addSuKien(this);
+		chonGhe_View.addSuKien(this, this);
 		thongTinVe.addSuKien(this, this);
 		hoanTien_view.addSuKien(this, this);
 		veTau_Page.addSuKien(this, this, this); // Gọi hàm thêm sự kiện cho lớp Vé tàu tạm thời
@@ -234,11 +239,11 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	}
 
 	private void nextPage() {
-		if (currentIndex + ITEMS_PER_PAGE < danhSachChuyenTau.size()) {
+		if (currentIndex + ITEMS_PER_PAGE < soChuyenTau) {
 			currentIndex += ITEMS_PER_PAGE;
 			soTrang++;
-			updateDisplay(danhSachChuyenTau); // sử dụng để cập nhật hiển thị của giao diện người dùng khi có thay đổi
-												// dữ liệu
+			updateDisplay(danhSachChuyenTau);
+
 		} else {
 			javax.swing.JOptionPane.showMessageDialog(null, "Đã đến trang cuối cùng.", "Thông báo",
 					javax.swing.JOptionPane.INFORMATION_MESSAGE);
@@ -271,6 +276,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 			ChuyenTau chuyenTau = dsChuyenTaus.get(i);
 			if (chuyenTau.getThoiGianKhoiHanh().isAfter(LocalDateTime.now())) {
 				trainPanel.add(createTau(chuyenTau));
+				soChuyenTau += 1;
 			}
 		}
 		trainPanel.revalidate();
@@ -621,8 +627,8 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 			String gaDiTemp = isChiChieuDi ? gaDi : gaDen;
 			String gaDenTemp = isChiChieuDi ? gaDen : gaDi;
 			chuyenTauList = ChuyenTau_DAO.getInstance().timKiemChuyenTau(gaDiTemp, gaDenTemp, ngay);
-			soChuyenTau = chuyenTauList.size();
 			Date date = inputFormat.parse(ngay);
+			soChuyenTau = chuyenTauList.size();
 
 			if (soChuyenTau > 0) {
 				chonGhe_View.getLblSoChuyenTau().setText("Tổng số chuyến tàu: " + soChuyenTau);
@@ -639,7 +645,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 			danhSachChuyenTau = chuyenTauList;
 			this.currentIndex = 0;
 			this.soTrang = 1;
-			this.soChuyenTau = danhSachChuyenTau.size();
+			System.out.println(danhSachChuyenTau);
 			updateDisplay(danhSachChuyenTau);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -693,7 +699,6 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 			// Reset lại chỉ số trang và hiển thị giao diện
 			this.currentIndex = 0;
 			this.soTrang = 1;
-			this.soChuyenTau = dsTimThay.size();
 			chonGhe_View.getLblSoChuyenTau().setText("Tổng số chuyến tàu: " + soChuyenTau);
 			danhSachChuyenTau = dsTimThay;
 			updateDisplay(danhSachChuyenTau);
@@ -722,6 +727,7 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 	}
 
 	// Phương thức kiểm tra ngày đi và ngày về
+//	@SuppressWarnings("unused") // bỏ qua cảnh báo
 	private boolean kiemTraNgay() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		Date ngayDiDate = chonGhe_View.getDateChooser_NgayDi().getDate();
@@ -778,7 +784,6 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		chonGhe_View.getLbl_TongSoVeTamThoi().setVisible(true);
 
 		danhSachChuyenTau = ChuyenTau_DAO.getInstance().getAll();
-		soChuyenTau = danhSachChuyenTau.size();
 		chonGhe_View.getLblSoChuyenTau().setText("Tổng số chuyến tàu: " + soChuyenTau);
 		// Reset lại chỉ số trang và hiển thị giao diện
 		this.currentIndex = 0;
@@ -1472,23 +1477,32 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		String soDienThoaiOrMaVe = hoanTien_view.getRdbtnMaVeTau().isSelected()
 				? hoanTien_view.getTxtMaVeTau().getText().trim()
 				: hoanTien_view.getTxtSDT().getText().trim();
-		ArrayList<HoaDon> hoaDons = HoaDon_DAO.getInstance().getHoaDonBySoDienThoaiOrCCCD(soDienThoaiOrMaVe);
+		ArrayList<model.ThongTinVe> thongTinVes = HoaDon_DAO.getInstance()
+				.getHoaDonBySoDienThoaiOrCCCD(soDienThoaiOrMaVe);
 		DefaultTableModel tableModel = (DefaultTableModel) hoanTien_view.getDanhSachVeTable().getModel();
 		tableModel.setRowCount(0);
 
 		int stt = 1;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-		for (HoaDon hoaDon : hoaDons) {
-			String formattedNgayLap = hoaDon.getNgayLapHoaDon().format(formatter);
-			if (!kiemTraVeNhom(hoaDon.getMaHoaDon())) {
-				tableModel.addRow(new Object[] { stt++, hoaDon.getMaHoaDon(), hoaDon.getKhachHang().getMaKhachHang(),
-						hoaDon.getKhachHang().getHoTen(), formattedNgayLap,
-						String.format("%,.0f ₫", tinhTienHoaDon(hoaDon.getMaHoaDon())) });
+		for (model.ThongTinVe thongTinVe : thongTinVes) {
+			String formattedNgayLap = thongTinVe.getHoaDon().getNgayLapHoaDon().format(formatter);
+			if (!kiemTraVeNhom(thongTinVe.getHoaDon().getMaHoaDon())) {
+				tableModel.addRow(new Object[] { stt++, thongTinVe.getHoaDon().getMaHoaDon(),
+						thongTinVe.getVeTau().getMaVeTau(), thongTinVe.getHoaDon().getKhachHang().getHoTen(),
+						formattedNgayLap, thongTinVe.getVeTau().isDaHuy() ? "Đã hủy / trả" : "Còn sử dụng",
+						thongTinVe.getVeTau().isKhuHoi() ? "Môt chiều" : "Khứ hồi",
+						String.format("%,.0f ₫", tinhTienHoaDon(thongTinVe.getHoaDon().getMaHoaDon())) });
+				if (thongTinVe.getVeTau().isDaHuy())
+					soVeDoiTra++;
+				if (thongTinVe.getVeTau().isKhuHoi())
+					soVeMotChieu++;
+				else
+					soVeKhuHoi++;
 			}
 		}
 
-		return !hoaDons.isEmpty();
+		return !thongTinVes.isEmpty();
 	}
 
 	private void resetDoiVe() {
@@ -1507,6 +1521,9 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 
 	private void lamMoiLblViewHoanTien() {
 		hoanTien_view.getLbl_TongSoVe().setText(hoanTien_view.getDanhSachVeTable().getRowCount() + "");
+		hoanTien_view.getLbl_TongSoVeDoiTra().setText(soVeDoiTra + "");
+		hoanTien_view.getLbl_TongVeKhuHoi().setText(soVeMotChieu + "");
+		hoanTien_view.getLbl_TongVeMotChieu().setText(soVeKhuHoi + "");
 	}
 
 	private void xuLyTraVe() {
@@ -1641,8 +1658,9 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 		hoanTien_view.getTxtLocDanhSach().setText("");
 		hoanTien_view.getComboBoxLocDs().setSelectedIndex(0);
 		hoanTien_view.getLbl_TongSoVe().setText("0");
-		hoanTien_view.getLbl_TongSoVeDoi().setText("0");
-		hoanTien_view.getLbl_TongSoVeHoanTra().setText("0");
+		hoanTien_view.getLbl_TongSoVeDoiTra().setText("0");
+		hoanTien_view.getLbl_TongVeMotChieu().setText("0");
+		hoanTien_view.getLbl_TongVeKhuHoi().setText("0");
 		hoanTien_view.getRdbtnMaVeTau().setSelected(true);
 		hoanTien_view.getTxtSDT().setEnabled(false);
 		hoanTien_view.getTxtMaVeTau().setEditable(true);
@@ -2565,6 +2583,30 @@ public class BanVeTau_Controller implements ActionListener, MouseListener, Focus
 			} else if (e.getStateChange() == ItemEvent.DESELECTED) {
 				thongTinVe.getLydoHoanTienField().setEnabled(false);
 				thongTinVe.getLydoHoanTienField().setText("");
+			}
+		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		Object obj = evt.getSource();
+		if (obj.equals(chonGhe_View.getDateChooser_NgayDi())) {
+			Date selectedDate = chonGhe_View.getDateChooser_NgayDi().getDate();
+			if (selectedDate != null) {
+				Date today = new Date();
+				if (selectedDate.before(today)) {
+					JOptionPane.showMessageDialog(null, "Ngày đi không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+					chonGhe_View.getDateChooser_NgayDi().setDate(null);
+				}
+			}
+		} else if (obj.equals(chonGhe_View.getDateChooser_NgayVe())) {
+			Date selectedDate = chonGhe_View.getDateChooser_NgayVe().getDate();
+			if (selectedDate != null) {
+				Date today = new Date();
+				if (selectedDate.before(today)) {
+					JOptionPane.showMessageDialog(null, "Ngày về không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+					chonGhe_View.getDateChooser_NgayVe().setDate(null);
+				}
 			}
 		}
 	}

@@ -34,11 +34,12 @@ public class DoiTraVe_View extends View {
 	private JTextField txtSDT;
 	private JTextField txtLocDanhSach;
 	private PrimaryButton btnLocTheoDanhSach;
-	private JLabel lbl_TongSoVeDoi;
-	private JLabel lbl_TongSoVeHoanTra;
+	private JLabel lbl_TongVeMotChieu;
+	private JLabel lbl_TongSoVeDoiTra;
 	private JLabel lbl_TongSoVe;
 	private JComboBox<String> comboBoxLocDs;
 	private DefaultTableModel tableModel;
+	private JLabel lbl_TongVeKhuHoi;
 
 	// Thêm sự kiện cho lớp hoàn tiền view
 	public void addSuKien(ActionListener listener, MouseListener mouseListener) {
@@ -282,10 +283,10 @@ public class DoiTraVe_View extends View {
 
 		comboBoxLocDs = new JComboBox<String>();
 		panel_13.add(comboBoxLocDs);
-		comboBoxLocDs.setModel(new DefaultComboBoxModel(new String[] { "Tất cả", "Lọc theo ngày tăng dần",
-				"Lọc theo ngày giảm dần", "Lọc theo vé đổi", "Lọc theo vé trả" }));
+		comboBoxLocDs.setModel(new DefaultComboBoxModel<String>(new String[] { "Tất cả", "Lọc theo ngày tăng dần",
+				"Lọc theo ngày giảm dần", "Lọc theo đổi / trả", "Lọc theo loại vé" }));
 		comboBoxLocDs.setFont(new Font("Arial", Font.PLAIN, 18));
-		comboBoxLocDs.setPreferredSize(new Dimension(200, 35));
+		comboBoxLocDs.setPreferredSize(new Dimension(210, 35));
 
 		txtLocDanhSach = new JTextField();
 		txtLocDanhSach.putClientProperty("JTextField.placeholderText", "Nhập mã vé tàu");
@@ -313,8 +314,8 @@ public class DoiTraVe_View extends View {
 		panel_center.add(panel_Table);
 		panel_Table.setLayout(new BoxLayout(panel_Table, BoxLayout.X_AXIS));
 
-		String[] columnNames = { "STT", "Mã hóa đơn", "Mã khách hàng", "Tên khách hàng","Ngày mua",
-				"Thành Tiền" };
+		String[] columnNames = { "STT", "Mã hóa đơn", "Mã vé tàu", "Tên khách hàng", "Ngày mua", "Trang thái vé",
+				"Loại vé", "Thành Tiền" };
 		tableModel = new DefaultTableModel(columnNames, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -351,6 +352,15 @@ public class DoiTraVe_View extends View {
 		for (int i = 0; i < danhSachVeTable.getColumnCount(); i++) {
 			danhSachVeTable.getColumnModel().getColumn(i).setResizable(true);
 		}
+		danhSachVeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		danhSachVeTable.getColumnModel().getColumn(0).setPreferredWidth(70);
+		danhSachVeTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+		danhSachVeTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+		danhSachVeTable.getColumnModel().getColumn(3).setPreferredWidth(190);
+		danhSachVeTable.getColumnModel().getColumn(4).setPreferredWidth(190);
+		danhSachVeTable.getColumnModel().getColumn(5).setPreferredWidth(130);
+		danhSachVeTable.getColumnModel().getColumn(6).setPreferredWidth(130);
+		danhSachVeTable.getColumnModel().getColumn(7).setPreferredWidth(200);
 
 		JScrollPane tableScrollPane = new JScrollPane(danhSachVeTable);
 		tableScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -389,27 +399,53 @@ public class DoiTraVe_View extends View {
 		panel_16_1.setBackground(Color.WHITE);
 		panel_15.add(panel_16_1);
 
-		JLabel lblTngSV = new JLabel("Tổng số vé hoàn trả:");
+		JLabel lblTngSV = new JLabel("Số vé đổi / trả:");
 		lblTngSV.setForeground(new Color(70, 130, 169));
 		lblTngSV.setFont(new Font("Arial", Font.BOLD, 18));
 		panel_16_1.add(lblTngSV);
 
-		lbl_TongSoVeHoanTra = new JLabel("0");
-		lbl_TongSoVeHoanTra.setFont(new Font("Arial", Font.BOLD, 18));
-		panel_16_1.add(lbl_TongSoVeHoanTra);
+		lbl_TongSoVeDoiTra = new JLabel("0");
+		lbl_TongSoVeDoiTra.setFont(new Font("Arial", Font.BOLD, 18));
+		panel_16_1.add(lbl_TongSoVeDoiTra);
 
 		JPanel panel_16_2 = new JPanel();
 		panel_16_2.setBackground(Color.WHITE);
 		panel_15.add(panel_16_2);
 
-		JLabel lblTngSV_1 = new JLabel("Tổng số vé đổi:");
+		JLabel lblTngSV_1 = new JLabel("Số vé một chiều:");
 		lblTngSV_1.setForeground(new Color(70, 130, 169));
 		lblTngSV_1.setFont(new Font("Arial", Font.BOLD, 18));
 		panel_16_2.add(lblTngSV_1);
 
-		lbl_TongSoVeDoi = new JLabel("0");
-		lbl_TongSoVeDoi.setFont(new Font("Arial", Font.BOLD, 18));
-		panel_16_2.add(lbl_TongSoVeDoi);
+		lbl_TongVeMotChieu = new JLabel("0");
+		lbl_TongVeMotChieu.setFont(new Font("Arial", Font.BOLD, 18));
+		panel_16_2.add(lbl_TongVeMotChieu);
+
+		JPanel panel_16_2_1 = new JPanel();
+		panel_16_2_1.setBackground(Color.WHITE);
+		panel_15.add(panel_16_2_1);
+
+		JLabel lblTngSV_1_1 = new JLabel("Số vé khứ hồi:");
+		lblTngSV_1_1.setForeground(new Color(70, 130, 169));
+		lblTngSV_1_1.setFont(new Font("Arial", Font.BOLD, 18));
+		panel_16_2_1.add(lblTngSV_1_1);
+
+		lbl_TongVeKhuHoi = new JLabel("0");
+		lbl_TongVeKhuHoi.setFont(new Font("Arial", Font.BOLD, 18));
+		panel_16_2_1.add(lbl_TongVeKhuHoi);
+
+		JPanel panel_16_2_1_1 = new JPanel();
+		panel_16_2_1_1.setBorder(new EmptyBorder(0, 30, 0, 0));
+		panel_16_2_1_1.setBackground(Color.WHITE);
+		panel_15.add(panel_16_2_1_1);
+
+		JLabel lblTngSV_1_1_1 = new JLabel("Tìm nhanh:");
+		lblTngSV_1_1_1.setFont(new Font("Arial", Font.ITALIC, 14));
+		panel_16_2_1_1.add(lblTngSV_1_1_1);
+
+		JLabel lbl_TongVeKhuHoi_1 = new JLabel("ALT + F");
+		lbl_TongVeKhuHoi_1.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 14));
+		panel_16_2_1_1.add(lbl_TongVeKhuHoi_1);
 
 		JPanel panel_14 = new JPanel();
 		panel_14.setBackground(Color.WHITE);
@@ -530,14 +566,6 @@ public class DoiTraVe_View extends View {
 		return btnLocTheoDanhSach;
 	}
 
-	public JLabel getLbl_TongSoVeDoi() {
-		return lbl_TongSoVeDoi;
-	}
-
-	public JLabel getLbl_TongSoVeHoanTra() {
-		return lbl_TongSoVeHoanTra;
-	}
-
 	public JLabel getLbl_TongSoVe() {
 		return lbl_TongSoVe;
 	}
@@ -549,5 +577,17 @@ public class DoiTraVe_View extends View {
 	public DefaultTableModel getTableModel() {
 		return tableModel;
 	}
-	
+
+	public JLabel getLbl_TongVeMotChieu() {
+		return lbl_TongVeMotChieu;
+	}
+
+	public JLabel getLbl_TongSoVeDoiTra() {
+		return lbl_TongSoVeDoiTra;
+	}
+
+	public JLabel getLbl_TongVeKhuHoi() {
+		return lbl_TongVeKhuHoi;
+	}
+
 }

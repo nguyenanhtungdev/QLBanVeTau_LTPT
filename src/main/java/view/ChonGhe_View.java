@@ -3,6 +3,8 @@ package view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import other.DangerPrimaryButton;
 import other.PrimaryButton;
@@ -14,6 +16,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -141,7 +144,7 @@ public class ChonGhe_View extends View {
 	private JLabel lbl_ThongBao;
 
 	// Thêm sự kiện cho lớp tìm kiếm view
-	public void addSuKien(ActionListener listener) {
+	public void addSuKien(ActionListener listener, PropertyChangeListener changeListener) {
 		jcombobox_gadi.addActionListener(listener);
 		jcombobox_gaden.addActionListener(listener);
 		btnTimKiemChuyenTau.addActionListener(listener);
@@ -154,6 +157,8 @@ public class ChonGhe_View extends View {
 		btn_TiepTheo.addActionListener(listener);
 		btn_QuayLai_1.addActionListener(listener);
 		btn_HoanTat.addActionListener(listener);
+		dateChooser_NgayDi.addPropertyChangeListener(changeListener);
+		dateChooser_NgayVe.addPropertyChangeListener(changeListener);
 	}
 
 	public void addNextButtonListener(ActionListener listener) {

@@ -28,19 +28,19 @@ public class HoaDon_DAO {
 	}
 
 	// Lấy hóa đơn theo số điện thoại hoặc CCCD
-	public ArrayList<HoaDon> getHoaDonBySoDienThoaiOrCCCD(String soDienThoaiOrMaVeTau) {
-		ArrayList<HoaDon> hoaDons = new ArrayList<>();
+	public ArrayList<ThongTinVe> getHoaDonBySoDienThoaiOrCCCD(String soDienThoaiOrMaVeTau) {
+		ArrayList<ThongTinVe> thongTinVes = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 			con = Database.getInstance().getConnection();
-			String sql = "SELECT DISTINCT hd.*, kh.maKH, kh.hoTen, kh.soDienThoai " + "FROM HoaDon hd "
+			String sql = "SELECT DISTINCT *" + "FROM HoaDon hd "
 					+ "JOIN KhachHang kh ON hd.maKH = kh.maKH "
 					+ "JOIN ChiTiet_HoaDon cthd ON hd.maHoaDon = cthd.maHoaDon "
 					+ "JOIN VeTau vt ON cthd.maVeTau = vt.maVeTau "
-					+ "WHERE (kh.soDienThoai = ? OR vt.maVeTau = ?) AND vt.daHuy = 0";
+					+ "WHERE (kh.soDienThoai = ? OR vt.maVeTau = ?)";
 			ps = con.prepareStatement(sql);
 			ps.setString(1, soDienThoaiOrMaVeTau);
 			ps.setString(2, soDienThoaiOrMaVeTau);
@@ -53,6 +53,14 @@ public class HoaDon_DAO {
 				float thueVAT = rs.getFloat("thueVAT");
 				Timestamp timestamp = rs.getTimestamp("ngayLapHoaDon");
 				LocalDateTime ngayLapHoaDon = timestamp.toLocalDateTime();
+
+				String maVeTau = rs.getString("maVeTau");
+				boolean loaiVe = rs.getBoolean("loaiVe");
+				LocalDateTime ngayHetHan = rs.getTimestamp("ngayHetHan").toLocalDateTime();
+				boolean daHuy = rs.getBoolean("daHuy");
+				String maKH = rs.getString("maKH");
+				boolean isKhuHoi = rs.getBoolean("isKhuHoi");
+				GheTau gheTau = new GheTau(rs.getString("maGheTau"));
 
 				// Tạo đối tượng HoaDon
 				HoaDon hoaDon = new HoaDon();
@@ -67,8 +75,10 @@ public class HoaDon_DAO {
 				khachHang.setSoDienThoai(rs.getString("soDienThoai"));
 				hoaDon.setKhachHang(khachHang);
 
+				VeTau veTau = new VeTau(maVeTau, loaiVe, ngayHetHan, daHuy, gheTau, isKhuHoi, khachHang);
+
 				// Thêm hóa đơn vào danh sách kết quả
-				hoaDons.add(hoaDon);
+				thongTinVes.add(new ThongTinVe(hoaDon, veTau));
 			}
 
 		} catch (SQLException e) {
@@ -85,7 +95,7 @@ public class HoaDon_DAO {
 				e.printStackTrace();
 			}
 		}
-		return hoaDons;
+		return thongTinVes;
 	}
 
 	public List<HoaDon> getAll() {
