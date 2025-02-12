@@ -23,9 +23,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-<<<<<<< Updated upstream
-import java.util.*;
-=======
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -33,7 +30,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
->>>>>>> Stashed changes
 
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -41,9 +37,6 @@ import javax.print.DocPrintJob;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
-<<<<<<< Updated upstream
-import javax.swing.*;
-=======
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -52,17 +45,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
->>>>>>> Stashed changes
 import javax.swing.Timer;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-<<<<<<< Updated upstream
 import javax.swing.table.TableRowSorter;
-=======
->>>>>>> Stashed changes
+
 
 import constant.ColorConstants;
 
@@ -2507,12 +2500,10 @@ public class BanVeTau_Controller
 			resetDoiVe();
 			HienThi_Controller.getInstance().getHomeView().showView("Đổi trả vé");
 		} else if (obj.equals(chonGhe_View.getBtn_HoanTat())) {
-<<<<<<< Updated upstream
 			resetDoiVe();
 			HienThi_Controller.getInstance().getHomeView().showView("Đổi trả vé");
 		}else if(obj.equals(hoanTien_view.getComboBoxLocDs())){
 			locDanhSachVe();
-=======
 			if (isDoiVe) {
 				resetDoiVe();
 				JOptionPane.showMessageDialog(null, "Xử lý đổi vé thành công!", "Thông báo", JOptionPane.ERROR_MESSAGE);
@@ -2522,7 +2513,6 @@ public class BanVeTau_Controller
 				JOptionPane.showMessageDialog(null, "Xử lý đổi vé không thành công!", "Thông báo",
 						JOptionPane.ERROR_MESSAGE);
 			}
->>>>>>> Stashed changes
 		}
 
 		// Xử lý sự kiện thanh toán
