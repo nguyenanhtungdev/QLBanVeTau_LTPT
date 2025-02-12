@@ -209,4 +209,50 @@ public class ChuyenTau_DAO {
 
 	}
 
+	public ArrayList<ChuyenTau> timKiemChuyenTauTheoGa(String gaDi, String gaDen) {
+		String sql = "SELECT * FROM ChuyenTau WHERE gaKhoiHanh = ? AND gaDen = ? ";
+
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = Database.getInstance().getConnection();
+			statement = con.prepareStatement(sql);
+			statement.setString(1, gaDi);
+			statement.setString(2, gaDen);
+			resultSet = statement.executeQuery();
+
+			ArrayList<ChuyenTau> list = new ArrayList<>();
+			while (resultSet.next()) {
+				String maChuyenTau = resultSet.getString("maChuyenTau");
+				String gaKhoiHanh = resultSet.getNString("gaKhoiHanh");
+				String gaDenResult = resultSet.getNString("gaDen");
+				LocalDateTime thoiGianKhoiHanh = resultSet.getTimestamp("thoiGianKhoiHanh").toLocalDateTime();
+				LocalDateTime thoiGianDuKien = resultSet.getTimestamp("thoiGianDuKien").toLocalDateTime();
+				String ghiChu = resultSet.getNString("ghiChu");
+				String maGiaVe = resultSet.getString("maGiaVe");
+
+				GiaVe giaVe = new GiaVe(maGiaVe);
+
+				list.add(new ChuyenTau(maChuyenTau, gaKhoiHanh, gaDenResult, thoiGianKhoiHanh, thoiGianDuKien, ghiChu,
+						giaVe));
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return null;
+
+	}
+
 }

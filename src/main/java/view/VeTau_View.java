@@ -51,7 +51,7 @@ public class VeTau_View extends View {
 	private JTable danhSachVeTau;
 	private DefaultTableModel danhSachVeTauModel;
 	private String title[] = { "STT", "Mã vé tàu", "Loại vé", "Mã ghế tàu", "Mã KH", "Họ tên", "SĐT", "Email",
-			"Giới tính", "CCCD", "Ngày sinh", "Loại KH", "Chi Tiết","Giá vé" };
+			"Giới tính", "CCCD", "Ngày sinh", "Loại KH", "Chi Tiết", "Giá vé" };
 	private PrimaryButton btn_XoaTrang;
 	private PrimaryButton btn_CapNhatTT;
 	private DangerPrimaryButton btn_XoaVeTau;
@@ -374,7 +374,7 @@ public class VeTau_View extends View {
 		lblNewLabel_2_2_1_2_1_1.setFont(new Font("Arial", Font.BOLD, 18));
 		panel_15_2_1_2_1_1.add(lblNewLabel_2_2_1_2_1_1);
 
-		String loaiKH[] = {"Khách thường", "Trẻ em", "Học sinh", "Sinh viên", "Người già", "Khuyết tật"};
+		String loaiKH[] = { "Khách thường", "Trẻ em", "Học sinh", "Sinh viên", "Người già", "Khuyết tật" };
 		comboBox_LoaiKH = new JComboBox(loaiKH);
 		comboBox_LoaiKH.setEnabled(false);
 		comboBox_LoaiKH.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -538,6 +538,7 @@ public class VeTau_View extends View {
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
 
 		JLabel lblNewLabel_3 = new JLabel("Tổng số vé:");
+		lblNewLabel_3.setForeground(ColorConstants.PRIMARY_COLOR);
 		lblNewLabel_3.setFont(new Font("Arial", Font.BOLD, 18));
 		panel_2.add(lblNewLabel_3);
 
@@ -551,6 +552,7 @@ public class VeTau_View extends View {
 		panel_2_1.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
 
 		JLabel lblNewLabel_3_1 = new JLabel("Tổng tiền tạm tính:");
+		lblNewLabel_3_1.setForeground(ColorConstants.PRIMARY_COLOR);
 		lblNewLabel_3_1.setFont(new Font("Arial", Font.BOLD, 18));
 		panel_2_1.add(lblNewLabel_3_1);
 
@@ -564,7 +566,8 @@ public class VeTau_View extends View {
 		panel_6.add(panel_2_2);
 		panel_2_2.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
 
-		JLabel lblNewLabel_3_2 = new JLabel("Thời gian giữ vé");
+		JLabel lblNewLabel_3_2 = new JLabel("Thời gian giữ vé:");
+		lblNewLabel_3_2.setForeground(ColorConstants.PRIMARY_COLOR);
 		lblNewLabel_3_2.setFont(new Font("Arial", Font.BOLD, 18));
 		panel_2_2.add(lblNewLabel_3_2);
 
@@ -611,14 +614,14 @@ public class VeTau_View extends View {
 		public MultiLineCellRenderer() {
 			setLineWrap(true);
 			setWrapStyleWord(true);
-			setOpaque(true); 
+			setOpaque(true);
 			setFont(new Font("Arial", Font.PLAIN, 16));
 		}
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
-		
+
 			setText(value != null ? value.toString() : "");
 			if (isSelected) {
 				setBackground(table.getSelectionBackground());
@@ -728,5 +731,5 @@ public class VeTau_View extends View {
 	public DangerPrimaryButton getBtn_XoaVeTau() {
 		return btn_XoaVeTau;
 	}
-	
+
 }

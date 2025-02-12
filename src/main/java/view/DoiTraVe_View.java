@@ -287,7 +287,7 @@ public class DoiTraVe_View extends View {
 		comboBoxLocDs.setModel(new DefaultComboBoxModel<String>(new String[] { "Tất cả", "Lọc theo ngày tăng dần",
 				"Lọc theo ngày giảm dần", "Lọc theo đổi / trả", "Lọc theo loại vé" }));
 		comboBoxLocDs.setFont(new Font("Arial", Font.PLAIN, 18));
-		comboBoxLocDs.setPreferredSize(new Dimension(210, 35));
+		comboBoxLocDs.setPreferredSize(new Dimension(210, 30));
 
 		txtLocDanhSach = new JTextField();
 		txtLocDanhSach.putClientProperty("JTextField.placeholderText", "Nhập mã vé tàu");

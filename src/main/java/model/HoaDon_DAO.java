@@ -36,11 +36,9 @@ public class HoaDon_DAO {
 
 		try {
 			con = Database.getInstance().getConnection();
-			String sql = "SELECT DISTINCT *" + "FROM HoaDon hd "
-					+ "JOIN KhachHang kh ON hd.maKH = kh.maKH "
+			String sql = "SELECT DISTINCT *" + "FROM HoaDon hd " + "JOIN KhachHang kh ON hd.maKH = kh.maKH "
 					+ "JOIN ChiTiet_HoaDon cthd ON hd.maHoaDon = cthd.maHoaDon "
-					+ "JOIN VeTau vt ON cthd.maVeTau = vt.maVeTau "
-					+ "WHERE (kh.soDienThoai = ? OR vt.maVeTau = ?)";
+					+ "JOIN VeTau vt ON cthd.maVeTau = vt.maVeTau " + "WHERE (kh.soDienThoai = ? OR vt.maVeTau = ?)";
 			ps = con.prepareStatement(sql);
 			ps.setString(1, soDienThoaiOrMaVeTau);
 			ps.setString(2, soDienThoaiOrMaVeTau);
@@ -48,34 +46,16 @@ public class HoaDon_DAO {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				// Lấy dữ liệu từ ResultSet
-				String maHoaDon = rs.getString("maHoaDon");
-				float thueVAT = rs.getFloat("thueVAT");
 				Timestamp timestamp = rs.getTimestamp("ngayLapHoaDon");
 				LocalDateTime ngayLapHoaDon = timestamp.toLocalDateTime();
 
-				String maVeTau = rs.getString("maVeTau");
-				boolean loaiVe = rs.getBoolean("loaiVe");
-				LocalDateTime ngayHetHan = rs.getTimestamp("ngayHetHan").toLocalDateTime();
-				boolean daHuy = rs.getBoolean("daHuy");
-				String maKH = rs.getString("maKH");
-				boolean isKhuHoi = rs.getBoolean("isKhuHoi");
-				GheTau gheTau = new GheTau(rs.getString("maGheTau"));
-
-				// Tạo đối tượng HoaDon
 				HoaDon hoaDon = new HoaDon();
-				hoaDon.setMaHoaDon(maHoaDon);
+				hoaDon.setMaHoaDon(rs.getString("maHoaDon"));
 				hoaDon.setNgayLapHoaDon(ngayLapHoaDon);
-				hoaDon.setThueVAT(thueVAT);
+				hoaDon.setThueVAT(rs.getFloat("thueVAT"));
 
-				// Tạo đối tượng KhachHang và gán vào HoaDon
-				KhachHang khachHang = new KhachHang();
-				khachHang.setMaKhachHang(rs.getString("maKH"));
-				khachHang.setHoTen(rs.getString("hoTen"));
-				khachHang.setSoDienThoai(rs.getString("soDienThoai"));
-				hoaDon.setKhachHang(khachHang);
-
-				VeTau veTau = new VeTau(maVeTau, loaiVe, ngayHetHan, daHuy, gheTau, isKhuHoi, khachHang);
+				hoaDon.setKhachHang(KhachHang_DAO.getInstance().getByMaKhachHang(rs.getString("maKH")));
+				VeTau veTau = VeTau_DAO.getInstance().getByMaVeTau(rs.getString("maVeTau"));
 
 				// Thêm hóa đơn vào danh sách kết quả
 				thongTinVes.add(new ThongTinVe(hoaDon, veTau));

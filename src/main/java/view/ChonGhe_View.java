@@ -558,7 +558,7 @@ public class ChonGhe_View extends View {
 		lblNewLabel_18.setBackground(Color.WHITE);
 		panel_36.add(lblNewLabel_18);
 
-		lbl_SoGheTau = new JLabel("  ");
+		lbl_SoGheTau = new JLabel("");
 		lbl_SoGheTau.setFont(new Font("Arial", Font.BOLD, 16));
 		panel_36.add(lbl_SoGheTau);
 

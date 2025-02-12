@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import model.Tau.TrangThaiTau;
 
 public class VeTau_DAO {
 
@@ -118,6 +120,47 @@ public class VeTau_DAO {
 		return null;
 	}
 
+	public VeTau getByMaVeTauChuyenTau(String maVeTau) {
+		String sql = "SELECT * FROM VeTau WHERE maVeTau = ?";
+
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = Database.getInstance().getConnection();
+			statement = con.prepareStatement(sql);
+			statement.setString(1, maVeTau);
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				boolean loaiVe = resultSet.getBoolean("loaiVe");
+				LocalDateTime ngayHetHan = resultSet.getTimestamp("ngayHetHan").toLocalDateTime();
+				boolean daHuy = resultSet.getBoolean("daHuy");
+				String maKH = resultSet.getString("maKH");
+				boolean isKhuHoi = resultSet.getBoolean("isKhuHoi");
+
+				GheTau gheTau = GheTau_DAO.getInstance().getByMaGheTau(resultSet.getString("maGheTau"));
+				ToaTau toaTau = ToaTau_DAO.getInstance().getByMaToaTau(gheTau.getToaTau().getMaToaTau());
+				Tau tau = Tau_DAO.getInstance().getByMaTau(toaTau.getTau().getMaTau());
+				ChuyenTau chuyenTau = ChuyenTau_DAO.getInstance().getByMaChuyenTau(tau.getChuyenTau().getMaChuyenTau());
+				return new VeTau(maVeTau, loaiVe, ngayHetHan, daHuy, gheTau, isKhuHoi, new KhachHang(maKH));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return null;
+	}
+
 	public boolean themVeTau(VeTau veTau) {
 		String sql = "INSERT INTO VeTau (maVeTau, loaiVe, ngayHetHan, daHuy, maGheTau, maKH) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -168,4 +211,39 @@ public class VeTau_DAO {
 		return false;
 	}
 
+	public VeTau getByMaHoaDon(String maHoaDon) {
+		String sql = "SELECT VeTau.maVeTau " + "FROM ChiTiet_HoaDon "
+				+ "INNER JOIN VeTau ON ChiTiet_HoaDon.maVeTau = VeTau.maVeTau "
+				+ "WHERE ChiTiet_HoaDon.maHoaDon = ?";
+
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			con = Database.getInstance().getConnection();
+			statement = con.prepareStatement(sql);
+			statement.setString(1, maHoaDon);
+			resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				// Lấy thông tin cơ bản của VeTau
+				String maVeTau = resultSet.getString("maVeTau");
+				// Trả về đối tượng VeTau
+				return new VeTau(maVeTau);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null)
+					resultSet.close();
+				if (statement != null)
+					statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return null; // Trả về null nếu không tìm thấy
+	}
 }
