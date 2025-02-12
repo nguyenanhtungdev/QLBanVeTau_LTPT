@@ -23,14 +23,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -38,27 +31,13 @@ import javax.print.DocPrintJob;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
-
-import com.toedter.calendar.JDateChooser;
+import javax.swing.table.TableRowSorter;
 
 import constant.ColorConstants;
 
@@ -75,6 +54,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.stream.Collectors;
 
 import model.ChiTiet_HoaDon;
 import model.ChiTiet_HoaDon_DAO;
@@ -82,7 +62,6 @@ import model.ChuyenTau;
 import model.ChuyenTau_DAO;
 import model.GheTau;
 import model.GheTau_DAO;
-import model.GiaVe;
 import model.GiaVe_DAO;
 import model.HoaDon;
 import model.HoaDon_DAO;
@@ -95,17 +74,13 @@ import model.PhieuHoanTien_DAO;
 import model.Tau;
 import model.Tau_DAO;
 import model.ThongTinTram;
-import model.ThongTinTram_DAO;
 import model.TinhThanh;
 import model.ToaTau;
 import model.ToaTau_DAO;
 import model.VeTau;
 import model.VeTau_DAO;
 import other.RoundedPanel;
-import other.ShortcutManager;
-import view.BaoMat_View;
 import view.DoiTraVe_View;
-import view.HomeView;
 import view.ThanhToan_View;
 import view.ThongTinVe;
 import view.ChonGhe_View;
@@ -1745,6 +1720,38 @@ public class BanVeTau_Controller
 		return hoanTienContent.toString();
 	}
 
+	private void locDanhSachVe() {
+		DefaultTableModel tableModel = (DefaultTableModel) hoanTien_view.getDanhSachVeTable().getModel();
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+		hoanTien_view.getDanhSachVeTable().setRowSorter(sorter);
+
+		String selectedCriteria = (String) hoanTien_view.getComboBoxLocDs().getSelectedItem();
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+
+		switch (selectedCriteria) {
+			case "Lọc theo ngày mua tăng dần":
+				sorter.setComparator(4, Comparator.comparing(dateStr -> LocalDateTime.parse((CharSequence) dateStr, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))));
+				sortKeys.add(new RowSorter.SortKey(4, SortOrder.ASCENDING));
+				break;
+			case "Lọc theo ngày mua giảm dần":
+				sorter.setComparator(4, Comparator.comparing((String dateStr) -> LocalDateTime.parse(dateStr, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))).reversed());
+				sortKeys.add(new RowSorter.SortKey(4, SortOrder.DESCENDING));
+				break;
+			case "Lọc theo đổi / trả":
+				sorter.setRowFilter(RowFilter.regexFilter("Đổi / Trả", 5));
+				return;
+			case "Lọc theo loại vé":
+				sorter.setRowFilter(RowFilter.regexFilter("VIP|Thường", 3));
+				return;
+			default:
+				sorter.setRowFilter(null);
+				return;
+		}
+
+		sorter.setSortKeys(sortKeys);
+		sorter.sort();
+	}
+
 	// Xử lý thanh toán
 	private void themDataThanhToan() {
 		themDataThanhToanInput();
@@ -2179,6 +2186,25 @@ public class BanVeTau_Controller
 		return capitalizedName.toString().trim();
 	}
 
+	//các phương thức xử lý sự kiện đổi trả vé
+//	private void timVeTheoComboBox(String selectedTicket){
+//		DefaultTableModel tableModel = (DefaultTableModel) hoanTien_view.getDanhSachVeTable().getModel();
+//		tableModel.setRowCount(0);
+//
+//		ArrayList<model.ThongTinVe> danhSachVe = HoaDon_DAO.getInstance().getAllTicket();
+//	}
+
+
+
+	public HoaDon searchByTicketCode(List<HoaDon> hoaDonList, String maVeTau) {
+		return hoaDonList.stream()
+				.filter(hoaDon -> hoaDon.getMaHoaDon().equals(maVeTau))
+				.findFirst()
+				.orElse(null);
+	}
+
+
+
 	// Xử lý sự kiện
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -2384,6 +2410,8 @@ public class BanVeTau_Controller
 		} else if (obj.equals(chonGhe_View.getBtn_HoanTat())) {
 			resetDoiVe();
 			HienThi_Controller.getInstance().getHomeView().showView("Đổi trả vé");
+		}else if(obj.equals(hoanTien_view.getComboBoxLocDs())){
+			locDanhSachVe();
 		}
 
 		// Xử lý sự kiện thanh toán

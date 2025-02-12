@@ -98,6 +98,8 @@ public class HoaDon_DAO {
 		return thongTinVes;
 	}
 
+
+
 	public List<HoaDon> getAll() {
 		String sql = "SELECT * FROM HoaDon";
 
@@ -763,4 +765,6 @@ public class HoaDon_DAO {
 		}
 		return soLuong;
 	}
+
+
 }

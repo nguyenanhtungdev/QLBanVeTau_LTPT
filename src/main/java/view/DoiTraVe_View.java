@@ -50,6 +50,7 @@ public class DoiTraVe_View extends View {
 		lamMoiButton.addActionListener(listener);
 		danhSachVeTable.addMouseListener(mouseListener);
 		btn_DoiVe.addActionListener(listener);
+		comboBoxLocDs.addActionListener(listener);
 	}
 
 	public DoiTraVe_View(String name, String iconPath) {

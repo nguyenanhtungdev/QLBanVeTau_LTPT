@@ -30,7 +30,13 @@ public class VeTau {
 		this.maVeTau = maVeTau;
 	}
 
-	public String getMaVeTau() {
+    public VeTau(String maVeTau, boolean loaiVe, boolean daHuy) {
+		this.maVeTau = maVeTau;
+		this.loaiVe = loaiVe;
+		this.daHuy = daHuy;
+    }
+
+    public String getMaVeTau() {
 		return maVeTau;
 	}
 
