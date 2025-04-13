@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class GiaVe {
 	@Id
 	private String maGiaVe;
-	@Column(columnDefinition = "float", nullable = false)
+	@Column(columnDefinition = "char(3)", nullable = false)
 	private double giaVe;
 	private float tiLeTangGia;
 	private LocalDateTime ngayCapNhat;

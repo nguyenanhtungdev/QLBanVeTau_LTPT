@@ -1,16 +1,31 @@
 package test;
 
+import constant.Config;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import net.datafaker.Faker;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Test_Main {
+    private static final EntityManagerFactory entityManagerFactory;
+
+    static {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("jakarta.persistence.jdbc.url", Config.get("DATABASE_URL"));
+        properties.put("jakarta.persistence.jdbc.user", Config.get("DATABASE_USER"));
+        properties.put("jakarta.persistence.jdbc.password", Config.get("DATABASE_PASSWORD"));
+
+        entityManagerFactory = Persistence.createEntityManagerFactory("MSSQL", properties);
+    }
+
+    public static EntityManagerFactory getEntityManagerFactory() {
+        return entityManagerFactory;
+    }
+
     public static void main(String[] args) {
-        EntityManager entityManager = Persistence
-                .createEntityManagerFactory("MSSQL")
-                .createEntityManager();
-        EntityTransaction tr = entityManager.getTransaction();
-        Faker faker = new Faker();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        System.out.println("Kết nối thành công!");
+        entityManager.close();
     }
 }
