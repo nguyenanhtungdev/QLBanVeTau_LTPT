@@ -21,6 +21,24 @@
     </persistence-unit>
     <persistence-unit name="JPA ORM MariaDB">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>model.CaLam</class>
+        <class>model.ChiTiet_HoaDon</class>
+        <class>model.ChuyenTau</class>
+        <class>model.GiaVe</class>
+        <class>model.GheTau</class>
+        <class>model.HoaDon</class>
+        <class>model.KhachHang</class>
+        <class>model.KhuyenMai</class>
+        <class>model.NhanVien</class>
+        <class>model.NhanVien_CaLam</class>
+        <class>model.PhieuHoanTien</class>
+        <class>model.TaiKhoan</class>
+        <class>model.Tau</class>
+        <class>model.ThongTinGiuCho</class>
+        <class>model.ThongTinTram</class>
+        <class>model.ThongTinGiuCho</class>
+        <class>model.ToaTau</class>
+        <class>model.VeTau</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver"
                       value="org.mariadb.jdbc.Driver" />
