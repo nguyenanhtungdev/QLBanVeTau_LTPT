@@ -18,13 +18,9 @@ public class PhieuHoanTien {
 	private String ghiChu;
 	@Column(name = "tiLeHoanTien")
 	private float tiLeHoanTien;
-
-	@Transient
-	private KhachHang khachHang;
-
 	@ManyToOne()
 	@JoinColumn(name = "maKhachHang", nullable = false)
-	private KhachHang khach_Hang;
+	private KhachHang khachHang;
 	public PhieuHoanTien() {
 	}
 

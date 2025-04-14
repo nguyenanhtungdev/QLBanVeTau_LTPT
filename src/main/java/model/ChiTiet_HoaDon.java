@@ -11,18 +11,14 @@ public class ChiTiet_HoaDon {
 	@Column(name = "soLuong")
 	private int soLuong;
 	@Transient
-	private HoaDon hoaDon;
-	@Transient
-	private KhuyenMai khuyenMai;
-	@Transient
 	private VeTau veTau;
 
 	@ManyToOne()
 	@JoinColumn(name = "maHoaDon", nullable = false)
-	private HoaDon hoa_Don;
+	private HoaDon hoaDon;
 	@ManyToOne()
 	@JoinColumn(name = "maKhuyenMai", nullable = true)
-	private KhuyenMai khuyen_Mai;
+	private KhuyenMai khuyenMai;
 
 	public ChiTiet_HoaDon() {
 	}
