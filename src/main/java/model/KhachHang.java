@@ -1,22 +1,37 @@
 package model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
+@Entity
+@Table(name = "KhachHang")
 public class KhachHang {
 
+	@Id
+	@Column(name = "maKhachHang")
 	private String maKhachHang;
+	@Column(name = "hoTen")
 	private String hoTen;
+	@Column(name = "soDienThoai")
 	private String soDienThoai;
+	@Column(name = "email")
 	private String email;
+	@Column(name = "gioiTinh")
 	private boolean gioiTinh;
+	@Column(name = "CCCD")
 	private String CCCD;
+	@Column(name = "ngaySinh")
 	private LocalDate ngaySinh;
+	@Column(name = "loaiKhachHang")
 	public LoaiKhachHang loaiKH;
-
+	@OneToMany(mappedBy = "khachHang", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PhieuHoanTien> phieuHoanTiens;
 	public static enum LoaiKhachHang {
 		TRE_EM(1.0), SINH_VIEN(0.05), HOC_SINH(0.1), NGUOI_GIA(0.15), NGUOI_KHUYET_TAT(0.2), KHACH_THUONG(0);
 

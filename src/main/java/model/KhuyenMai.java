@@ -1,8 +1,13 @@
 package model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "KhuyenMai")
 public class KhuyenMai {
 
 	public enum TinhTrangKhuyenMai {
@@ -29,15 +34,26 @@ public class KhuyenMai {
 		}
 
 	}
-
+	@Id
+	@Column(name = "maKhuyenMai")
 	private String maKhuyenMai;
+	@Column(name = "tenKhuyenMai")
 	private String tenKhuyenMai;
+	@Column(name = "noiDungKhuyenMai")
 	private String noiDungKhuyenMai;
+	@Column(name = "giamGia")
 	private int giamGia;
+	@Column(name = "soLuongToiDa")
 	private int soLuongToiDa;
+	@Column(name = "thoiGianBatDau")
 	private LocalDateTime thoiGianBatDau;
+	@Column(name = "hanSuDungKhuyenMai")
 	private LocalDateTime hanSuDungKhuyenMai;
+	@Column(name = "tinhTrangKhuyenMai")
 	private TinhTrangKhuyenMai tinhTrangKhuyenMai;
+
+	@OneToMany(mappedBy = "khuyenMai", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ChiTiet_HoaDon> chiTietHoaDons;
 
 	public KhuyenMai() {
 	}

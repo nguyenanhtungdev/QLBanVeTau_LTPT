@@ -1,12 +1,28 @@
 package model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "ChiTiet_HoaDon")
 public class ChiTiet_HoaDon {
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(name = "soLuong")
 	private int soLuong;
-
+	@Transient
 	private HoaDon hoaDon;
+	@Transient
 	private KhuyenMai khuyenMai;
+	@Transient
 	private VeTau veTau;
+
+	@ManyToOne()
+	@JoinColumn(name = "maHoaDon", nullable = false)
+	private HoaDon hoa_Don;
+	@ManyToOne()
+	@JoinColumn(name = "maKhuyenMai", nullable = true)
+	private KhuyenMai khuyen_Mai;
 
 	public ChiTiet_HoaDon() {
 	}
@@ -78,4 +94,11 @@ public class ChiTiet_HoaDon {
 				+ veTau + "}";
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
+	}
 }

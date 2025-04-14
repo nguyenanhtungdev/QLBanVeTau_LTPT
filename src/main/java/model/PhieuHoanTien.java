@@ -1,17 +1,30 @@
 package model;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+@Entity
+@Table(name = "PhieuHoanTien")
 public class PhieuHoanTien {
 
+	@Id
+	@Column(name = "maPhieuHoanTien", length = 8, columnDefinition = "CHAR(8)")
 	private String maPhieuHoanTien;
+	@Column(name = "ngayHoanTien")
 	private LocalDateTime ngayHoanTien;
+	@Column(name = "lyDoHoanTien")
 	private String lyDoHoanTien;
+	@Column(name = "ghiChu")
 	private String ghiChu;
+	@Column(name = "tiLeHoanTien")
 	private float tiLeHoanTien;
 
+	@Transient
 	private KhachHang khachHang;
 
+	@ManyToOne()
+	@JoinColumn(name = "maKhachHang", nullable = false)
+	private KhachHang khach_Hang;
 	public PhieuHoanTien() {
 	}
 
