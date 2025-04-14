@@ -1,12 +1,33 @@
 package model;
 
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+
+import java.util.List;
+
+@Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class GheTau {
 
+	@Id
+	@EqualsAndHashCode.Include
+	@Column(name = "maGheTau", length = 7, columnDefinition = "CHAR(7)", nullable = false)
 	private String maGheTau;
+
+	@Column(name = "tenLoaiGheTau", length = 15, nullable = false)
 	private String tenLoaiGheTau;
-	private int soThuTuGhe;
+
+	@Column(name = "soThuTuGhe", nullable = true)
+	private Integer soThuTuGhe; // dùng Integer vì cột cho phép null
+
+	@Column(name = "trangThai", length = 20, nullable = false)
 	private String trangThai;
 
+	@OneToMany(mappedBy = "gheTau")
+	private List<VeTau> veTaus;
+
+	@ManyToOne
+	@JoinColumn(name = "maToaTau", nullable = false, columnDefinition = "CHAR(8)")
 	private ToaTau toaTau;
 
 	public GheTau() {

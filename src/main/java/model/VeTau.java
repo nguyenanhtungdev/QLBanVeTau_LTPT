@@ -1,16 +1,40 @@
 package model;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import java.time.LocalDateTime;
 import java.time.Year;
-
+@Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class VeTau {
-
+	@Id
+	@EqualsAndHashCode.Include
+	@Column(name = "maVeTau", length = 8, columnDefinition = "CHAR(8)", nullable = false)
 	private String maVeTau;
+
+	@Column(name = "loaiVe", length = 10, nullable = false)
 	private boolean loaiVe;
+
+	@Column(name = "ngayHetHan", nullable = false)
 	private LocalDateTime ngayHetHan;
+
+	@Column(name = "daHuy", nullable = false)
 	private boolean daHuy;
+
+	@ManyToOne
+	@JoinColumn(name = "maGheTau", nullable = false, columnDefinition = "CHAR(7)")
 	private GheTau gheTau;
+
+	@Column(name = "isKhuHoi", nullable = false)
 	private boolean isKhuHoi;
+
+	@Column(name = "maKH", length = 9, columnDefinition = "CHAR(9)")
+	private String maKH;
+
+	@Transient
 	private KhachHang khachHang;
 
 	public VeTau() {

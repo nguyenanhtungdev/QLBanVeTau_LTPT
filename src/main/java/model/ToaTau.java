@@ -1,15 +1,40 @@
 package model;
 
-public class ToaTau {
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
+@Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class ToaTau {
+	@Id
+	@EqualsAndHashCode.Include
+	@Column(name = "maToaTau", length = 8, columnDefinition = "CHAR(8)", nullable = false)
 	private String maToaTau;
+
+	@Column(name = "tenToaTau", length = 3, columnDefinition = "CHAR(3)", nullable = false)
 	private String tenToaTau;
+
+	@Column(name = "soThuTuToa", nullable = false)
 	private int soThuTuToa;
+
+	@Column(name = "loaiToa", length = 10, nullable = false)
 	private String loaiToa;
+
+	@Column(name = "soLuongGhe", nullable = false)
 	private int soLuongGhe;
+
+	@Column(name = "trangThai", nullable = false)
 	private boolean trangThai = true;
 
+	@OneToMany(mappedBy = "toaTau")
+	private List<GheTau> gheTaus;
+
+	@ManyToOne
+	@JoinColumn(name = "maTau", nullable = false, columnDefinition = "CHAR(7)")
 	private Tau tau;
+
 
 	public ToaTau() {
 	}

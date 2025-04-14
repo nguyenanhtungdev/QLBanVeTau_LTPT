@@ -1,20 +1,49 @@
 package model;
 
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+
 import java.time.LocalDate;
-
+import java.util.List;
+@Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Tau {
-
+	@Id
+	@EqualsAndHashCode.Include
+	@Column(name = "maTau", length = 7, columnDefinition = "CHAR(7)", nullable = false)
 	private String maTau;
+
+	@Column(name = "tenTau", length = 30, nullable = false)
 	private String tenTau;
+
+	@Column(name = "soToa", nullable = false)
 	private int soToa;
+
+	@Column(name = "namSanXuat", nullable = false)
 	private LocalDate namSanXuat;
+
+	@Column(name = "nhaSanXuat", length = 30, nullable = false)
 	private String nhaSanXuat;
-	private float tocDoTB;
-	private float tocDoToiDa;
-	private String ghiChu;
+
+	@Column(name = "tocDoTB")
+	private Float tocDoTB;
+
+	@Column(name = "tocDoToiDa")
+	private Float tocDoToiDa;
+
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "trangThai", nullable = false)
 	private TrangThaiTau trangThai;
 
+	@Column(name = "ghiChu", length = 255)
+	private String ghiChu;
+
+	@ManyToOne
+	@JoinColumn(name = "maChuyenTau", nullable = false, columnDefinition = "CHAR(6)")
 	private ChuyenTau chuyenTau;
+
+	@OneToMany(mappedBy = "tau")
+	private List<ToaTau> toaTaus;
 
 	public enum TrangThaiTau {
 		HOAT_DONG(0), BAO_TRI(1), DUNG_HOAT_DONG(2);

@@ -3,25 +3,37 @@ package model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class GiaVe {
 	@Id
+	@EqualsAndHashCode.Include
+	@Column(name = "maGiaVe", length = 6, columnDefinition = "CHAR(6)", nullable = false)
 	private String maGiaVe;
-	@Column(columnDefinition = "char(3)", nullable = false)
+
+	@Column(name = "giaVe", nullable = false)
 	private double giaVe;
+
+	@Column(name = "tiLeTangGia", nullable = false)
 	private float tiLeTangGia;
+
+	@Column(name = "ngayCapNhat", nullable = false)
 	private LocalDateTime ngayCapNhat;
+
+	@Column(name = "ghiChu", length = 255)
 	private String ghiChu;
 
+	@OneToMany(mappedBy = "giaVe")
+	private List<ChuyenTau> chuyenTaus;
 	public GiaVe() {
 	}
 
