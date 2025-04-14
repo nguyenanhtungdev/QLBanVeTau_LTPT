@@ -1,18 +1,40 @@
 package model;
 
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
-
+@Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ChuyenTau {
-
+	@Id
+	@Column(name = "maChuyenTau", length = 6, columnDefinition = "CHAR(6)")
+	@EqualsAndHashCode.Include
 	private String maChuyenTau;
+
+	@Column(name = "gaKhoiHanh", nullable = false, length = 50)
 	private String gaKhoiHanh;
+
+	@Column(name = "gaDen", nullable = false, length = 50)
 	private String gaDen;
+
+	@Column(name = "thoiGianKhoiHanh", nullable = false)
 	private LocalDateTime thoiGianKhoiHanh;
+
+	@Column(name = "thoiGianDuKien", nullable = false)
 	private LocalDateTime thoiGianDuKien;
+
+	@Column(name = "ghiChu", length = 255)
 	private String ghiChu;
 
+	@ManyToOne
+	@JoinColumn(name = "maGiaVe", columnDefinition = "CHAR(6)")
 	private GiaVe giaVe;
+
+	@OneToMany(mappedBy = "chuyenTau")
+	private List<Tau> taus;
 
 	public ChuyenTau() {
 	}
