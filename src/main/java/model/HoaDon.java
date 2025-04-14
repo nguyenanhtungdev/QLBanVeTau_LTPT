@@ -1,21 +1,40 @@
 package model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "HoaDon")
 public class HoaDon {
 
+	@Id
+	@Column(name = "maHoaDon")
 	private String maHoaDon;
+	@Column(name = "ngayLapHoaDon")
 	private LocalDateTime ngayLapHoaDon;
+	@Column(name = "ghiChu")
 	private String ghiChu;
+	@Column(name = "thueVAT")
 	private float thueVAT;
+	@Column(name = "phuongThucThanhToan")
 	private String phuongThucThanhToan;
+	@Column(name = "loaiHoaDon")
 	private String loaiHoaDon;
 
+	@OneToMany(mappedBy = "hoaDon", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ChiTiet_HoaDon> chiTietHoaDons = new ArrayList<>();
+
+	@Transient
 	private KhachHang khachHang;
+	@Transient
 	private ThongTinTram thongTinTram;
+	@Transient
 	private NhanVien nhanVien;
+	@Transient
 	private ThongTinGiuCho thongTinGiuCho;
 
 	public HoaDon() {
