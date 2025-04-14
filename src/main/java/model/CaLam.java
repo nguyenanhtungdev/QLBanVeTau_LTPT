@@ -1,14 +1,31 @@
 package model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.time.LocalTime;
 import java.util.Objects;
 
+@Entity
+@Table(name = "CaLam")
 public class CaLam {
 
+	@Id
+	@Column(name = "maCa", length = 10, nullable = false)
 	private String maCa;
+
+	@Column(name = "tenCa", length = 2, nullable = false)
 	private String tenCa;
+
+	@Column(name = "thoiGianBatDau", nullable = false)
 	private LocalTime thoiGianBatDau;
+
+	@Column(name = "thoiGianKetThuc", nullable = false)
 	private LocalTime thoiGianKetThuc;
+
+	@Column(name = "ghiChu", length = 255)
 	private String ghiChu;
 
 	public CaLam() {
@@ -30,11 +47,10 @@ public class CaLam {
 		return maCa;
 	}
 
-	private void setMaCa(String maCa) {
+	public void setMaCa(String maCa) {
 		if (!maCa.matches("^CA\\d{2}$")) {
 			throw new IllegalArgumentException("Mã ca làm phải bắt đầu bằng CA và theo sau là hai ký số");
 		}
-
 		this.maCa = maCa;
 	}
 
@@ -46,7 +62,6 @@ public class CaLam {
 		if (!tenCa.matches("^(SA|TR|TO|KH)$")) {
 			throw new IllegalArgumentException("Tên ca làm phải là 1 trong các giá trị “SA”, “TR”, “TO” hoặc “KH”");
 		}
-
 		this.tenCa = tenCa;
 	}
 
@@ -55,10 +70,9 @@ public class CaLam {
 	}
 
 	public void setThoiGianBatDau(LocalTime thoiGianBatDau) {
-		if (thoiGianBatDau.isAfter(thoiGianKetThuc)) {
+		if (this.thoiGianKetThuc != null && thoiGianBatDau.isAfter(this.thoiGianKetThuc)) {
 			throw new IllegalArgumentException("Thời gian bắt đầu ca làm phải trước thời gian kết thúc ca làm");
 		}
-
 		this.thoiGianBatDau = thoiGianBatDau;
 	}
 
@@ -67,10 +81,9 @@ public class CaLam {
 	}
 
 	public void setThoiGianKetThuc(LocalTime thoiGianKetThuc) {
-		if (thoiGianKetThuc.isBefore(thoiGianBatDau)) {
-			throw new IllegalArgumentException("Thời gian kết thúc ca làm phải trước thời gian bắt đầu ca làm");
+		if (this.thoiGianBatDau != null && thoiGianKetThuc.isBefore(this.thoiGianBatDau)) {
+			throw new IllegalArgumentException("Thời gian kết thúc ca làm phải sau thời gian bắt đầu ca làm");
 		}
-
 		this.thoiGianKetThuc = thoiGianKetThuc;
 	}
 
@@ -102,5 +115,4 @@ public class CaLam {
 		return "CaLam {maCa: " + maCa + ", tenCa: " + tenCa + ", thoiGianBatDau: " + thoiGianBatDau
 				+ ", thoiGianKetThuc: " + thoiGianKetThuc + ", ghiChu: " + ghiChu + "}";
 	}
-
 }

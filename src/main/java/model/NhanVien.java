@@ -1,25 +1,52 @@
 package model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 
+@Entity
+@Table(name = "NhanVien")
 public class NhanVien {
 
+	@Id
+	@Column(name = "maNV", nullable = false, length = 10)
 	private String maNV;
+
+	@Column(name = "hoTenNV", nullable = false)
 	private String hoTenNV;
+
+	@Column(name = "ngaySinh", nullable = false)
 	private LocalDate ngaySinh;
+
+	@Column(name = "soDienThoai", nullable = false, length = 10)
 	private String soDienThoai;
+
+	@Column(name = "email", nullable = false)
 	private String email;
+
+	@Column(name = "diaChi")
 	private String diaChi;
+
+	@Column(name = "gioiTinh")
 	private boolean gioiTinh;
+
+	@Column(name = "CCCD", length = 12)
 	private String CCCD;
+
+	@Column(name = "heSoLuong")
 	private float heSoLuong;
+
+	@Column(name = "trangThai")
 	private boolean trangThai;
+
+	@Column(name = "tenChucVu")
 	private String tenChucVu;
+
+	@Column(name = "ngayVaoLam")
 	private LocalDate ngayVaoLam;
 
 	public NhanVien(String maNV, String hoTenNV, LocalDate ngaySinh, String soDienThoai, String email, String diaChi,
-			boolean gioiTinh, String CCCD, float heSoLuong, boolean trangThai, String tenChucVu, LocalDate ngayVaoLam) {
+					boolean gioiTinh, String CCCD, float heSoLuong, boolean trangThai, String tenChucVu, LocalDate ngayVaoLam) {
 		this.setMaNV(maNV);
 		this.setHoTenNV(hoTenNV);
 		this.setNgaySinh(ngaySinh);
@@ -73,10 +100,10 @@ public class NhanVien {
 	public void setNgaySinh(LocalDate ngaySinh) {
 		int temp_Age = Period.between(ngaySinh, LocalDate.now()).getYears();
 		if (ngaySinh.isBefore(LocalDate.now()) && (temp_Age >= 18 && temp_Age <= 60)) {
-            this.ngaySinh = ngaySinh;
-        } else {
-            throw new IllegalArgumentException("Ngày sinh không hợp lệ. ");
-        }
+			this.ngaySinh = ngaySinh;
+		} else {
+			throw new IllegalArgumentException("Ngày sinh không hợp lệ. ");
+		}
 	}
 
 	public String getSoDienThoai() {
@@ -109,9 +136,9 @@ public class NhanVien {
 
 	public void setDiaChi(String diaChi) {
 		if (diaChi != null && diaChi.matches("^[\\p{L}0-9/., ]+$")) {
-		    this.diaChi = diaChi;
+			this.diaChi = diaChi;
 		} else {
-		    throw new IllegalArgumentException("Định dạng địa chỉ không hợp lệ!");
+			throw new IllegalArgumentException("Định dạng địa chỉ không hợp lệ!");
 		}
 	}
 
@@ -177,5 +204,4 @@ public class NhanVien {
 				+ soDienThoai + ", email=" + email + ", diaChi=" + diaChi + ", gioiTinh=" + gioiTinh + ", CCCD=" + CCCD
 				+ ", heSoLuong=" + heSoLuong + ", trangThai=" + trangThai + "]";
 	}
-
 }
