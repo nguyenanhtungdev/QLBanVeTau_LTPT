@@ -23,8 +23,8 @@ public class TaiKhoan {
 	@Column(name = "ngayTaoTaiKhoan")
 	private LocalDateTime ngayTaoTaiKhoan;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "maNhanVien")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "maNV", columnDefinition = "CHAR(8)")
 	private NhanVien nhanVien;
 
 	public TaiKhoan() {

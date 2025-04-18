@@ -10,15 +10,15 @@ public class ChiTiet_HoaDon {
 	private Long id;
 	@Column(name = "soLuong")
 	private int soLuong;
-	@Transient
-	private VeTau veTau;
-
 	@ManyToOne()
 	@JoinColumn(name = "maHoaDon", nullable = false)
 	private HoaDon hoaDon;
 	@ManyToOne()
 	@JoinColumn(name = "maKhuyenMai", nullable = true)
 	private KhuyenMai khuyenMai;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "maVeTau")
+	private VeTau veTau;
 
 	public ChiTiet_HoaDon() {
 	}

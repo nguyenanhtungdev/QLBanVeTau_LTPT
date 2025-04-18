@@ -1,27 +1,44 @@
 package model;
 
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ThongTinGiuCho {
-
+	@Id
+	@Column(name = "maThongTinGiuCho", columnDefinition = "char(7)")
+	@EqualsAndHashCode.Include
 	private String maThongTinGiuCho;
+
+	@Column(name = "ngayDatGiuCho", nullable = false)
 	private LocalDateTime ngayDatGiuCho;
+
+	@Column(name = "ngayHetHanGiuCho", nullable = false)
 	private LocalDateTime ngayHetHanGiuCho;
+
+	@Column(name = "trangThai", nullable = false)
+	private int trangThai;
+
+	@Column(name = "ghiChu", columnDefinition = "nvarchar(255)")
 	private String ghiChu;
 
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "maKH")
 	private KhachHang khachHang;
-
-	public ThongTinGiuCho(String maThongTinGiuCho, LocalDateTime ngayDatGiuCho, LocalDateTime ngayHetHanGiuCho,
-			String ghiChu, KhachHang khachHang) {
-		this.maThongTinGiuCho = maThongTinGiuCho;
-		this.ngayDatGiuCho = ngayDatGiuCho;
-		this.ngayHetHanGiuCho = ngayHetHanGiuCho;
-		this.ghiChu = ghiChu;
-		this.khachHang = khachHang;
-	}
+	@OneToOne(optional = false)
+	@JoinColumn(name = "maHoaDon")
+	private HoaDon hoaDon;
 
 	public ThongTinGiuCho(String maThongTinGiuCho) {
 		this.maThongTinGiuCho = maThongTinGiuCho;
+	}
+
+	public ThongTinGiuCho() {
+
 	}
 
 	public String getMaThongTinGiuCho() {

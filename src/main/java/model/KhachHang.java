@@ -31,7 +31,16 @@ public class KhachHang {
 	@Column(name = "loaiKhachHang")
 	public LoaiKhachHang loaiKH;
 	@OneToMany(mappedBy = "khachHang", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<VeTau> veTaus;
+	@OneToMany(mappedBy = "khachHang", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PhieuHoanTien> phieuHoanTiens;
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "loaiKH", nullable = false, columnDefinition = "NVARCHAR(20)")
+	private LoaiKhachHang loaiKhachHang;
+	@OneToMany(mappedBy = "khachHang", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<HoaDon> hoaDons;
+	@OneToMany(mappedBy = "maThongTinGiuCho", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ThongTinGiuCho> thongTinGiuChos;
 	public static enum LoaiKhachHang {
 		TRE_EM(1.0), SINH_VIEN(0.05), HOC_SINH(0.1), NGUOI_GIA(0.15), NGUOI_KHUYET_TAT(0.2), KHACH_THUONG(0);
 

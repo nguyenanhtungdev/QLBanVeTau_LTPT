@@ -1,38 +1,40 @@
 package model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "ThongTinTram")
 public class ThongTinTram {
 
 	@Id
-	@Column(name = "maNhaGa", nullable = false, length = 50)
+	@Column(name = "maNhaGa", nullable = false, columnDefinition = "char(7)")
 	private String maNhaGa;
 
-	@Column(name = "tenNhaGa", length = 100)
+	@Column(name = "tenNhaGa", nullable = false, columnDefinition = "nvarchar(50)")
 	private String tenNhaGa;
 
-	@Column(name = "diaChi", length = 255)
+	@Column(name = "diaChi", nullable = false, columnDefinition = "nvarchar(30)")
 	private String diaChi;
 
-	@Column(name = "dienThoai", length = 20)
+	@Column(name = "dienThoai", nullable = false, columnDefinition = "nchar(10)")
 	private String dienThoai;
 
-	@Column(name = "email", length = 100)
+	@Column(name = "email", nullable = false, columnDefinition = "varchar(50)")
 	private String email;
 
-	@Column(name = "tenNganHang", length = 100)
+	@Column(name = "tenNganHang", nullable = true, columnDefinition = "nvarchar(50)")
 	private String tenNganHang;
 
-	@Column(name = "soTaiKhoan", length = 30)
-	private String soTaiKhoản;
+	@Column(name = "soTaiKhoan", nullable = true, columnDefinition = "varchar(13)")
+	private String soTaiKhoan;
 
-	@Column(name = "maSoThue", length = 30)
+	@Column(name = "maSoThue", nullable = false, columnDefinition = "char(10)")
 	private String maSoThue;
+
+	@OneToMany(mappedBy = "thongTinTram", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<HoaDon> hoaDons;
 
 	public ThongTinTram() {
 	}
@@ -49,7 +51,7 @@ public class ThongTinTram {
 		this.dienThoai = dienThoai;
 		this.email = email;
 		this.tenNganHang = tenNganHang;
-		this.soTaiKhoản = soTaiKhoản;
+		this.soTaiKhoan = soTaiKhoản;
 		this.maSoThue = maSoThue;
 	}
 
@@ -102,11 +104,11 @@ public class ThongTinTram {
 	}
 
 	public String getSoTaiKhoản() {
-		return soTaiKhoản;
+		return soTaiKhoan;
 	}
 
 	public void setSoTaiKhoản(String soTaiKhoản) {
-		this.soTaiKhoản = soTaiKhoản;
+		this.soTaiKhoan = soTaiKhoan;
 	}
 
 	public String getMaSoThue() {
@@ -120,7 +122,7 @@ public class ThongTinTram {
 	@Override
 	public String toString() {
 		return "ThongTinTram [maNhaGa=" + maNhaGa + ", tenNhaGa=" + tenNhaGa + ", diaChi=" + diaChi + ", dienThoai="
-				+ dienThoai + ", email=" + email + ", tenNganHang=" + tenNganHang + ", soTaiKhoản=" + soTaiKhoản
+				+ dienThoai + ", email=" + email + ", tenNganHang=" + tenNganHang + ", soTaiKhoản=" + soTaiKhoan
 				+ ", maSoThue=" + maSoThue + "]";
 	}
 }

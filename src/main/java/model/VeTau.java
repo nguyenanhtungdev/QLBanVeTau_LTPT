@@ -28,15 +28,15 @@ public class VeTau {
 	@JoinColumn(name = "maGheTau", nullable = false, columnDefinition = "CHAR(7)")
 	private GheTau gheTau;
 
+	@ManyToOne
+	@JoinColumn(name = "maKH", nullable = false, columnDefinition = "CHAR(9)")
+	private KhachHang khachHang;
+
 	@Column(name = "isKhuHoi", nullable = false)
 	private boolean isKhuHoi;
 
-	@Column(name = "maKH", length = 9, columnDefinition = "CHAR(9)")
-	private String maKH;
-
-	@Transient
-	private KhachHang khachHang;
-
+	@OneToOne(mappedBy = "veTau")
+	private ChiTiet_HoaDon chiTietHoaDon;
 	public VeTau() {
 	}
 
