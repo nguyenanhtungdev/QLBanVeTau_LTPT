@@ -1,18 +1,48 @@
 package model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "ThongTinTram")
 public class ThongTinTram {
 
+	@Id
+	@Column(name = "maNhaGa", nullable = false, length = 50)
 	private String maNhaGa;
+
+	@Column(name = "tenNhaGa", length = 100)
 	private String tenNhaGa;
+
+	@Column(name = "diaChi", length = 255)
 	private String diaChi;
+
+	@Column(name = "dienThoai", length = 20)
 	private String dienThoai;
+
+	@Column(name = "email", length = 100)
 	private String email;
+
+	@Column(name = "tenNganHang", length = 100)
 	private String tenNganHang;
+
+	@Column(name = "soTaiKhoan", length = 30)
 	private String soTaiKhoản;
+
+	@Column(name = "maSoThue", length = 30)
 	private String maSoThue;
 
+	public ThongTinTram() {
+	}
+
+	public ThongTinTram(String maNhaGa) {
+		this.maNhaGa = maNhaGa;
+	}
+
 	public ThongTinTram(String maNhaGa, String tenNhaGa, String diaChi, String dienThoai, String email,
-			String tenNganHang, String soTaiKhoản, String maSoThue) {
+						String tenNganHang, String soTaiKhoản, String maSoThue) {
 		this.maNhaGa = maNhaGa;
 		this.tenNhaGa = tenNhaGa;
 		this.diaChi = diaChi;
@@ -21,13 +51,6 @@ public class ThongTinTram {
 		this.tenNganHang = tenNganHang;
 		this.soTaiKhoản = soTaiKhoản;
 		this.maSoThue = maSoThue;
-	}
-
-	public ThongTinTram(String maNhaGa) {
-		this.maNhaGa = maNhaGa;
-	}
-
-	public ThongTinTram() {
 	}
 
 	public String getMaNhaGa() {
@@ -100,5 +123,4 @@ public class ThongTinTram {
 				+ dienThoai + ", email=" + email + ", tenNganHang=" + tenNganHang + ", soTaiKhoản=" + soTaiKhoản
 				+ ", maSoThue=" + maSoThue + "]";
 	}
-
 }
