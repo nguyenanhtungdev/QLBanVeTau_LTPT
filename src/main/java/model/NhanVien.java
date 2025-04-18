@@ -3,47 +3,52 @@ package model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 @Entity
 @Table(name = "NhanVien")
 public class NhanVien {
-
 	@Id
-	@Column(name = "maNV", nullable = false, length = 10)
+	@Column(name = "maNV", nullable = false, columnDefinition = "char(8)")
 	private String maNV;
 
-	@Column(name = "hoTenNV", nullable = false)
+	@Column(name = "hoTenNV", nullable = false, columnDefinition = "nvarchar(100)")
 	private String hoTenNV;
 
 	@Column(name = "ngaySinh", nullable = false)
 	private LocalDate ngaySinh;
 
-	@Column(name = "soDienThoai", nullable = false, length = 10)
+	@Column(name = "soDienThoai", nullable = false, columnDefinition = "char(10)")
 	private String soDienThoai;
 
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = true, columnDefinition = "varchar(30)")
 	private String email;
 
-	@Column(name = "diaChi")
+	@Column(name = "diaChi", nullable = true, columnDefinition = "nvarchar(50)")
 	private String diaChi;
 
-	@Column(name = "gioiTinh")
+	@Column(name = "gioiTinh", nullable = false)
 	private boolean gioiTinh;
 
-	@Column(name = "CCCD", length = 12)
+	@Column(name = "CCCD", nullable = false, columnDefinition = "char(12)")
 	private String CCCD;
 
-	@Column(name = "heSoLuong")
+	@Column(name = "heSoLuong", nullable = false)
 	private float heSoLuong;
 
-	@Column(name = "trangThai")
+	@Column(name = "trangThai", nullable = false)
 	private boolean trangThai;
 
-	@Column(name = "tenChucVu")
+	@Column(name = "ngayVaoLam", nullable = false)
+	private LocalDate ngayVaoLam;
+
+	@Column(name = "tenChucVu", nullable = true, columnDefinition = "nchar(10)")
 	private String tenChucVu;
 
-	@Column(name = "ngayVaoLam")
-	private LocalDate ngayVaoLam;
+	@OneToMany(mappedBy = "nhanVien", cascade = CascadeType.ALL)
+	private List<HoaDon> hoaDons;
+	@OneToOne(mappedBy = "nhanVien")
+	private TaiKhoan taiKhoan;
 
 	public NhanVien(String maNV, String hoTenNV, LocalDate ngaySinh, String soDienThoai, String email, String diaChi,
 					boolean gioiTinh, String CCCD, float heSoLuong, boolean trangThai, String tenChucVu, LocalDate ngayVaoLam) {

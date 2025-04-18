@@ -26,15 +26,18 @@ public class HoaDon {
 	private String loaiHoaDon;
 
 	@OneToMany(mappedBy = "hoaDon", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ChiTiet_HoaDon> chiTietHoaDons = new ArrayList<>();
+	private List<ChiTiet_HoaDon> chiTietHoaDons;
 
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "maKH", columnDefinition = "CHAR(9)")
 	private KhachHang khachHang;
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "maNhaGa", columnDefinition = "CHAR(7)")
 	private ThongTinTram thongTinTram;
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "maNV", columnDefinition = "CHAR(8)")
 	private NhanVien nhanVien;
-	@Transient
+	@OneToOne(mappedBy = "hoaDon", cascade = CascadeType.ALL, orphanRemoval = true)
 	private ThongTinGiuCho thongTinGiuCho;
 
 	public HoaDon() {

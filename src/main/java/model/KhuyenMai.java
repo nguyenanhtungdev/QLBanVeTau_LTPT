@@ -10,6 +10,7 @@ import java.util.Objects;
 @Table(name = "KhuyenMai")
 public class KhuyenMai {
 
+
 	public enum TinhTrangKhuyenMai {
 		CON(0), HET_SO_LUONG(1), HET_HAN_SU_DUNG(2);
 
