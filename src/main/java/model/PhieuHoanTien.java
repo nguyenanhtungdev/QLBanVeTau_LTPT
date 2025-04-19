@@ -10,16 +10,16 @@ public class PhieuHoanTien {
 	@Id
 	@Column(name = "maPhieuHoanTien", length = 8, columnDefinition = "CHAR(8)")
 	private String maPhieuHoanTien;
-	@Column(name = "ngayHoanTien")
+	@Column(name = "ngayHoanTien", nullable = false)
 	private LocalDateTime ngayHoanTien;
-	@Column(name = "lyDoHoanTien")
+	@Column(name = "lyDoHoanTien", length = 255, columnDefinition = "NVARCHAR(255)")
 	private String lyDoHoanTien;
-	@Column(name = "ghiChu")
+	@Column(name = "ghiChu", length = 255, columnDefinition = "NVARCHAR(255)")
 	private String ghiChu;
-	@Column(name = "tiLeHoanTien")
+	@Column(name = "tiLeHoanTien", nullable = false)
 	private float tiLeHoanTien;
 	@ManyToOne()
-	@JoinColumn(name = "maKhachHang", nullable = false)
+	@JoinColumn(name = "maKhachHang", nullable = false, columnDefinition = "CHAR(9)")
 	private KhachHang khachHang;
 	public PhieuHoanTien() {
 	}

@@ -12,17 +12,17 @@ import java.util.Objects;
 public class HoaDon {
 
 	@Id
-	@Column(name = "maHoaDon")
+	@Column(name = "maHoaDon", length = 11, columnDefinition = "CHAR(11)")
 	private String maHoaDon;
-	@Column(name = "ngayLapHoaDon")
+	@Column(name = "ngayLapHoaDon", nullable = false)
 	private LocalDateTime ngayLapHoaDon;
-	@Column(name = "ghiChu")
+	@Column(name = "ghiChu", length = 255)
 	private String ghiChu;
-	@Column(name = "thueVAT")
+	@Column(name = "thueVAT", nullable = false)
 	private float thueVAT;
-	@Column(name = "phuongThucThanhToan")
+	@Column(name = "phuongThucThanhToan", nullable = false, length = 10, columnDefinition = "NVARCHAR(10)")
 	private String phuongThucThanhToan;
-	@Column(name = "loaiHoaDon")
+	@Column(name = "loaiHoaDon", nullable = false, length = 50, columnDefinition = "NVARCHAR(50)")
 	private String loaiHoaDon;
 
 	@OneToMany(mappedBy = "hoaDon", cascade = CascadeType.ALL, orphanRemoval = true)

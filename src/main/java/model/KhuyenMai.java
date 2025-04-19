@@ -36,21 +36,21 @@ public class KhuyenMai {
 
 	}
 	@Id
-	@Column(name = "maKhuyenMai")
+	@Column(name = "maKhuyenMai", length = 6, columnDefinition = "CHAR(6)")
 	private String maKhuyenMai;
-	@Column(name = "tenKhuyenMai")
+	@Column(name = "tenKhuyenMai", nullable = false, length = 50, columnDefinition = "NVARCHAR(50)")
 	private String tenKhuyenMai;
-	@Column(name = "noiDungKhuyenMai")
+	@Column(name = "noiDungKhuyenMai", length = 255, columnDefinition = "NVARCHAR(255)", nullable = false)
 	private String noiDungKhuyenMai;
-	@Column(name = "giamGia")
+	@Column(name = "giamGia", nullable = false)
 	private int giamGia;
-	@Column(name = "soLuongToiDa")
+	@Column(name = "soLuongToiDa", nullable = false)
 	private int soLuongToiDa;
-	@Column(name = "thoiGianBatDau")
+	@Column(name = "thoiGianBatDau", nullable = false)
 	private LocalDateTime thoiGianBatDau;
-	@Column(name = "hanSuDungKhuyenMai")
+	@Column(name = "hanSuDungKhuyenMai", nullable = false)
 	private LocalDateTime hanSuDungKhuyenMai;
-	@Column(name = "tinhTrangKhuyenMai")
+	@Column(name = "tinhTrangKhuyenMai", nullable = false)
 	private TinhTrangKhuyenMai tinhTrangKhuyenMai;
 
 	@OneToMany(mappedBy = "khuyenMai", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -14,21 +14,21 @@ import javax.swing.JOptionPane;
 public class KhachHang {
 
 	@Id
-	@Column(name = "maKhachHang")
+	@Column(name = "maKhachHang", length = 9, columnDefinition = "CHAR(9)")
 	private String maKhachHang;
-	@Column(name = "hoTen")
+	@Column(name = "hoTen", nullable = false)
 	private String hoTen;
-	@Column(name = "soDienThoai")
+	@Column(name = "soDienThoai", nullable = false, length = 10, columnDefinition = "CHAR(10)")
 	private String soDienThoai;
-	@Column(name = "email")
+	@Column(name = "email", nullable = false)
 	private String email;
-	@Column(name = "gioiTinh")
+	@Column(name = "gioiTinh", nullable = false)
 	private boolean gioiTinh;
-	@Column(name = "CCCD")
+	@Column(name = "CCCD", length = 12, columnDefinition = "CHAR(12)", nullable = false)
 	private String CCCD;
-	@Column(name = "ngaySinh")
+	@Column(name = "ngaySinh", nullable = false)
 	private LocalDate ngaySinh;
-	@Column(name = "loaiKhachHang")
+	@Column(name = "loaiKhachHang", nullable = false)
 	public LoaiKhachHang loaiKH;
 	@OneToMany(mappedBy = "khachHang", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<VeTau> veTaus;
