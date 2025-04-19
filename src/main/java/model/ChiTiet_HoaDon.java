@@ -8,16 +8,16 @@ public class ChiTiet_HoaDon {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "soLuong")
+	@Column(name = "soLuong", nullable = false)
 	private int soLuong;
 	@ManyToOne()
-	@JoinColumn(name = "maHoaDon", nullable = false)
+	@JoinColumn(name = "maHoaDon", nullable = false, columnDefinition = "CHAR(8)")
 	private HoaDon hoaDon;
 	@ManyToOne()
-	@JoinColumn(name = "maKhuyenMai", nullable = true)
+	@JoinColumn(name = "maKhuyenMai", nullable = true, columnDefinition = "CHAR(6)")
 	private KhuyenMai khuyenMai;
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "maVeTau")
+	@JoinColumn(name = "maVeTau", nullable = false, columnDefinition = "CHAR(8)")
 	private VeTau veTau;
 
 	public ChiTiet_HoaDon() {
