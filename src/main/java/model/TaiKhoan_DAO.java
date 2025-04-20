@@ -33,13 +33,13 @@ public class TaiKhoan_DAO {
 			resultSet = statement.executeQuery(sql);
 
 			while (resultSet.next()) {
-				String maTaiKhoan = resultSet.getString(1);
-				String tenDangNhap = resultSet.getString(2);
-				String matKhau = resultSet.getString(3);
-				boolean trangThai = resultSet.getBoolean(4);
-				Timestamp timestamp = resultSet.getTimestamp(5);
+				String maTaiKhoan = resultSet.getString("maTaiKhoan");
+				String tenDangNhap = resultSet.getString("tenDangNhap");
+				String matKhau = resultSet.getString("matKhau");
+				boolean trangThai = resultSet.getBoolean("trangThai");
+				Timestamp timestamp = resultSet.getTimestamp("ngayTaoTaiKhoan");
 				LocalDateTime ngayTaoTaiKhoan = timestamp.toLocalDateTime();
-				String maNV = resultSet.getString(6);
+				String maNV = resultSet.getString("maNV");
 
 				NhanVien nhanVien = new NhanVien(maNV);
 				TaiKhoan taiKhoan = new TaiKhoan(maTaiKhoan, tenDangNhap, matKhau, trangThai, ngayTaoTaiKhoan,

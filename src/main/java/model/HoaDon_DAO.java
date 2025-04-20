@@ -93,17 +93,17 @@ public class HoaDon_DAO {
 
 			List<HoaDon> list = new ArrayList<>();
 			while (resultSet.next()) {
-				String maHoaDon = resultSet.getString(1);
-				Timestamp timestamp = resultSet.getTimestamp(2);
+				String maHoaDon = resultSet.getString("maHoaDon");
+				Timestamp timestamp = resultSet.getTimestamp("ngayLapHoaDon");
 				LocalDateTime ngayLapHoaDon = timestamp.toLocalDateTime();
-				String ghiChu = resultSet.getString(3);
-				float thueVAT = resultSet.getFloat(4);
-				String phuongThucThanhToan = resultSet.getString(5);
-				String loaiHoaDon = resultSet.getString(6);
-				String maKH = resultSet.getString(7);
-				String maNhaGa = resultSet.getString(8);
-				String maNV = resultSet.getString(9);
-				String maThongTinGiuCho = resultSet.getString(10);
+				String ghiChu = resultSet.getString("ghiChu");
+				float thueVAT = resultSet.getFloat("thueVAT");
+				String phuongThucThanhToan = resultSet.getString("phuongThucThanhToan");
+				String loaiHoaDon = resultSet.getString("loaiHoaDon");
+				String maKH = resultSet.getString("maKH");
+				String maNhaGa = resultSet.getString("maNhaGa");
+				String maNV = resultSet.getString("maNV");
+				String maThongTinGiuCho = resultSet.getString("maThongTinGiuCho");
 
 				KhachHang khachHang = new KhachHang(maKH);
 				ThongTinTram thongTinTram = new ThongTinTram(maNhaGa);
