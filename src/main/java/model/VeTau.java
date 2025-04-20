@@ -15,10 +15,10 @@ public class VeTau {
 	@Column(name = "maVeTau", length = 8, columnDefinition = "CHAR(8)", nullable = false)
 	private String maVeTau;
 
-	@Column(name = "loaiVe", length = 10, nullable = false)
+	@Column(name = "loaiVe", nullable = false, columnDefinition = "NVARCHAR(10)")
 	private boolean loaiVe;
 
-	@Column(name = "ngayHetHan", nullable = false)
+	@Column(name = "ngayHetHan", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime ngayHetHan;
 
 	@Column(name = "daHuy", nullable = false)

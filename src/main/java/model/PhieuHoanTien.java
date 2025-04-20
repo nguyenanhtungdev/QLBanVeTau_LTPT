@@ -8,15 +8,15 @@ import java.time.LocalDateTime;
 public class PhieuHoanTien {
 
 	@Id
-	@Column(name = "maPhieuHoanTien", length = 8, columnDefinition = "CHAR(8)")
+	@Column(name = "maPhieuHoanTien", nullable = false,columnDefinition = "CHAR(8)")
 	private String maPhieuHoanTien;
-	@Column(name = "ngayHoanTien", nullable = false)
+	@Column(name = "ngayHoanTien", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime ngayHoanTien;
-	@Column(name = "lyDoHoanTien", length = 255, columnDefinition = "NVARCHAR(255)")
+	@Column(name = "lyDoHoanTien", length = 255, columnDefinition = "NVARCHAR(100)")
 	private String lyDoHoanTien;
 	@Column(name = "ghiChu", length = 255, columnDefinition = "NVARCHAR(255)")
 	private String ghiChu;
-	@Column(name = "tiLeHoanTien", nullable = false)
+	@Column(name = "tiLeHoanTien", nullable = false, columnDefinition = "FLOAT")
 	private float tiLeHoanTien;
 	@ManyToOne()
 	@JoinColumn(name = "maKhachHang", nullable = false, columnDefinition = "CHAR(9)")

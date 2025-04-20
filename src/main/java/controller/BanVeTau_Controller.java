@@ -1855,7 +1855,7 @@ public class BanVeTau_Controller
 
 			DefaultTableModel model = (DefaultTableModel) hoaDonTable.getModel();
 			model.addRow(new Object[] { i + 1, // STT
-					maVe, loaiVe, soLuong, giaVeString, kh.loaiKH.chuyenDoiDiscountToString(giamGia), giamGiaKhac,
+					maVe, loaiVe, soLuong, giaVeString, kh.getLoaiKH().chuyenDoiDiscountToString(giamGia), giamGiaKhac,
 					String.format("%,.0f ₫", roundMoney(thanhTienChiTiet)) });
 		}
 		double tongTienHoaDon = roundMoney(hoaDon.tinhTongTien(dsTienChiTietVe));

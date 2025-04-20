@@ -10,32 +10,32 @@ import java.util.List;
 public class Tau {
 	@Id
 	@EqualsAndHashCode.Include
-	@Column(name = "maTau", length = 7, columnDefinition = "CHAR(7)", nullable = false)
+	@Column(name = "maTau", nullable = false, columnDefinition = "CHAR(7)")
 	private String maTau;
 
-	@Column(name = "tenTau", length = 30, nullable = false)
+	@Column(name = "tenTau", nullable = false, columnDefinition = "NVARCHAR(50)")
 	private String tenTau;
 
 	@Column(name = "soToa", nullable = false)
 	private int soToa;
 
-	@Column(name = "namSanXuat", nullable = false)
+	@Column(name = "namSanXuat", nullable = false, columnDefinition = "DATE")
 	private LocalDate namSanXuat;
 
-	@Column(name = "nhaSanXuat", length = 30, nullable = false)
+	@Column(name = "nhaSanXuat", nullable = false, columnDefinition = "NVARCHAR(30)")
 	private String nhaSanXuat;
 
-	@Column(name = "tocDoTB")
+	@Column(name = "tocDoTB", nullable = true, columnDefinition = "FLOAT")
 	private Float tocDoTB;
 
-	@Column(name = "tocDoToiDa")
+	@Column(name = "tocDoToiDa", nullable = true, columnDefinition = "FLOAT")
 	private Float tocDoToiDa;
 
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "trangThai", nullable = false)
 	private TrangThaiTau trangThai;
 
-	@Column(name = "ghiChu", length = 255)
+	@Column(name = "ghiChu", nullable = true, columnDefinition = "NVARCHAR(255)")
 	private String ghiChu;
 
 	@ManyToOne

@@ -19,7 +19,7 @@ public class ToaTau {
 	@Column(name = "soThuTuToa", nullable = false)
 	private int soThuTuToa;
 
-	@Column(name = "loaiToa", length = 10, nullable = false)
+	@Column(name = "loaiToa", nullable = false, columnDefinition = "NVARCHAR(10)")
 	private String loaiToa;
 
 	@Column(name = "soLuongGhe", nullable = false)

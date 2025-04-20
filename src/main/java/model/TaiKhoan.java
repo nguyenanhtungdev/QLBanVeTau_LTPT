@@ -8,22 +8,22 @@ import java.time.LocalDateTime;
 public class TaiKhoan {
 
 	@Id
-	@Column(name = "maTaiKhoan", nullable = false, length = 50)
+	@Column(name = "maTaiKhoan", nullable = false, columnDefinition = "CHAR(7)")
 	private String maTaiKhoan;
 
-	@Column(name = "tenDangNhap", nullable = false, unique = true, length = 50)
+	@Column(name = "tenDangNhap", nullable = false, unique = true, columnDefinition = "VARCHAR(50)")
 	private String tenDangNhap;
 
-	@Column(name = "matKhau", nullable = false, length = 100)
+	@Column(name = "matKhau", nullable = false, columnDefinition = "VARCHAR(255)")
 	private String matKhau;
 
 	@Column(name = "trangThai", nullable = false)
 	private boolean trangThai;
 
-	@Column(name = "ngayTaoTaiKhoan")
+	@Column(name = "ngayTaoTaiKhoan", nullable = false,columnDefinition = "DATETIME")
 	private LocalDateTime ngayTaoTaiKhoan;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, optional = false)
 	@JoinColumn(name = "maNV", columnDefinition = "CHAR(8)")
 	private NhanVien nhanVien;
 

@@ -16,27 +16,25 @@ public class KhachHang {
 	@Id
 	@Column(name = "maKhachHang", length = 9, columnDefinition = "CHAR(9)")
 	private String maKhachHang;
-	@Column(name = "hoTen", nullable = false)
+	@Column(name = "hoTen", nullable = false, columnDefinition = "NVARCHAR(100)")
 	private String hoTen;
 	@Column(name = "soDienThoai", nullable = false, length = 10, columnDefinition = "CHAR(10)")
 	private String soDienThoai;
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = false, columnDefinition = "VARCHAR(50)")
 	private String email;
 	@Column(name = "gioiTinh", nullable = false)
 	private boolean gioiTinh;
 	@Column(name = "CCCD", length = 12, columnDefinition = "CHAR(12)", nullable = false)
 	private String CCCD;
-	@Column(name = "ngaySinh", nullable = false)
+	@Column(name = "ngaySinh", nullable = false, columnDefinition = "DATE")
 	private LocalDate ngaySinh;
-	@Column(name = "loaiKhachHang", nullable = false)
-	public LoaiKhachHang loaiKH;
 	@OneToMany(mappedBy = "khachHang", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<VeTau> veTaus;
 	@OneToMany(mappedBy = "khachHang", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PhieuHoanTien> phieuHoanTiens;
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "loaiKH", nullable = false, columnDefinition = "NVARCHAR(20)")
-	private LoaiKhachHang loaiKhachHang;
+	private LoaiKhachHang loaiKH;
 	@OneToMany(mappedBy = "khachHang", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<HoaDon> hoaDons;
 	@OneToMany(mappedBy = "maThongTinGiuCho", cascade = CascadeType.ALL, orphanRemoval = true)

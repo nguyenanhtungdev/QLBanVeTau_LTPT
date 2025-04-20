@@ -36,20 +36,21 @@ public class KhuyenMai {
 
 	}
 	@Id
-	@Column(name = "maKhuyenMai", length = 6, columnDefinition = "CHAR(6)")
+	@Column(name = "maKhuyenMai",nullable = false, columnDefinition = "CHAR(6)")
 	private String maKhuyenMai;
-	@Column(name = "tenKhuyenMai", nullable = false, length = 50, columnDefinition = "NVARCHAR(50)")
+	@Column(name = "tenKhuyenMai", nullable = false, columnDefinition = "NVARCHAR(50)")
 	private String tenKhuyenMai;
-	@Column(name = "noiDungKhuyenMai", length = 255, columnDefinition = "NVARCHAR(255)", nullable = false)
+	@Column(name = "noiDungKhuyenMai",  nullable = false, columnDefinition = "NVARCHAR(255)")
 	private String noiDungKhuyenMai;
 	@Column(name = "giamGia", nullable = false)
 	private int giamGia;
 	@Column(name = "soLuongToiDa", nullable = false)
 	private int soLuongToiDa;
-	@Column(name = "thoiGianBatDau", nullable = false)
+	@Column(name = "thoiGianBatDau", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime thoiGianBatDau;
-	@Column(name = "hanSuDungKhuyenMai", nullable = false)
+	@Column(name = "hanSuDungKhuyenMai", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime hanSuDungKhuyenMai;
+	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tinhTrangKhuyenMai", nullable = false)
 	private TinhTrangKhuyenMai tinhTrangKhuyenMai;
 

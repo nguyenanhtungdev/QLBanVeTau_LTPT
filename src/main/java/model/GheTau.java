@@ -11,16 +11,16 @@ public class GheTau {
 
 	@Id
 	@EqualsAndHashCode.Include
-	@Column(name = "maGheTau", length = 7, columnDefinition = "CHAR(7)", nullable = false)
+	@Column(name = "maGheTau", nullable = false, columnDefinition = "CHAR(7)")
 	private String maGheTau;
 
-	@Column(name = "tenLoaiGheTau", length = 15, nullable = false)
+	@Column(name = "tenLoaiGheTau", nullable = false, columnDefinition = "NVARCHAR(15)")
 	private String tenLoaiGheTau;
 
 	@Column(name = "soThuTuGhe", nullable = true)
-	private Integer soThuTuGhe; // dùng Integer vì cột cho phép null
+	private int soThuTuGhe;
 
-	@Column(name = "trangThai", length = 20, nullable = false)
+	@Column(name = "trangThai", nullable = false, columnDefinition = "NVARCHAR(20)")
 	private String trangThai;
 
 	@OneToMany(mappedBy = "gheTau")

@@ -4,22 +4,22 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ChiTiet_HoaDon")
+@IdClass(ChiTiet_HoaDonId.class)
 public class ChiTiet_HoaDon {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@ManyToOne
+	@JoinColumn(name = "maHoaDon", nullable = false, columnDefinition = "CHAR(11)")
+	private HoaDon hoaDon;
+
+	@Id
+	@OneToOne
+	@JoinColumn(name = "maVeTau", nullable = false, columnDefinition = "CHAR(8)")
+	private VeTau veTau;
 	@Column(name = "soLuong", nullable = false)
 	private int soLuong;
 	@ManyToOne()
-	@JoinColumn(name = "maHoaDon", nullable = false, columnDefinition = "CHAR(8)")
-	private HoaDon hoaDon;
-	@ManyToOne()
 	@JoinColumn(name = "maKhuyenMai", nullable = true, columnDefinition = "CHAR(6)")
 	private KhuyenMai khuyenMai;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "maVeTau", nullable = false, columnDefinition = "CHAR(8)")
-	private VeTau veTau;
-
 	public ChiTiet_HoaDon() {
 	}
 
@@ -88,13 +88,5 @@ public class ChiTiet_HoaDon {
 	public String toString() {
 		return "ChiTiet_HoaDon {soLuong: " + soLuong + ", hoaDon: " + hoaDon + ", khuyenMai: " + khuyenMai + ", veTau: "
 				+ veTau + "}";
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getId() {
-		return id;
 	}
 }
