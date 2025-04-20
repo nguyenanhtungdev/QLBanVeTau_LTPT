@@ -12,14 +12,14 @@ public class PhieuHoanTien {
 	private String maPhieuHoanTien;
 	@Column(name = "ngayHoanTien", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime ngayHoanTien;
-	@Column(name = "lyDoHoanTien", length = 255, columnDefinition = "NVARCHAR(100)")
+	@Column(name = "lyDoHoanTra", length = 255, columnDefinition = "NVARCHAR(100)")
 	private String lyDoHoanTien;
 	@Column(name = "ghiChu", length = 255, columnDefinition = "NVARCHAR(255)")
 	private String ghiChu;
 	@Column(name = "tiLeHoanTien", nullable = false, columnDefinition = "FLOAT")
 	private float tiLeHoanTien;
 	@ManyToOne()
-	@JoinColumn(name = "maKhachHang", nullable = false, columnDefinition = "CHAR(9)")
+	@JoinColumn(name = "maKH", nullable = false, columnDefinition = "CHAR(9)")
 	private KhachHang khachHang;
 	public PhieuHoanTien() {
 	}

@@ -12,7 +12,8 @@ public class Database {
 		return instance == null ? instance = new Database() : instance;
 	}
 
-	private final String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyBanVeTau";
+	private final String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyBanVeTau_PT;encrypt=true;trustServerCertificate=true";
+
 	private String user;
 	private String password;
 	private Connection connection;

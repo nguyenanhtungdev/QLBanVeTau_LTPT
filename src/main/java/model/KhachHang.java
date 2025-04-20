@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 public class KhachHang {
 
 	@Id
-	@Column(name = "maKhachHang", length = 9, columnDefinition = "CHAR(9)")
+	@Column(name = "maKH", length = 9, columnDefinition = "CHAR(9)")
 	private String maKhachHang;
 	@Column(name = "hoTen", nullable = false, columnDefinition = "NVARCHAR(100)")
 	private String hoTen;
