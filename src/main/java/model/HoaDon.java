@@ -37,7 +37,8 @@ public class HoaDon {
 	@ManyToOne
 	@JoinColumn(name = "maNV", columnDefinition = "CHAR(8)")
 	private NhanVien nhanVien;
-	@OneToOne(mappedBy = "hoaDon", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne
+	@JoinColumn(name = "maThongTinGiuCho", columnDefinition = "CHAR(7)")
 	private ThongTinGiuCho thongTinGiuCho;
 
 	public HoaDon() {

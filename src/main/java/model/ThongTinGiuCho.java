@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -29,9 +28,9 @@ public class ThongTinGiuCho {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "maKH", columnDefinition = "CHAR(9)")
 	private KhachHang khachHang;
-	@OneToOne(optional = false)
-	@JoinColumn(name = "maHoaDon", columnDefinition = "CHAR(11)")
+	@OneToOne(mappedBy = "thongTinGiuCho", cascade = CascadeType.ALL, orphanRemoval = true)
 	private HoaDon hoaDon;
+	
 
 	public ThongTinGiuCho(String maThongTinGiuCho) {
 		this.maThongTinGiuCho = maThongTinGiuCho;
