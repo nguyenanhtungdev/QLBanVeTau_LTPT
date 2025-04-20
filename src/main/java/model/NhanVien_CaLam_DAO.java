@@ -83,7 +83,7 @@ public class NhanVien_CaLam_DAO {
 
 			boolean exists = false;
 			if (rs.next()) {
-				exists = rs.getInt(1) > 0;
+				exists = rs.getInt("maNV") > 0;
 			}
 
 			if (exists) {

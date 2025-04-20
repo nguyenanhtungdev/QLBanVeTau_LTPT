@@ -32,14 +32,14 @@ public class KhachHang_DAO {
 
 			List<KhachHang> list = new ArrayList<>();
 			while (resultSet.next()) {
-				String maKhachHang = resultSet.getString(1);
-				String hoTen = resultSet.getString(2);
-				String soDienThoai = resultSet.getString(3);
-				String email = resultSet.getString(4);
-				boolean gioiTinh = resultSet.getBoolean(5);
-				String CCCD = resultSet.getString(6);
-				LocalDate ngaySinh = resultSet.getDate(7).toLocalDate();
-				String loaiKHStr = resultSet.getString(8);
+				String maKhachHang = resultSet.getString("maKH");
+				String hoTen = resultSet.getString("hoTen");
+				String soDienThoai = resultSet.getString("soDienThoai");
+				String email = resultSet.getString("email");
+				boolean gioiTinh = resultSet.getBoolean("gioiTinh");
+				String CCCD = resultSet.getString("CCCD");
+				LocalDate ngaySinh = resultSet.getDate("ngaySinh").toLocalDate();
+				String loaiKHStr = resultSet.getString("loaiKH");
 				KhachHang.LoaiKhachHang loaiKH = KhachHang.LoaiKhachHang.valueOf(loaiKHStr);
 
 				list.add(new KhachHang(maKhachHang, hoTen, soDienThoai, email, gioiTinh, CCCD, ngaySinh, loaiKH));
@@ -143,7 +143,7 @@ public class KhachHang_DAO {
 			Statement statement = con.createStatement();
 			ResultSet resultSet = statement.executeQuery(sql);
 			while (resultSet.next()) {
-				maKH = resultSet.getString(1);
+				maKH = resultSet.getString("maKH");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -166,14 +166,14 @@ public class KhachHang_DAO {
 
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				String maKhachHang = resultSet.getString(1);
-				String hoTen = resultSet.getString(2);
-				String soDienThoai = resultSet.getString(3);
-				String email = resultSet.getString(4);
-				boolean gioiTinh = resultSet.getBoolean(5);
-				String CCCD = resultSet.getString(6);
-				LocalDate ngaySinh = resultSet.getDate(7).toLocalDate();
-				String loaiKHStr = resultSet.getString(8);
+				String maKhachHang = resultSet.getString("maKH");
+				String hoTen = resultSet.getString("hoTen");
+				String soDienThoai = resultSet.getString("soDienThoai");
+				String email = resultSet.getString("email");
+				boolean gioiTinh = resultSet.getBoolean("gioiTinh");
+				String CCCD = resultSet.getString("CCCD");
+				LocalDate ngaySinh = resultSet.getDate("ngaySinh").toLocalDate();
+				String loaiKHStr = resultSet.getString("loaiKH");
 
 				KhachHang.LoaiKhachHang loaiKH = KhachHang.LoaiKhachHang.valueOf(loaiKHStr);
 

@@ -33,16 +33,16 @@ public class NhanVien_DAO {
 
 			List<NhanVien> list = new ArrayList<>();
 			while (resultSet.next()) {
-				String maNV = resultSet.getString(1);
-				String hoTenNV = resultSet.getString(2);
-				LocalDate ngaySinh = resultSet.getDate(3).toLocalDate();
-				String soDienThoai = resultSet.getString(4);
-				String email = resultSet.getString(5);
-				String diaChi = resultSet.getString(6);
-				boolean gioiTinh = resultSet.getBoolean(7);
-				String CCCD = resultSet.getString(8);
-				float heSoLuong = resultSet.getFloat(9);
-				boolean trangThai = resultSet.getBoolean(10);
+				String maNV = resultSet.getString("maNV");
+				String hoTenNV = resultSet.getString("hoTenNV");
+				LocalDate ngaySinh = resultSet.getDate("ngaySinh").toLocalDate();
+				String soDienThoai = resultSet.getString("soDienThoai");
+				String email = resultSet.getString("email");
+				String diaChi = resultSet.getString("diaChi");
+				boolean gioiTinh = resultSet.getBoolean("gioiTinh");
+				String CCCD = resultSet.getString("CCCD");
+				float heSoLuong = resultSet.getFloat("heSoLuong");
+				boolean trangThai = resultSet.getBoolean("trangThai");
 				String tenChucVu = resultSet.getString("tenChucVu");
 				LocalDate ngayVaoLam = resultSet.getDate("ngayVaoLam").toLocalDate();
 
@@ -80,16 +80,16 @@ public class NhanVien_DAO {
 			resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
-				String maNV = resultSet.getString(1);
-				String hoTenNV = resultSet.getString(2);
-				LocalDate ngaySinh = resultSet.getDate(3).toLocalDate();
-				String soDienThoai = resultSet.getString(4);
-				String email = resultSet.getString(5);
-				String diaChi = resultSet.getString(6);
-				boolean gioiTinh = resultSet.getBoolean(7);
-				String CCCD = resultSet.getString(8);
-				float heSoLuong = resultSet.getFloat(9);
-				boolean trangThai = resultSet.getBoolean(10);
+				String maNV = resultSet.getString("maNV");
+				String hoTenNV = resultSet.getString("hoTenNV");
+				LocalDate ngaySinh = resultSet.getDate("ngaySinh").toLocalDate();
+				String soDienThoai = resultSet.getString("soDienThoai");
+				String email = resultSet.getString("email");
+				String diaChi = resultSet.getString("diaChi");
+				boolean gioiTinh = resultSet.getBoolean("gioiTinh");
+				String CCCD = resultSet.getString("CCCD");
+				float heSoLuong = resultSet.getFloat("heSoLuong");
+				boolean trangThai = resultSet.getBoolean("trangThai");
 				String tenChucVu = resultSet.getString("tenChucVu");
 				LocalDate ngayVaoLam = resultSet.getDate("ngayVaoLam").toLocalDate();
 
@@ -165,18 +165,18 @@ public class NhanVien_DAO {
 			preparedStatement.setString(1, ten);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				String maNhanVien = resultSet.getString(1);
-				String hoTenNV = resultSet.getString(2);
-				LocalDate ngaySinh = resultSet.getDate(3).toLocalDate();
-				String soDienThoai = resultSet.getString(4);
-				String email = resultSet.getString(5);
-				String diaChi = resultSet.getString(6);
-				boolean gioiTinh = resultSet.getBoolean(7);
-				String CCCD = resultSet.getString(8);
-				float heSoLuong = resultSet.getFloat(9);
-				boolean trangThai = resultSet.getBoolean(10);
-				String maChucVu = resultSet.getString(12);
-				LocalDate ngayVaoLam = resultSet.getDate(11).toLocalDate();
+				String maNhanVien = resultSet.getString("maNV");
+				String hoTenNV = resultSet.getString("hoTenNV");
+				LocalDate ngaySinh = resultSet.getDate("ngaySinh").toLocalDate();
+				String soDienThoai = resultSet.getString("soDienThoai");
+				String email = resultSet.getString("email");
+				String diaChi = resultSet.getString("diaChi");
+				boolean gioiTinh = resultSet.getBoolean("gioiTinh");
+				String CCCD = resultSet.getString("CCCD");
+				float heSoLuong = resultSet.getFloat("heSoLuong");
+				boolean trangThai = resultSet.getBoolean("trangThai");
+				String maChucVu = resultSet.getString("tenChucVu");
+				LocalDate ngayVaoLam = resultSet.getDate("ngayVaoLam").toLocalDate();
 
 				NhanVien nhanVien = new NhanVien(maNhanVien, hoTenNV, ngaySinh, soDienThoai, email, diaChi, gioiTinh,
 						CCCD, heSoLuong, trangThai, maChucVu, ngayVaoLam);
@@ -200,18 +200,18 @@ public class NhanVien_DAO {
 			preparedStatement.setString(1, sdt);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				String maNhanVien = resultSet.getString(1);
-				String hoTenNV = resultSet.getString(2);
-				LocalDate ngaySinh = resultSet.getDate(3).toLocalDate();
-				String soDienThoai = resultSet.getString(4);
-				String email = resultSet.getString(5);
-				String diaChi = resultSet.getString(6);
-				boolean gioiTinh = resultSet.getBoolean(7);
-				String CCCD = resultSet.getString(8);
-				float heSoLuong = resultSet.getFloat(9);
-				boolean trangThai = resultSet.getBoolean(10);
-				String maChucVu = resultSet.getString(12);
-				LocalDate ngayVaoLam = resultSet.getDate(11).toLocalDate();
+				String maNhanVien = resultSet.getString("maNV");
+				String hoTenNV = resultSet.getString("hoTenNV");
+				LocalDate ngaySinh = resultSet.getDate("ngaySinh").toLocalDate();
+				String soDienThoai = resultSet.getString("soDienThoai");
+				String email = resultSet.getString("email");
+				String diaChi = resultSet.getString("diaChi");
+				boolean gioiTinh = resultSet.getBoolean("gioiTinh");
+				String CCCD = resultSet.getString("CCCD");
+				float heSoLuong = resultSet.getFloat("heSoLuong");
+				boolean trangThai = resultSet.getBoolean("trangThai");
+				String maChucVu = resultSet.getString("tenChucVu");
+				LocalDate ngayVaoLam = resultSet.getDate("ngayVaoLam").toLocalDate();
 
 				NhanVien nhanVien = new NhanVien(maNhanVien, hoTenNV, ngaySinh, soDienThoai, email, diaChi, gioiTinh,
 						CCCD, heSoLuong, trangThai, maChucVu, ngayVaoLam);
@@ -235,18 +235,18 @@ public class NhanVien_DAO {
 			preparedStatement.setString(1, cccd);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				String maNhanVien = resultSet.getString(1);
-				String hoTenNV = resultSet.getString(2);
-				LocalDate ngaySinh = resultSet.getDate(3).toLocalDate();
-				String soDienThoai = resultSet.getString(4);
-				String email = resultSet.getString(5);
-				String diaChi = resultSet.getString(6);
-				boolean gioiTinh = resultSet.getBoolean(7);
-				String CCCD = resultSet.getString(8);
-				float heSoLuong = resultSet.getFloat(9);
-				boolean trangThai = resultSet.getBoolean(10);
-				String maChucVu = resultSet.getString(12);
-				LocalDate ngayVaoLam = resultSet.getDate(11).toLocalDate();
+				String maNhanVien = resultSet.getString("maNV");
+				String hoTenNV = resultSet.getString("hoTenNV");
+				LocalDate ngaySinh = resultSet.getDate("ngaySinh").toLocalDate();
+				String soDienThoai = resultSet.getString("soDienThoai");
+				String email = resultSet.getString("email");
+				String diaChi = resultSet.getString("diaChi");
+				boolean gioiTinh = resultSet.getBoolean("gioiTinh");
+				String CCCD = resultSet.getString("CCCD");
+				float heSoLuong = resultSet.getFloat("heSoLuong");
+				boolean trangThai = resultSet.getBoolean("trangThai");
+				String maChucVu = resultSet.getString("tenChucVu");
+				LocalDate ngayVaoLam = resultSet.getDate("ngayVaoLam").toLocalDate();
 
 				NhanVien nhanVien = new NhanVien(maNhanVien, hoTenNV, ngaySinh, soDienThoai, email, diaChi, gioiTinh,
 						CCCD, heSoLuong, trangThai, maChucVu, ngayVaoLam);
