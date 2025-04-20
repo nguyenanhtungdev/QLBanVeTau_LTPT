@@ -17,19 +17,19 @@ import java.util.List;
 public class GiaVe {
 	@Id
 	@EqualsAndHashCode.Include
-	@Column(name = "maGiaVe", length = 6, columnDefinition = "CHAR(6)", nullable = false)
+	@Column(name = "maGiaVe", nullable = false, columnDefinition = "CHAR(6)")
 	private String maGiaVe;
-
+	//float trong SQL Server thật ra là double-precision (8 byte), chứ không giống float 4 byte trong Java.
 	@Column(name = "giaVe", nullable = false)
 	private double giaVe;
 
-	@Column(name = "tiLeTangGia", nullable = false)
+	@Column(name = "tiLeTangGia", nullable = false, columnDefinition = "FLOAT")
 	private float tiLeTangGia;
 
-	@Column(name = "ngayCapNhat", nullable = false)
+	@Column(name = "ngayCapNhat", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime ngayCapNhat;
 
-	@Column(name = "ghiChu", length = 255)
+	@Column(name = "ghiChu", columnDefinition = "NVARCHAR(50)")
 	private String ghiChu;
 
 	@OneToMany(mappedBy = "giaVe")

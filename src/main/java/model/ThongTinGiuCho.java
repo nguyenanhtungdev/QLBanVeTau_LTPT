@@ -14,10 +14,10 @@ public class ThongTinGiuCho {
 	@EqualsAndHashCode.Include
 	private String maThongTinGiuCho;
 
-	@Column(name = "ngayDatGiuCho", nullable = false)
+	@Column(name = "ngayDatGiuCho", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime ngayDatGiuCho;
 
-	@Column(name = "ngayHetHanGiuCho", nullable = false)
+	@Column(name = "ngayHetHanGiuCho", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime ngayHetHanGiuCho;
 
 	@Column(name = "trangThai", nullable = false)
@@ -27,10 +27,10 @@ public class ThongTinGiuCho {
 	private String ghiChu;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "maKH")
+	@JoinColumn(name = "maKH", columnDefinition = "CHAR(9)")
 	private KhachHang khachHang;
 	@OneToOne(optional = false)
-	@JoinColumn(name = "maHoaDon")
+	@JoinColumn(name = "maHoaDon", columnDefinition = "CHAR(11)")
 	private HoaDon hoaDon;
 
 	public ThongTinGiuCho(String maThongTinGiuCho) {

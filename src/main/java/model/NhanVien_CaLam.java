@@ -5,26 +5,23 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
+@IdClass(NhanVien_CaLamId.class)
 @Table(name = "NhanVien_CaLam")
 public class NhanVien_CaLam {
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(name = "thoiGianNhanCa", nullable = false)
-	private LocalDateTime thoiGianNhanCa;
-
-	@Column(name = "thoiGianKetThucCa", nullable = false)
-	private LocalDateTime thoiGianKetThucCa;
-
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "maNV", nullable = false)
+	@JoinColumn(name = "maNV", nullable = false, columnDefinition = "CHAR(8)")
 	private NhanVien nhanVien;
 
+	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "maCa", nullable = false)
+	@JoinColumn(name = "maCa", nullable = false, columnDefinition = "CHAR(4)")
 	private CaLam caLam;
+	@Column(name = "thoiGianNhanCa", nullable = false, columnDefinition = "DATETIME")
+	private LocalDateTime thoiGianNhanCa;
+
+	@Column(name = "thoiGianKetThucCa", nullable = false, columnDefinition = "DATETIME")
+	private LocalDateTime thoiGianKetThucCa;
 
 	public NhanVien_CaLam() {
 	}
@@ -35,10 +32,6 @@ public class NhanVien_CaLam {
 		setThoiGianKetThucCa(thoiGianKetThucCa);
 		this.nhanVien = nhanVien;
 		this.caLam = caLam;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public LocalDateTime getThoiGianNhanCa() {

@@ -13,19 +13,19 @@ import java.util.Objects;
 public class CaLam {
 
 	@Id
-	@Column(name = "maCa", length = 10, nullable = false)
+	@Column(name = "maCa", columnDefinition = "char(4)", nullable = false)
 	private String maCa;
 
-	@Column(name = "tenCa", length = 2, nullable = false)
+	@Column(name = "tenCa", columnDefinition = "nvarchar(50)", nullable = false)
 	private String tenCa;
 
-	@Column(name = "thoiGianBatDau", nullable = false)
+	@Column(name = "thoiGianBatDau", nullable = false, columnDefinition = "DATETIME")
 	private LocalTime thoiGianBatDau;
 
-	@Column(name = "thoiGianKetThuc", nullable = false)
+	@Column(name = "thoiGianKetThuc", nullable = false, columnDefinition = "DATETIME")
 	private LocalTime thoiGianKetThuc;
 
-	@Column(name = "ghiChu", length = 255)
+	@Column(name = "ghiChu", columnDefinition = "nvarchar(255)", nullable = true)
 	private String ghiChu;
 
 	public CaLam() {

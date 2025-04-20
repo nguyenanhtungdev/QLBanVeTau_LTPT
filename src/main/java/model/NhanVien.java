@@ -15,7 +15,7 @@ public class NhanVien {
 	@Column(name = "hoTenNV", nullable = false, columnDefinition = "nvarchar(100)")
 	private String hoTenNV;
 
-	@Column(name = "ngaySinh", nullable = false)
+	@Column(name = "ngaySinh", nullable = false, columnDefinition = "DATE")
 	private LocalDate ngaySinh;
 
 	@Column(name = "soDienThoai", nullable = false, columnDefinition = "char(10)")
@@ -33,13 +33,13 @@ public class NhanVien {
 	@Column(name = "CCCD", nullable = false, columnDefinition = "char(12)")
 	private String CCCD;
 
-	@Column(name = "heSoLuong", nullable = false)
+	@Column(name = "heSoLuong", nullable = false, columnDefinition = "FLOAT")
 	private float heSoLuong;
 
 	@Column(name = "trangThai", nullable = false)
 	private boolean trangThai;
 
-	@Column(name = "ngayVaoLam", nullable = false)
+	@Column(name = "ngayVaoLam", nullable = false, columnDefinition = "DATE")
 	private LocalDate ngayVaoLam;
 
 	@Column(name = "tenChucVu", nullable = true, columnDefinition = "nchar(10)")

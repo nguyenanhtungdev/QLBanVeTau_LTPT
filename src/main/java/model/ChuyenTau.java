@@ -14,19 +14,19 @@ public class ChuyenTau {
 	@EqualsAndHashCode.Include
 	private String maChuyenTau;
 
-	@Column(name = "gaKhoiHanh", nullable = false, length = 50)
+	@Column(name = "gaKhoiHanh", nullable = false, columnDefinition = "NVARCHAR(50)")
 	private String gaKhoiHanh;
 
-	@Column(name = "gaDen", nullable = false, length = 50)
+	@Column(name = "gaDen", nullable = false, columnDefinition = "NVARCHAR(30)")
 	private String gaDen;
 
-	@Column(name = "thoiGianKhoiHanh", nullable = false)
+	@Column(name = "thoiGianKhoiHanh", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime thoiGianKhoiHanh;
 
-	@Column(name = "thoiGianDuKien", nullable = false)
+	@Column(name = "thoiGianDuKien", nullable = false, columnDefinition = "DATETIME")
 	private LocalDateTime thoiGianDuKien;
 
-	@Column(name = "ghiChu", length = 255)
+	@Column(name = "ghiChu", columnDefinition = "NVARCHAR(30)")
 	private String ghiChu;
 
 	@ManyToOne
