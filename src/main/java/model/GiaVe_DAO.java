@@ -71,11 +71,11 @@ public class GiaVe_DAO {
 			resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
-				String maGiaVeResult = resultSet.getString(1);
-				double giaVeResult = resultSet.getDouble(2);
-				float tiLeTangGia = resultSet.getFloat(3);
-				LocalDateTime ngayCapNhap = resultSet.getTimestamp(4).toLocalDateTime();
-				String ghiChu = resultSet.getString(5);
+				String maGiaVeResult = resultSet.getString("maGiaVe");
+				double giaVeResult = resultSet.getDouble("giaVe");
+				float tiLeTangGia = resultSet.getFloat("tiLeTangGia");
+				LocalDateTime ngayCapNhap = resultSet.getTimestamp("ngayCapNhat").toLocalDateTime();
+				String ghiChu = resultSet.getString("ghiChu");
 
 				return new GiaVe(maGiaVeResult, giaVeResult, tiLeTangGia, ngayCapNhap, ghiChu);
 			}

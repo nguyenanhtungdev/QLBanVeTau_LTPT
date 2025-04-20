@@ -52,7 +52,7 @@ public class PhieuHoanTien_DAO {
             statement = con.prepareStatement(sql);
             rs = statement.executeQuery();
             while (rs.next()) {
-                maPhieuHoanTienMax = rs.getString(1);
+                maPhieuHoanTienMax = rs.getString("maPhieuHoanTien");
             }
         } catch (SQLException e) {
 		 e.printStackTrace();

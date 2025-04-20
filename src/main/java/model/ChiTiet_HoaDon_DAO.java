@@ -34,10 +34,10 @@ public class ChiTiet_HoaDon_DAO {
 			while (resultSet.next()) {
 				int soLuong = resultSet.getInt("soLuong");
 
-				HoaDon hoaDon = new HoaDon(resultSet.getString(2));
-				String maKhuyenMai = resultSet.getString(3);
+				HoaDon hoaDon = new HoaDon(resultSet.getString("maHoaDon"));
+				String maKhuyenMai = resultSet.getString("maKhuyenMai");
 				KhuyenMai khuyenMai = maKhuyenMai != null ? new KhuyenMai(maKhuyenMai) : null;
-				VeTau veTau = new VeTau(resultSet.getString(4));
+				VeTau veTau = new VeTau(resultSet.getString("maVeTau"));
 
 				list.add(new ChiTiet_HoaDon(soLuong, hoaDon, khuyenMai, veTau));
 			}

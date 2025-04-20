@@ -31,13 +31,13 @@ public class ToaTau_DAO {
 
 			List<ToaTau> list = new ArrayList<>();
 			while (resultSet.next()) {
-				String maToaTau = resultSet.getString(1);
-				String tenToaTau = resultSet.getString(2);
-				int soThuTuToa = resultSet.getInt(3);
-				String loaiToa = resultSet.getString(4);
-				int soLuongGhe = resultSet.getInt(5);
-				boolean trangThai = resultSet.getBoolean(6);
-				String maTau = resultSet.getString(7);
+				String maToaTau = resultSet.getString("maToaTau");
+				String tenToaTau = resultSet.getString("tenToaTau");
+				int soThuTuToa = resultSet.getInt("soThuTuToa");
+				String loaiToa = resultSet.getString("loaiToa");
+				int soLuongGhe = resultSet.getInt("soLuongGhe");
+				boolean trangThai = resultSet.getBoolean("trangThai");
+				String maTau = resultSet.getString("maTau");
 
 				Tau tau = new Tau(maTau);
 
@@ -74,12 +74,12 @@ public class ToaTau_DAO {
 			resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
-				String tenToaTau = resultSet.getString(2);
-				int soThuTuToa = resultSet.getInt(3);
-				String loaiToa = resultSet.getString(4);
-				int soLuongGhe = resultSet.getInt(5);
-				boolean trangThai = resultSet.getBoolean(6);
-				String maTau = resultSet.getString(7);
+				String tenToaTau = resultSet.getString("tenToaTau");
+				int soThuTuToa = resultSet.getInt("soThuTuToa");
+				String loaiToa = resultSet.getString("loaiToa");
+				int soLuongGhe = resultSet.getInt("soLuongGhe");
+				boolean trangThai = resultSet.getBoolean("trangThai");
+				String maTau = resultSet.getString("maTau");
 
 				Tau tau = new Tau(maTau);
 
@@ -113,13 +113,13 @@ public class ToaTau_DAO {
 
 			ResultSet resultSet = statement.executeQuery();
 			while (resultSet.next()) {
-				String maToaTau = resultSet.getString(1);
-				String tenToaTau = resultSet.getString(2);
-				int soThuTuToa = resultSet.getInt(3);
-				String loaiToa = resultSet.getString(4);
-				int soLuongGhe = resultSet.getInt(5);
-				boolean trangThai = resultSet.getBoolean(6);
-				String maTauSQL = resultSet.getString(7);
+				String maToaTau = resultSet.getString("maToaTau");
+				String tenToaTau = resultSet.getString("tenToaTau");
+				int soThuTuToa = resultSet.getInt("soThuTuToa");
+				String loaiToa = resultSet.getString("loaiToa");
+				int soLuongGhe = resultSet.getInt("soLuongGhe");
+				boolean trangThai = resultSet.getBoolean("trangThai");
+				String maTauSQL = resultSet.getString("maTau");
 
 				Tau tau = new Tau(maTauSQL);
 				ToaTau toatau = new ToaTau(maToaTau, tenToaTau, soThuTuToa, loaiToa, soLuongGhe, trangThai, tau);
@@ -144,12 +144,12 @@ public class ToaTau_DAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
-				String maToaTau = resultSet.getString(1);
-				String tenToaTau = resultSet.getString(2);
-				int soThuTuToa = resultSet.getInt(3);
-				String loaiToa = resultSet.getString(4);
-				int soLuongGhe = resultSet.getInt(5);
-				boolean trangThai = resultSet.getBoolean(6);
+				String maToaTau = resultSet.getString("maToaTau");
+				String tenToaTau = resultSet.getString("tenToaTau");
+				int soThuTuToa = resultSet.getInt("soThuTuToa");
+				String loaiToa = resultSet.getString("loaiToa");
+				int soLuongGhe = resultSet.getInt("soLuongGhe");
+				boolean trangThai = resultSet.getBoolean("trangThai");
 
 				Tau tau = new Tau(maTau);
 				ToaTau toatau = new ToaTau(maToaTau, tenToaTau, soThuTuToa, loaiToa, soLuongGhe, trangThai, tau);
