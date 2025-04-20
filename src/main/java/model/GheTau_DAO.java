@@ -109,10 +109,10 @@ public class GheTau_DAO {
 
 			ResultSet resultSet = statement.executeQuery();
 			while (resultSet.next()) {
-				String maGheTau = resultSet.getString(1);
-				String tenLoaiGheTau = resultSet.getString(2);
-				int soThuTuGhe = resultSet.getInt(3);
-				String trangThai = resultSet.getString(4);
+				String maGheTau = resultSet.getString("maGheTau");
+				String tenLoaiGheTau = resultSet.getString("tenLoaiGheTau");
+				int soThuTuGhe = resultSet.getInt("soThuTuGhe");
+				String trangThai = resultSet.getString("trangThai");
 
 				ToaTau toatau = new ToaTau(maToaTau);
 
@@ -158,10 +158,10 @@ public class GheTau_DAO {
 
 			List<GheTau> list = new ArrayList<>();
 			while (resultSet.next()) {
-				String maGheTau = resultSet.getString(1);
-				String tenLoaiGhe = resultSet.getString(2);
-				int soThuTuGhe = resultSet.getInt(3);
-				String trangThai = resultSet.getString(4);
+				String maGheTau = resultSet.getString("maGheTau");
+				String tenLoaiGhe = resultSet.getString("tenLoaiGheTau");
+				int soThuTuGhe = resultSet.getInt("soThuTuGhe");
+				String trangThai = resultSet.getString("trangThai");
 
 				ToaTau toaTau = new ToaTau(maToaTau);
 

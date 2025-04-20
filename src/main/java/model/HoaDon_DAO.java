@@ -729,7 +729,7 @@ public class HoaDon_DAO {
 			statement.setString(1, maHoaDon);
 			resultSet = statement.executeQuery();
 			if (resultSet.next()) {
-				soLuong = resultSet.getInt(1);
+				soLuong = resultSet.getInt("soLuong");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

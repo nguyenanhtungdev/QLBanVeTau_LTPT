@@ -143,7 +143,7 @@ public class KhachHang_DAO {
 			Statement statement = con.createStatement();
 			ResultSet resultSet = statement.executeQuery(sql);
 			while (resultSet.next()) {
-				maKH = resultSet.getString(1);
+				maKH = resultSet.getString("maKH");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
