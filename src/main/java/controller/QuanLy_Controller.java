@@ -58,6 +58,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import constant.ColorConstants;
+import constant.PasswordUtil;
 import model.CaLam;
 import model.CaLam_DAO;
 import model.ChiTiet_HoaDon;
@@ -81,10 +82,12 @@ import model.NhanVien_CaLam;
 import model.NhanVien_CaLam_DAO;
 import model.NhanVien_DAO;
 import model.TaiKhoan;
+import model.TaiKhoan_DAO;
 import model.Tau;
 import model.Tau.TrangThaiTau;
 import model.Tau_DAO;
 import model.ThongTinTram;
+import model.ThongTinTram_DAO;
 import model.ToaTau;
 import model.ToaTau_DAO;
 import model.VeTau;
@@ -127,6 +130,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	private QuanLyHoaDon_View qLHoaDon_view;
 	private QuanLyKhachHang_View qlyKhachHang_View;
 	private QuanLyKhuyenMai_View qLKhuyenMai_View;
+	private QuanLyNhanVien_View lyNhanVien_View;
 	private QuanLyCaLam_View qLCaLam_View;
 	private HoaDonChiTiet_View qlHoaDonChiTiet;
 	private int soTau;
@@ -220,7 +224,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	}
 
 	private void initControllerNV() {
-		themSuKienNV();
+		qLNhanVien_View.addSuKien(this, this, this);
 		loadDataToTable();
 		layDataTuBangNV();
 	}
@@ -561,8 +565,8 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		if (row != -1 && row < rowCount) {
 			String maHD = getSelectedMaHD();
 			HoaDon hoaDon = hoaDon_DAO.layTTHoaDonTheoMa(maHD);
-			ThongTinTram ttTram = hoaDon_DAO.layThongTinTramTheoMa(hoaDon.getThongTinTram().getMaNhaGa());
-			KhachHang kh = hoaDon_DAO.layKhachHangTheoMa(hoaDon.getKhachHang().getMaKhachHang());
+			ThongTinTram ttTram = ThongTinTram_DAO.getInstance().getByMaNhaGa(hoaDon.getThongTinTram().getMaNhaGa());
+			KhachHang kh = KhachHang_DAO.getInstance().getByMaKhachHang(hoaDon.getKhachHang().getMaKhachHang());
 			LocalDateTime ngayLapHoaDon = hoaDon.getNgayLapHoaDon();
 			DateTimeFormatter formatter = DateTimeFormatter
 					.ofPattern("'Ngày' dd 'tháng' MM 'năm' yyyy, HH 'giờ' mm 'phút' ss 'giây'");
@@ -2125,6 +2129,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 				qLNhanVien_View.getTxt_CCCD().setText(model.getValueAt(row, 7).toString());
 				String gioiTinh = model.getValueAt(row, 8).toString();
 				qLNhanVien_View.getComboBox_GioiTinh().setSelectedItem(gioiTinh);
+				qLNhanVien_View.getComboBox_QuyenHan().setSelectedIndex(model.getValueAt(row, 7).toString() == "NVBV" ? 0 : 1);
 			}
 
 		});
@@ -2137,16 +2142,16 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 			List<NhanVien> nhanVienList = nhanVien_DAO.getAll();
 			DefaultTableModel model = (DefaultTableModel) qLNhanVien_View.getDanhSachNhanVienJtable().getModel(); // Lấy
 			// JTable
-			model.setRowCount(0); // Xóa dữ liệu cũ trong bảng
+			model.setRowCount(0); 
 
-			int stt = 1; // Biến đếm số thứ tự
+			int stt = 1; 
 			for (NhanVien nv : nhanVienList) {
-				model.addRow(new Object[] { stt++, // Số thứ tự
-						nv.getMaNV(), // Mã nhân viên
-						nv.getHoTenNV(), nv.getNgaySinh(), // Họ tên
-						nv.getSoDienThoai(), // Số điện thoại
-						nv.getEmail(), nv.getDiaChi(), nv.getCCCD(), // Email
-						nv.isGioiTinh() ? "Nam" : "Nữ", nv.getHeSoLuong(), nv.getTenChucVu(), // Chức vụ
+				model.addRow(new Object[] { stt++,
+						nv.getMaNV(),
+						nv.getHoTenNV(), nv.getNgaySinh(),
+						nv.getSoDienThoai(),
+						nv.getEmail(), nv.getDiaChi(), nv.getCCCD(),
+						nv.isGioiTinh() ? "Nam" : "Nữ", nv.getHeSoLuong(), nv.getTenChucVu(),
 						nv.isTrangThai() ? "Đang làm" : "Đã nghỉ", nv.getNgayVaoLam() });
 			}
 		} catch (Exception e) {
@@ -2154,14 +2159,6 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
-
-	}
-
-	private void themSuKienNV() {
-		qLNhanVien_View.addBtnHuyBo(e -> huyBoNV());
-		qLNhanVien_View.addBtnXacNhan(e -> xacNhanNV());
-//		qLNhanVien_View.addBtnCapNhat(e -> capNhatNV());
-		qLNhanVien_View.addBtnTimKiem(e -> timKiemNV());
 
 	}
 
@@ -2228,45 +2225,6 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		qLNhanVien_View.getComboBox_GioiTinh().setSelectedItem(null);
 	}
 
-	private void xacNhanNV() {
-		try {
-			String hoTen = qLNhanVien_View.getTxt_HoTen().getText().trim();
-			String sdt = qLNhanVien_View.getTxt_SDT().getText().trim();
-			String email = qLNhanVien_View.getTxt_Email().getText().trim();
-			String cccd = qLNhanVien_View.getTxt_CCCD().getText().trim();
-			String ngaySinh = qLNhanVien_View.getTxt_NgaySinh().getText().trim();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate ldNgaySinh = LocalDate.parse(ngaySinh, formatter);
-			String gioiTinhText = (String) qLNhanVien_View.getComboBox_GioiTinh().getSelectedItem();
-			boolean gioiTinh = gioiTinhText.equalsIgnoreCase("Nam");
-			String diaChi = qLNhanVien_View.getTxt_DiaChi().getText().trim();
-			float heSoLuong = 2; // CHỈNH NÀY THÀNH FLOAT GIÚP T VS
-			String chucVu = "NVBV";
-			String trangThaiText = "Đang làm";
-			boolean trangThai = trangThaiText.equalsIgnoreCase("Đang làm");
-			LocalDate ngayVaoLam = LocalDate.now();
-
-			String maNV = taoMaNhanVien();
-			NhanVien nv = new NhanVien(maNV, hoTen, ldNgaySinh, sdt, email, diaChi, gioiTinh, cccd, heSoLuong,
-					trangThai, chucVu, ngayVaoLam);
-			boolean result = NhanVien_DAO.getInstance().insertNhanVien(nv);
-
-			if (result) {
-				themNhanVienVaoBang(nv);
-				JOptionPane.showMessageDialog(qLNhanVien_View, "Thêm nhân viên thành công!", "Thông báo",
-						JOptionPane.INFORMATION_MESSAGE);
-				huyBoNV();
-			} else {
-				JOptionPane.showMessageDialog(qLNhanVien_View, "Thêm nhân viên không thành công!", "Lỗi",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(qLNhanVien_View, "Lỗi khi thêm khách hàng: " + e.getMessage(), "Lỗi",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
 	private void huyBoNV() {
 		qLNhanVien_View.getTxt_MaNV().setText("");
 		qLNhanVien_View.getTxt_HoTen().setText("");
@@ -2275,6 +2233,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		qLNhanVien_View.getTxt_DiaChi().setText("");
 		qLNhanVien_View.getTxt_CCCD().setText("");
 		qLNhanVien_View.getComboBox_GioiTinh().setSelectedIndex(0);
+		qLNhanVien_View.getComboBox_QuyenHan().setSelectedIndex(0);
 		qLNhanVien_View.getTxt_NgaySinh().setText("");
 	}
 
@@ -2285,13 +2244,51 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 				nhanVien.getCCCD(), nhanVien.isGioiTinh() ? "Nam" : "Nữ", nhanVien.getHeSoLuong(),
 				nhanVien.getTenChucVu(), nhanVien.isTrangThai() ? "Đang làm" : "Đã nghỉ", nhanVien.getNgayVaoLam() });
 	}
-
-	private String taoMaNhanVien() {
-		DefaultTableModel model = (DefaultTableModel) qLNhanVien_View.getDanhSachNhanVienJtable().getModel();
-		int soLuongNhanVien = model.getRowCount();
-		String maNhanVien = "NV" + String.format("%05d", soLuongNhanVien + 1);
-		return maNhanVien;
+	
+	private String createMaNV() {
+		String so = NhanVien_DAO.getInstance().getMaNVMax().trim().substring(2); 
+	    int soMoi = Integer.parseInt(so) + 1;
+	    
+	    return "NV" + String.format("%05d", soMoi);
 	}
+	
+	private String createMaTK() {
+		String so = TaiKhoan_DAO.getInstance().getMaTKMax().trim().substring(2); 
+	    int soMoi = Integer.parseInt(so) + 1;
+	    return "TK" + String.format("%05d", soMoi);
+	}
+	
+	private NhanVien getDateInputNV() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate ngaySinh = LocalDate.parse(qLNhanVien_View.getTxt_NgaySinh().getText().trim(), formatter);
+		return new NhanVien(createMaNV(), qLNhanVien_View.getTxt_HoTen().getText().trim(),
+				ngaySinh, qLNhanVien_View.getTxt_SDT().getText().trim(),
+				qLNhanVien_View.getTxt_Email().getText().trim(), qLNhanVien_View.getTxt_DiaChi().getText().trim(), 
+				qLNhanVien_View.getComboBox_GioiTinh().getSelectedIndex() == 0 ? true : false, qLNhanVien_View.getTxt_CCCD().getText().trim(), 
+						qLNhanVien_View.getComboBox_QuyenHan().getSelectedIndex() == 0 ? 2.4f : 2.8f,true,qLNhanVien_View.getComboBox_QuyenHan().getSelectedIndex() == 0 ? "NVBV" : "NVQL".toString(),
+								LocalDate.now());
+	} 
+	
+	private boolean themTaiKhoan(String maNV) {
+		return TaiKhoan_DAO.getInstance().getInstance().insertTaiKhoan(new TaiKhoan(createMaTK(), 
+				maNV,PasswordUtil.hashPassword(maNV+"A@" ) , true, LocalDateTime.now(), new NhanVien(maNV)));
+	}
+	
+	
+	public boolean themNhanVien() {
+		NhanVien nv = getDateInputNV();
+		if(NhanVien_DAO.getInstance().insertNhanVien(nv)) {
+			if(themTaiKhoan(nv.getMaNV())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+//	
+//	private String taoMaTaiKhoan(String quyen) {
+//		
+//	}
 
 	@Override
 	public String toString() {
@@ -2434,6 +2431,17 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 			} else {
 				JOptionPane.showMessageDialog(null, "Xuất file Excel thất bại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
 			}
+		} else if(ob.equals(qLNhanVien_View.getbtn_ThemNV())) {
+			if(themNhanVien()) {
+				JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công: ", "Thông báo",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(null, "Thêm nhân viên không thành công: ", "Thông báo",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		} else if(ob.equals(qLNhanVien_View.getBtnHuybo())) {
+			huyBoNV();
 		}
 	}
+
 }

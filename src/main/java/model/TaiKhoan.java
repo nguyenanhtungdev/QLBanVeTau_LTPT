@@ -69,13 +69,7 @@ public class TaiKhoan {
 	}
 
 	public void setMatKhau(String matKhau) {
-		matKhau = matKhau.trim();
-		if (matKhau != null && matKhau.length() >= 8
-				&& matKhau.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$")) {
-			this.matKhau = matKhau;
-		} else {
-			throw new IllegalArgumentException("Mật khẩu không hợp lệ!");
-		}
+		this.matKhau = matKhau;
 	}
 
 	public boolean isTrangThai() {

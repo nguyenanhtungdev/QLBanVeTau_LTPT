@@ -78,7 +78,7 @@ public class NhanVien {
 	}
 
 	public void setMaNV(String maNV) {
-		maNV = maNV.trim(); // Nhớ là phải xóa đi cái khoảng trắng
+		maNV = maNV.trim(); 
 		if (maNV != null && maNV.matches("^NV\\d{5}$")) {
 			this.maNV = maNV;
 		} else {

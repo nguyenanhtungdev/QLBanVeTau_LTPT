@@ -46,7 +46,7 @@ public class DangNhap extends JFrame {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			UIManager.put("Label.font", FontConstants.TEXT);
-			DangNhap_Controller controller = new DangNhap_Controller();
+			new DangNhap_Controller();
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block

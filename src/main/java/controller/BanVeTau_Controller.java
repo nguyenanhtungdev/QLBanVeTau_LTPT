@@ -2038,7 +2038,7 @@ public class BanVeTau_Controller
 
 		boolean temp = false;
 
-		hoaDon.setMaHoaDon(taoMaHoaDon(HoaDon_DAO.getInstance().getMaHoaDonMaxTrongThang()));
+		hoaDon.setMaHoaDon(taoMaHoaDon(HoaDon_DAO.getInstance().getMaHoaDonMax()));
 		hoaDon.setNgayLapHoaDon(LocalDateTime.now());
 		hoaDon.setGhiChu(ghiChu == null || ghiChu.equals("") ? "trống" : ghiChu);
 		hoaDon.setThueVAT(10);

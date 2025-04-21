@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -41,9 +42,8 @@ public class TaiKhoan_DAO {
 				LocalDateTime ngayTaoTaiKhoan = timestamp.toLocalDateTime();
 				String maNV = resultSet.getString("maNV");
 
-				NhanVien nhanVien = new NhanVien(maNV);
 				TaiKhoan taiKhoan = new TaiKhoan(maTaiKhoan, tenDangNhap, matKhau, trangThai, ngayTaoTaiKhoan,
-						nhanVien);
+						NhanVien_DAO.getInstance().getByMaNhanVien(maNV));
 				taiKhoans.add(taiKhoan);
 			}
 
@@ -62,4 +62,49 @@ public class TaiKhoan_DAO {
 
 		return taiKhoans;
 	}
+	
+	public boolean insertTaiKhoan(TaiKhoan tk) {
+	    Connection con = null;
+	    PreparedStatement preparedStatement = null;
+
+	    String sql = "INSERT INTO TaiKhoan (maTaiKhoan, tenDangNhap, matKhau, maNV, ngayTaoTaiKhoan, trangThai) VALUES (?, ?, ?, ?, ?, ?)";
+
+	    try {
+	        con = Database.getInstance().getConnection();
+	        preparedStatement = con.prepareStatement(sql);
+
+	        preparedStatement.setString(1, tk.getMaTaiKhoan());
+	        preparedStatement.setString(2, tk.getTenDangNhap());
+	        preparedStatement.setString(3, tk.getMatKhau());
+	        preparedStatement.setString(4, tk.getNhanVien().getMaNV()); 
+	        preparedStatement.setTimestamp(5, java.sql.Timestamp.valueOf(tk.getNgayTaoTaiKhoan()));
+	        preparedStatement.setBoolean(6, tk.isTrangThai());
+
+	        int rowsInserted = preparedStatement.executeUpdate();
+	        return rowsInserted > 0;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	
+	public String getMaTKMax() {
+		String sql = "SELECT MAX(maTaiKhoan) FROM TaiKhoan";
+		Statement statement = null;
+		ResultSet resultSet = null;
+		String maTK = null;
+		try {
+			Connection con = Database.getInstance().getConnection();
+			statement = con.createStatement();
+			resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				maTK = resultSet.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maTK;
+	}
+
 }

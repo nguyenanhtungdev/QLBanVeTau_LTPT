@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 
 import constant.ColorConstants;
 import controller.BanVeTau_Controller;
+import controller.DangNhap_Controller;
 import controller.HienThi_Controller;
 import controller.ThongKe_Controller;
 import model.CaLam;
@@ -52,9 +53,9 @@ public class Left_Menu extends JFrame {
 						int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn đăng xuất không?",
 								"Xác nhận", JOptionPane.YES_NO_OPTION);
 						if (confirm == JOptionPane.YES_OPTION) {
-							home.setVisible(false);
-							DangNhap dangNhap = new DangNhap();
-							dangNhap.setVisible(true);
+							home.dispose();
+							DangNhap_Controller.getInstance().resetLogin();
+							new DangNhap_Controller();
 						}
 					} else if (BanVeTau_Controller.getInstance().isDoiVe()) {
 						int confirm = JOptionPane.showConfirmDialog(null, "Mọi thay đổi sẽ bị hủy bỏ nếu rời khỏi!",

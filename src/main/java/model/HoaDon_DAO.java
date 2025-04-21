@@ -407,85 +407,8 @@ public class HoaDon_DAO {
 		return hoaDons;
 	}
 
-	public ThongTinTram layThongTinTramTheoMa(String maNhaGa) {
-		ThongTinTram thongTinTram = null;
-		Connection con = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
 
-		try {
-			Database.getInstance();
-			con = Database.getInstance().getConnection();
-
-			// Truy vấn SQL để lấy thông tin trạm
-			String sql = "SELECT * FROM ThongTinTram WHERE maNhaGa = ?";
-			preparedStatement = con.prepareStatement(sql);
-			preparedStatement.setString(1, maNhaGa);
-			resultSet = preparedStatement.executeQuery();
-
-			// Nếu tìm thấy kết quả, tạo đối tượng ThongTinTram
-			if (resultSet.next()) {
-				String tenNhaGa = resultSet.getString("tenNhaGa");
-				String diaChi = resultSet.getString("diaChi");
-				String dienThoai = resultSet.getString("dienThoai");
-				String email = resultSet.getString("email");
-				String tenNganHang = resultSet.getString("tenNganHang");
-				String soTaiKhoan = resultSet.getString("soTaiKhoan");
-				String maSoThue = resultSet.getString("maSoThue");
-
-				// Tạo đối tượng ThongTinTram
-				thongTinTram = new ThongTinTram(maNhaGa, tenNhaGa, diaChi, dienThoai, email, tenNganHang, soTaiKhoan,
-						maSoThue);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return thongTinTram;
-	}
-
-	public KhachHang layKhachHangTheoMa(String maKH) {
-		KhachHang khachHang = null;
-		Connection con = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-
-		try {
-			Database.getInstance();
-			con = Database.getInstance().getConnection();
-
-			String sql = "SELECT * FROM KhachHang WHERE maKH = ?";
-			preparedStatement = con.prepareStatement(sql);
-			preparedStatement.setString(1, maKH);
-			resultSet = preparedStatement.executeQuery();
-
-			if (resultSet.next()) {
-				String hoTen = resultSet.getString("hoTen");
-				String soDienThoai = resultSet.getString("soDienThoai");
-				String email = resultSet.getString("email");
-				boolean gioiTinh = resultSet.getBoolean("gioiTinh");
-				String CCCD = resultSet.getString("CCCD");
-				LocalDate ngaySinh = resultSet.getDate("ngaySinh").toLocalDate();
-				LoaiKhachHang loaiKH = LoaiKhachHang.valueOf(resultSet.getString("loaiKH").toUpperCase());
-				khachHang = new KhachHang(maKH, hoTen, soDienThoai, email, gioiTinh, CCCD, ngaySinh, loaiKH);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (resultSet != null)
-					resultSet.close();
-				if (preparedStatement != null)
-					preparedStatement.close();
-				if (con != null)
-					con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return khachHang;
-	}
-
-	public String getMaHoaDonMaxTrongThang() {
+	public String getMaHoaDonMax() {
 		String sql = "SELECT MAX(maHoaDon) FROM HoaDon WHERE maHoaDon LIKE ?";
 		Connection con;
 		String maHoaDon = null;

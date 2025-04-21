@@ -316,4 +316,22 @@ public class NhanVien_DAO {
 			return false;
 		}
 	}
+	
+	public String getMaNVMax() {
+		String sql = "SELECT MAX(maNV) FROM NhanVien";
+		Statement statement = null;
+		ResultSet resultSet = null;
+		String maNV = null;
+		try {
+			Connection con = Database.getInstance().getConnection();
+			statement = con.createStatement();
+			resultSet = statement.executeQuery(sql);
+			while (resultSet.next()) {
+				maNV = resultSet.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maNV;
+	}
 }

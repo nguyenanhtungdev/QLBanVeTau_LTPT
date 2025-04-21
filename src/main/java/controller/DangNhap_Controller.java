@@ -12,6 +12,7 @@ import javax.swing.SwingWorker;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import constant.PasswordUtil;
 import model.NhanVien;
 import model.TaiKhoan;
 import model.TaiKhoan_DAO;
@@ -23,6 +24,14 @@ public class DangNhap_Controller implements ActionListener, KeyListener {
 	private DangNhap dangNhap;
 	private ChoDangNhap choDangNhap;
 	private HienThi_Controller controller;
+	private static DangNhap_Controller instance;
+
+	public static DangNhap_Controller getInstance() {
+		if (instance == null) {
+			instance = new DangNhap_Controller();
+		}
+		return instance;
+	}
 
 	public DangNhap_Controller() {
 		taiKhoan_DAO = new TaiKhoan_DAO();
@@ -34,6 +43,14 @@ public class DangNhap_Controller implements ActionListener, KeyListener {
 		dangNhap.getTxt_passWord().addKeyListener(this);
 	}
 
+	public void resetLogin() {
+		dangNhap.getTxt_userName().setText("");
+		dangNhap.getTxt_passWord().setText("");
+		taiKhoan_DAO = null;
+		dangNhap = null;
+		choDangNhap = null;	
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
@@ -43,12 +60,11 @@ public class DangNhap_Controller implements ActionListener, KeyListener {
 		}
 	}
 
-	// Hàm xử lý đăng nhập
 	public TaiKhoan xuLyDangNhap() {
 		for (TaiKhoan tk : taiKhoan_DAO.getalltbTK()) {
 			String password = new String(dangNhap.getTxt_passWord().getPassword()).trim();
 			if (dangNhap.getTxt_userName().getText().trim().equals(tk.getTenDangNhap())
-					&& password.equals(tk.getMatKhau())) {
+					&& PasswordUtil.checkPassword(password, tk.getMatKhau())) {
 				return tk;
 			}
 		}

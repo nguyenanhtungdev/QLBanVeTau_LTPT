@@ -75,31 +75,17 @@ public class QuanLyNhanVien_View extends View {
 	private JRadioButton rdbtn_TenNV;
 	private PrimaryButton btnTimKiem;
 	private JRadioButton rdbtn_TatCa;
+	private PrimaryButton btn_ThemNV;
+	private JComboBox comboBox_QuyenHan;
 
-//	public void addSuKien(ActionListener listener, FocusListener focusListener, KeyListener keyListener) {
-//		btn_CapNhatTT.addActionListener(listener);
-//		btn_XoaTrang.addActionListener(listener);
-//		btn_XemDsHD.addActionListener(listener);
-//		btn_TimKiem.addActionListener(listener);
-//
-//		txt_HoTen.addFocusListener(focusListener);
-//		txt_Email.addFocusListener(focusListener);
-//		txt_SDT.addFocusListener(focusListener);
-//		txt_CCCD.addFocusListener(focusListener);
-//		txt_NgaySinh.addFocusListener(focusListener);
-//
-//		txt_HoTen.addKeyListener(keyListener);
-//		txt_Email.addKeyListener(keyListener);
-//		txt_SDT.addKeyListener(keyListener);
-//		txt_CCCD.addKeyListener(keyListener);
-//		txt_NgaySinh.addKeyListener(keyListener);
-//
-////		comboBox_LocLoaiKH.addActionListener(listener);
-//	}
-//
-//	public void addSuKienTable(MouseListener mouseListener) {
-//		danhSachNhanVienJtable.addMouseListener(mouseListener);
-//	}
+	public void addSuKien(ActionListener listener, FocusListener focusListener, KeyListener keyListener) {
+		btn_ThemNV.addActionListener(listener);
+		btnHuybo.addActionListener(listener);
+	}
+
+	public void addSuKienTable(MouseListener mouseListener) {
+		danhSachNhanVienJtable.addMouseListener(mouseListener);
+	}
 
 	public QuanLyNhanVien_View(String name, String imagePath) {
 		super(name, imagePath);
@@ -340,12 +326,31 @@ public class QuanLyNhanVien_View extends View {
 		comboBox_GioiTinh.setModel(new DefaultComboBoxModel(new String[] { "Nam", "Nữ" }));
 		comboBox_GioiTinh.setFont(new Font("Arial", Font.PLAIN, 16));
 		panel_TT7.add(comboBox_GioiTinh);
+		
+		Component horizontalStrut_1_5_1_1 = Box.createHorizontalStrut(7);
+		panel_InputThongTin2.add(horizontalStrut_1_5_1_1);
+		
+		JPanel panel_2 = new JPanel();
+		panel_InputThongTin2.add(panel_2);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
+		
+		JPanel panel_15_2_1_2_1 = new JPanel();
+		panel_15_2_1_2_1.setBorder(new EmptyBorder(0, 0, 0, 0));
+		panel_15_2_1_2_1.setBackground(Color.WHITE);
+		panel_2.add(panel_15_2_1_2_1);
+		panel_15_2_1_2_1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		
+		JLabel lblNewLabel_2_2_1_2_1 = new JLabel("Quyền hạn");
+		lblNewLabel_2_2_1_2_1.setForeground(new Color(70, 130, 169));
+		lblNewLabel_2_2_1_2_1.setFont(new Font("Arial", Font.BOLD, 18));
+		panel_15_2_1_2_1.add(lblNewLabel_2_2_1_2_1);
+		
+		comboBox_QuyenHan = new JComboBox(new Object[]{});
+		comboBox_QuyenHan.setModel(new DefaultComboBoxModel(new String[] {"Nhân viên bán vé", "Nhân viên quản lý"}));
+		comboBox_QuyenHan.setFont(new Font("Arial", Font.PLAIN, 16));
+		panel_2.add(comboBox_QuyenHan);
 
-		JPanel panel_TT8 = new JPanel();
-		panel_InputThongTin2.add(panel_TT8);
-		panel_TT8.setLayout(new BoxLayout(panel_TT8, BoxLayout.Y_AXIS));
-
-		Component horizontalStrut_1_6 = Box.createHorizontalStrut(169);
+		Component horizontalStrut_1_6 = Box.createHorizontalStrut(10);
 		panel_InputThongTin2.add(horizontalStrut_1_6);
 
 		JPanel panel_TT9 = new JPanel();
@@ -395,8 +400,17 @@ public class QuanLyNhanVien_View extends View {
 //		btn_XoaTrang.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
 
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.Y_AXIS));
-
-		Component vs_1_1 = Box.createVerticalStrut(20);
+		
+		btn_ThemNV= new PrimaryButton("Thêm mới", "/Image/icon_them.png");
+		btn_ThemNV.setPreferredSize(new Dimension(145, 40));
+		btn_ThemNV.setMaximumSize(new Dimension(2147483647, 40));
+		btn_ThemNV.setInsets(new Insets(4, 6, 4, 6));
+		btn_ThemNV.setIconTextGap(5);
+		btn_ThemNV.setBorderRadius(10);
+		btn_ThemNV.setAlignmentX(0.0f);
+		panel_3.add(btn_ThemNV);
+		
+		Component vs_1_1 = Box.createVerticalStrut(12);
 		panel_3.add(vs_1_1);
 
 		btnXacnhan = new PrimaryButton("Cập nhật", "/Image/icon_ChinhSua.png");
@@ -408,7 +422,7 @@ public class QuanLyNhanVien_View extends View {
 		btnXacnhan.setAlignmentX(0.0f);
 		panel_3.add(btnXacnhan);
 		
-		Component vs_1 = Box.createVerticalStrut(20);
+		Component vs_1 = Box.createVerticalStrut(12);
 		panel_3.add(vs_1);
 
 		btnHuybo = new PrimaryButton("Làm mới", "/Image/restore.png");
@@ -729,5 +743,17 @@ public class QuanLyNhanVien_View extends View {
 
 	public void addBtnTimKiem(ActionListener listener) {
 		btnTimKiem.addActionListener(listener);
+	}
+
+	public PrimaryButton getbtn_ThemNV() {
+		return btn_ThemNV;
+	}
+
+	public JComboBox getComboBox_QuyenHan() {
+		return comboBox_QuyenHan;
+	}
+
+	public PrimaryButton getBtnHuybo() {
+		return btnHuybo;
 	}
 }
