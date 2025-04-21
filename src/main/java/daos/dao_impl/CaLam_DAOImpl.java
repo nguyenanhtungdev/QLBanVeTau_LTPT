@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import model.CaLam;
 
-public class CaLam_DAO {
+public class CaLam_DAOImpl {
 
-	private static CaLam_DAO instance;
+	private static CaLam_DAOImpl instance;
 
-	public static CaLam_DAO getInstance() {
-		return instance == null ? instance = new CaLam_DAO() : instance;
+	public static CaLam_DAOImpl getInstance() {
+		return instance == null ? instance = new CaLam_DAOImpl() : instance;
 	}
 
 	public List<CaLam> getAll() {

@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +10,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import connectDB.Database;
+import model.TaiKhoan;
 
-public class TaiKhoan_DAO {
+public class TaiKhoan_DAOImpl {
 
-	public static TaiKhoan_DAO instance;
+	public static TaiKhoan_DAOImpl instance;
 
-	public static TaiKhoan_DAO getInstance() {
-		return instance == null ? instance = new TaiKhoan_DAO() : instance;
+	public static TaiKhoan_DAOImpl getInstance() {
+		return instance == null ? instance = new TaiKhoan_DAOImpl() : instance;
 	}
 
 	public ArrayList<TaiKhoan> getalltbTK() {
@@ -43,7 +44,7 @@ public class TaiKhoan_DAO {
 				String maNV = resultSet.getString("maNV");
 
 				TaiKhoan taiKhoan = new TaiKhoan(maTaiKhoan, tenDangNhap, matKhau, trangThai, ngayTaoTaiKhoan,
-						NhanVien_DAO.getInstance().getByMaNhanVien(maNV));
+						NhanVien_DAOImpl.getInstance().getByMaNhanVien(maNV));
 				taiKhoans.add(taiKhoan);
 			}
 

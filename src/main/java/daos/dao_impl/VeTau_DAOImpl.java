@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,20 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
-import model.Tau.TrangThaiTau;
+import model.*;
 
-public class VeTau_DAO {
+public class VeTau_DAOImpl {
 
-	private static VeTau_DAO instance;
+	private static VeTau_DAOImpl instance;
 
-	public static VeTau_DAO getInstance() {
-		return instance == null ? instance = new VeTau_DAO() : instance;
+	public static VeTau_DAOImpl getInstance() {
+		return instance == null ? instance = new VeTau_DAOImpl() : instance;
 	}
 
 	public List<VeTau> getAll() {
@@ -139,10 +138,10 @@ public class VeTau_DAO {
 				String maKH = resultSet.getString("maKH");
 				boolean isKhuHoi = resultSet.getBoolean("isKhuHoi");
 
-				GheTau gheTau = GheTau_DAO.getInstance().getByMaGheTau(resultSet.getString("maGheTau"));
-				ToaTau toaTau = ToaTau_DAO.getInstance().getByMaToaTau(gheTau.getToaTau().getMaToaTau());
-				Tau tau = Tau_DAO.getInstance().getByMaTau(toaTau.getTau().getMaTau());
-				ChuyenTau chuyenTau = ChuyenTau_DAO.getInstance().getByMaChuyenTau(tau.getChuyenTau().getMaChuyenTau());
+				GheTau gheTau = GheTau_DAOImpl.getInstance().getByMaGheTau(resultSet.getString("maGheTau"));
+				ToaTau toaTau = ToaTau_DAOImpl.getInstance().getByMaToaTau(gheTau.getToaTau().getMaToaTau());
+				Tau tau = Tau_DAOImpl.getInstance().getByMaTau(toaTau.getTau().getMaTau());
+				ChuyenTau chuyenTau = ChuyenTau_DAOImpl.getInstance().getByMaChuyenTau(tau.getChuyenTau().getMaChuyenTau());
 				return new VeTau(maVeTau, loaiVe, ngayHetHan, daHuy, gheTau, isKhuHoi, new KhachHang(maKH));
 			}
 		} catch (SQLException e) {

@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,13 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import model.CaLam;
+import model.NhanVien;
+import model.NhanVien_CaLam;
 
-public class NhanVien_CaLam_DAO {
+public class NhanVien_CaLam_DAOImpl {
 
-	public static NhanVien_CaLam_DAO instance;
+	public static NhanVien_CaLam_DAOImpl instance;
 
-	public static NhanVien_CaLam_DAO getInstance() {
-		return instance == null ? instance = new NhanVien_CaLam_DAO() : instance;
+	public static NhanVien_CaLam_DAOImpl getInstance() {
+		return instance == null ? instance = new NhanVien_CaLam_DAOImpl() : instance;
 	}
 
 	public List<NhanVien_CaLam> getAll() {

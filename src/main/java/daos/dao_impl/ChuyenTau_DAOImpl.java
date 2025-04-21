@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,18 +8,18 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import connectDB.Database;
+import model.ChuyenTau;
+import model.GiaVe;
 
-public class ChuyenTau_DAO {
+public class ChuyenTau_DAOImpl {
 
-	private static ChuyenTau_DAO instance;
+	private static ChuyenTau_DAOImpl instance;
 
-	public static ChuyenTau_DAO getInstance() {
-		return instance == null ? instance = new ChuyenTau_DAO() : instance;
+	public static ChuyenTau_DAOImpl getInstance() {
+		return instance == null ? instance = new ChuyenTau_DAOImpl() : instance;
 	}
 
 	public List<ChuyenTau> getAll() {

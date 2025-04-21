@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,12 +8,14 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import connectDB.Database;
+import model.KhachHang;
+import model.PhieuHoanTien;
 
-public class PhieuHoanTien_DAO {
-	private static PhieuHoanTien_DAO instance;
+public class PhieuHoanTien_DAOImpl {
+	private static PhieuHoanTien_DAOImpl instance;
 	
-	public static PhieuHoanTien_DAO getInstance() {
-		return instance == null ? instance = new PhieuHoanTien_DAO() : instance;
+	public static PhieuHoanTien_DAOImpl getInstance() {
+		return instance == null ? instance = new PhieuHoanTien_DAOImpl() : instance;
 	}
 	
 	public boolean themPhieuHoanTien(PhieuHoanTien phieuHoanTien) {

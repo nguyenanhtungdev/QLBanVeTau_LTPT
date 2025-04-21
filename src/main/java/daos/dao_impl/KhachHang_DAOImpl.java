@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import model.KhachHang;
+import model.VeTau;
 
-public class KhachHang_DAO {
+public class KhachHang_DAOImpl {
 
-	private static KhachHang_DAO instance;
+	private static KhachHang_DAOImpl instance;
 
-	public static KhachHang_DAO getInstance() {
-		return instance == null ? instance = new KhachHang_DAO() : instance;
+	public static KhachHang_DAOImpl getInstance() {
+		return instance == null ? instance = new KhachHang_DAOImpl() : instance;
 	}
 
 	public List<KhachHang> getAll() {

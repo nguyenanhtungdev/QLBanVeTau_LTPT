@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,14 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import model.KhuyenMai;
 import model.KhuyenMai.TinhTrangKhuyenMai;
 
-public class KhuyenMai_DAO {
+public class KhuyenMai_DAOImpl {
 
-	private static KhuyenMai_DAO instance;
+	private static KhuyenMai_DAOImpl instance;
 
-	public static KhuyenMai_DAO getInstance() {
-		return instance == null ? instance = new KhuyenMai_DAO() : instance;
+	public static KhuyenMai_DAOImpl getInstance() {
+		return instance == null ? instance = new KhuyenMai_DAOImpl() : instance;
 	}
 
 	public List<KhuyenMai> getAll() {
