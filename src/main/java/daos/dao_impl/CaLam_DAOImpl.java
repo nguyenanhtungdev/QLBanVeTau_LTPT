@@ -13,7 +13,7 @@ import java.util.List;
 import connectDB.Database;
 import model.CaLam;
 
-public class CaLam_DAOImpl {
+public class CaLam_DAOImpl{
 
 	private static CaLam_DAOImpl instance;
 
