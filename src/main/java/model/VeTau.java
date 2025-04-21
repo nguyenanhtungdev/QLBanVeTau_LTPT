@@ -1,12 +1,12 @@
 package model;
 
+import daos.dao_impl.GheTau_DAOImpl;
+import daos.dao_impl.KhachHang_DAOImpl;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.time.Year;
+
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class VeTau {
@@ -98,11 +98,11 @@ public class VeTau {
 	}
 
 	public GheTau getGheTau() {
-		return gheTau.getTenLoaiGheTau() == null ? gheTau = GheTau_DAO.getInstance().getByMaGheTau(gheTau.getMaGheTau())
+		return gheTau.getTenLoaiGheTau() == null ? gheTau = GheTau_DAOImpl.getInstance().getByMaGheTau(gheTau.getMaGheTau())
 				: gheTau;
 	}
 	public KhachHang getKhachHang() {
-		return khachHang = KhachHang_DAO.getInstance().getByMaKhachHang(khachHang.getMaKhachHang());
+		return khachHang = KhachHang_DAOImpl.getInstance().getByMaKhachHang(khachHang.getMaKhachHang());
 	}
 	
 	public boolean isKhuHoi() {

@@ -4,10 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-
-import com.formdev.flatlaf.FlatLightLaf;
 
 import constant.ColorConstants;
 
@@ -15,11 +11,6 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.concurrent.TimeUnit;
-import controller.HienThi_Controller;
-import model.TaiKhoan;
-import model.TaiKhoan_DAO;
-import model.Tau_DAO;
 
 public class ChoDangNhap extends JFrame {
 

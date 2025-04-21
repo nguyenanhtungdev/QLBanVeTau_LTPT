@@ -1,5 +1,6 @@
 package model;
 
+import daos.dao_impl.Tau_DAOImpl;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
@@ -55,7 +56,7 @@ public class ToaTau {
 	}
 
 	public Tau getTau() {
-		return tau.getTenTau() == null ? tau = Tau_DAO.getInstance().getByMaTau(tau.getMaTau()) : tau;
+		return tau.getTenTau() == null ? tau = Tau_DAOImpl.getInstance().getByMaTau(tau.getMaTau()) : tau;
 	}
 
 	public void setTau(Tau tau) {

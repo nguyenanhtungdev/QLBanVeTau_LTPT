@@ -72,31 +72,30 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.stream.Collectors;
 
 import model.ChiTiet_HoaDon;
-import model.ChiTiet_HoaDon_DAO;
+import daos.dao_impl.ChiTiet_HoaDon_DAOImpl;
 import model.ChuyenTau;
-import model.ChuyenTau_DAO;
+import daos.dao_impl.ChuyenTau_DAOImpl;
 import model.GheTau;
-import model.GheTau_DAO;
-import model.GiaVe_DAO;
+import daos.dao_impl.GheTau_DAOImpl;
+import daos.dao_impl.GiaVe_DAOImpl;
 import model.HoaDon;
-import model.HoaDon_DAO;
+import daos.dao_impl.HoaDon_DAOImpl;
 import model.KhachHang;
 import model.KhachHang.LoaiKhachHang;
-import model.KhachHang_DAO;
+import daos.dao_impl.KhachHang_DAOImpl;
 import model.NhanVien;
 import model.PhieuHoanTien;
-import model.PhieuHoanTien_DAO;
+import daos.dao_impl.PhieuHoanTien_DAOImpl;
 import model.Tau;
-import model.Tau_DAO;
+import daos.dao_impl.Tau_DAOImpl;
 import model.ThongTinTram;
 import model.TinhThanh;
 import model.ToaTau;
-import model.ToaTau_DAO;
+import daos.dao_impl.ToaTau_DAOImpl;
 import model.VeTau;
-import model.VeTau_DAO;
+import daos.dao_impl.VeTau_DAOImpl;
 import other.RoundedPanel;
 import view.DoiTraVe_View;
 import view.ThanhToan_View;
@@ -180,7 +179,7 @@ public class BanVeTau_Controller
 
 	// Hàm khởi tạo
 	public BanVeTau_Controller() throws SQLException {
-		this.danhSachChuyenTau = ChuyenTau_DAO.getInstance().getAll();
+		this.danhSachChuyenTau = ChuyenTau_DAOImpl.getInstance().getAll();
 
 		pageList.add(chonGhe_View = new ChonGhe_View("Chọn ghế", "/Image/armchair.png"));
 		pageList.add(veTau_Page = new VeTau_View("Vé tàu", "/Image/tabler-icon-ticket.png"));
@@ -277,7 +276,7 @@ public class BanVeTau_Controller
 	}
 
 	private void updateSoLuongGheTrongChuyen(Tau tau) {
-		Map<String, Integer> thongTinGhe = Tau_DAO.getInstance().layThongTinGhe(tau.getMaTau());
+		Map<String, Integer> thongTinGhe = Tau_DAOImpl.getInstance().layThongTinGhe(tau.getMaTau());
 		soLuongGheTrongChuyen.setText(thongTinGhe.get("soGheConLai") + "/" + thongTinGhe.get("tongSoGhe") + "");
 		soLuongGheTrongChuyen.revalidate();
 		soLuongGheTrongChuyen.repaint();
@@ -285,7 +284,7 @@ public class BanVeTau_Controller
 
 	// Tạo phần tử tàu
 	private JPanel createTau(ChuyenTau chuyenTau) {
-		Tau tau = Tau_DAO.getInstance().getTauByMaChuyenTau(chuyenTau.getMaChuyenTau());
+		Tau tau = Tau_DAOImpl.getInstance().getTauByMaChuyenTau(chuyenTau.getMaChuyenTau());
 		RoundedPanel panel_chyentau = new RoundedPanel(20);
 		panel_chyentau.setBorder(new EmptyBorder(0, 20, 15, 20));
 		panel_chyentau.setBackground(ColorConstants.PRIMARY_COLOR);
@@ -368,7 +367,7 @@ public class BanVeTau_Controller
 				// Ghi nhận chuyến tàu được chọn
 				chuyenTauChon = chuyenTau;
 
-				ArrayList<ToaTau> dsToaTau = ToaTau_DAO.getInstance().getDsToaTau(tau.getMaTau());
+				ArrayList<ToaTau> dsToaTau = ToaTau_DAOImpl.getInstance().getDsToaTau(tau.getMaTau());
 
 				if (dsToaTau != null && !dsToaTau.isEmpty()) {
 					JPanel panelToaTau = themDsToaTau(dsToaTau);
@@ -424,7 +423,7 @@ public class BanVeTau_Controller
 		// Mặc định là lấy thằng toa tàu đầu tiên
 		if (!dsToaTau.isEmpty()) {
 			ToaTau toaTauDauTien = dsToaTau.get(0);
-			ArrayList<GheTau> dsGheTau = GheTau_DAO.getInstance().getDsGheTau(toaTauDauTien.getMaToaTau());
+			ArrayList<GheTau> dsGheTau = GheTau_DAOImpl.getInstance().getDsGheTau(toaTauDauTien.getMaToaTau());
 			JPanel panelGheTau = themDsGheTau(dsGheTau);
 
 			// Cập nhật giao diện cho `panel_DsGheTau`
@@ -443,7 +442,7 @@ public class BanVeTau_Controller
 	// Phương thức tính số tàu còn lại
 	private int tinhSoGheTauConLai(String maToaTau) {
 		int sl = 0;
-		for (GheTau gheTau : GheTau_DAO.getInstance().getDsGheTau(maToaTau)) {
+		for (GheTau gheTau : GheTau_DAOImpl.getInstance().getDsGheTau(maToaTau)) {
 			if (gheTau.getTrangThai().equals("TRONG")) {
 				sl++;
 			}
@@ -498,7 +497,7 @@ public class BanVeTau_Controller
 				// Ghi nhận chuyến tàu được chọn
 				toaTauChon = toaTau;
 
-				ArrayList<GheTau> dsGheTau = GheTau_DAO.getInstance().getDsGheTau(toaTau.getMaToaTau());
+				ArrayList<GheTau> dsGheTau = GheTau_DAOImpl.getInstance().getDsGheTau(toaTau.getMaToaTau());
 				if (dsGheTau != null && !dsGheTau.isEmpty()) {
 					JPanel panelGheTau = themDsGheTau(dsGheTau);
 					// Cập nhật giao diện
@@ -619,7 +618,7 @@ public class BanVeTau_Controller
 			// Tìm kiếm chuyến tàu
 			String gaDiTemp = isChiChieuDi ? gaDi : gaDen;
 			String gaDenTemp = isChiChieuDi ? gaDen : gaDi;
-			chuyenTauList = ChuyenTau_DAO.getInstance().timKiemChuyenTau(gaDiTemp, gaDenTemp, ngay);
+			chuyenTauList = ChuyenTau_DAOImpl.getInstance().timKiemChuyenTau(gaDiTemp, gaDenTemp, ngay);
 			Date date = inputFormat.parse(ngay);
 			soChuyenTau = chuyenTauList.size();
 
@@ -776,7 +775,7 @@ public class BanVeTau_Controller
 		chonGhe_View.getLbl_SoVeChieuDi().setVisible(false);
 		chonGhe_View.getLbl_TongSoVeTamThoi().setVisible(true);
 
-		danhSachChuyenTau = ChuyenTau_DAO.getInstance().getAll();
+		danhSachChuyenTau = ChuyenTau_DAOImpl.getInstance().getAll();
 		chonGhe_View.getLblSoChuyenTau().setText("Tổng số chuyến tàu: " + soChuyenTau);
 		// Reset lại chỉ số trang và hiển thị giao diện
 		this.currentIndex = 0;
@@ -806,7 +805,7 @@ public class BanVeTau_Controller
 	}
 
 	private void capNhatGiaoDienGheTau(String maToaTau) {
-		JPanel panelGheTau = themDsGheTau(GheTau_DAO.getInstance().getDsGheTau(maToaTau));
+		JPanel panelGheTau = themDsGheTau(GheTau_DAOImpl.getInstance().getDsGheTau(maToaTau));
 
 		chonGhe_View.panel_DsGheTau.removeAll();
 		chonGhe_View.panel_DsGheTau.add(panelGheTau);
@@ -872,7 +871,7 @@ public class BanVeTau_Controller
 
 	private ArrayList<GheTau> layDanhSachGheTrong() {
 		ArrayList<GheTau> danhSachGheTrong = new ArrayList<>();
-		for (GheTau ghe : GheTau_DAO.getInstance().getDsGheTau(toaTauChon.getMaToaTau())) {
+		for (GheTau ghe : GheTau_DAOImpl.getInstance().getDsGheTau(toaTauChon.getMaToaTau())) {
 			if ("TRONG".equals(ghe.getTrangThai())) {
 				danhSachGheTrong.add(ghe);
 			}
@@ -917,7 +916,7 @@ public class BanVeTau_Controller
 	private void capNhatThongTinVeTau(ArrayList<GheTau> danhSachGheDuocChon, int soLuongGhe) {
 		for (GheTau ghe : danhSachGheDuocChon) {
 			ghe.setTrangThai(isDoiVe ? "DA_THANH_TOAN" : "DANG_GIU_CHO");
-			GheTau_DAO.getInstance().updateTrangThaiGheTau(ghe.getMaGheTau(), ghe.getTrangThai());
+			GheTau_DAOImpl.getInstance().updateTrangThaiGheTau(ghe.getMaGheTau(), ghe.getTrangThai());
 			if (!isDoiVe)
 				themVeTauChonNhanh(ghe);
 		}
@@ -944,7 +943,7 @@ public class BanVeTau_Controller
 		int i = 0;
 		for (GheTau gheTau : danhSachGheDuocChon) {
 			double giaVeHienTai = Double.parseDouble(((String) jTable.getValueAt(i, 13)).replace(",", ""));
-			double giaVe = GiaVe_DAO.getInstance()
+			double giaVe = GiaVe_DAOImpl.getInstance()
 					.getGiaVeTheoChuyenTau(gheTau.getMaGheTau(), chuyenTauChon.getMaChuyenTau())
 					.getGiaVeHienTai((gheTau.getTenLoaiGheTau().equals("Giường nằm")) ? "VIP" : "Thường");
 
@@ -967,12 +966,12 @@ public class BanVeTau_Controller
 				+ formatterNgayGio.format(chuyenTauChon.getThoiGianKhoiHanh());
 
 		if (sttVeTau == 0) {
-			maVeTau = taoMaVeTau(VeTau_DAO.getInstance().getVeTauMax());
+			maVeTau = taoMaVeTau(VeTau_DAOImpl.getInstance().getVeTauMax());
 		} else {
 			maVeTau = taoMaVeTau(maVeTau);
 		}
 		String loaiVeString = (gheTau.getTenLoaiGheTau().equals("Giường nằm")) ? "VIP" : "Thường";
-		double giaVe = GiaVe_DAO.getInstance()
+		double giaVe = GiaVe_DAOImpl.getInstance()
 				.getGiaVeTheoChuyenTau(gheTau.getMaGheTau(), chuyenTauChon.getMaChuyenTau())
 				.getGiaVeHienTai(loaiVeString);
 
@@ -1020,7 +1019,7 @@ public class BanVeTau_Controller
 		}
 
 		themDataTableVeTau();
-		GheTau_DAO.getInstance().updateTrangThaiGheTau(maGheTauDuocChon, "DANG_GIU_CHO");
+		GheTau_DAOImpl.getInstance().updateTrangThaiGheTau(maGheTauDuocChon, "DANG_GIU_CHO");
 
 		++tongSoVeTamThoi;
 		updateTrangThaiThemVeTau();
@@ -1102,7 +1101,7 @@ public class BanVeTau_Controller
 				+ formatterNgayGio.format(chuyenTauChon.getThoiGianKhoiHanh());
 
 		if (sttVeTau == 0) {
-			maVeTau = taoMaVeTau(VeTau_DAO.getInstance().getVeTauMax());
+			maVeTau = taoMaVeTau(VeTau_DAOImpl.getInstance().getVeTauMax());
 		} else {
 			maVeTau = taoMaVeTau(maVeTau);
 		}
@@ -1114,7 +1113,7 @@ public class BanVeTau_Controller
 		}
 
 		String loaiVeString = loaiVe ? "VIP" : "Thường";
-		double giaVe = GiaVe_DAO.getInstance()
+		double giaVe = GiaVe_DAOImpl.getInstance()
 				.getGiaVeTheoChuyenTau(gheTauChon.getMaGheTau(), chuyenTauChon.getMaChuyenTau())
 				.getGiaVeHienTai(loaiVeString);
 		// Them data vao table
@@ -1167,7 +1166,7 @@ public class BanVeTau_Controller
 
 	// Cập nhật trạng thái ghế tàu
 	private void capNhatTrangThaiGheTau(String maGheTau) {
-		for (GheTau gheTau : GheTau_DAO.getInstance().getAll()) {
+		for (GheTau gheTau : GheTau_DAOImpl.getInstance().getAll()) {
 			if (gheTau.getMaGheTau().equals(maGheTau)) {
 				gheTau.setTrangThai("DANG_GIU_CHO");
 				break;
@@ -1182,7 +1181,7 @@ public class BanVeTau_Controller
 		if (count > 0) {
 			for (int i = 0; i < count; i++) {
 				String maVeTau = (String) jTable.getValueAt(i, 3);
-				GheTau_DAO.getInstance().updateTrangThaiGheTau(maVeTau, "TRONG");
+				GheTau_DAOImpl.getInstance().updateTrangThaiGheTau(maVeTau, "TRONG");
 			}
 			return true;
 		} else {
@@ -1231,7 +1230,7 @@ public class BanVeTau_Controller
 
 	// Tìm kiếm khách hàng
 	private KhachHang timKiemKhachHang(String s, boolean b) { // true: sdt, false: cccd
-		for (KhachHang khachHang : KhachHang_DAO.getInstance().getAll()) {
+		for (KhachHang khachHang : KhachHang_DAOImpl.getInstance().getAll()) {
 			if (b) {
 				if (khachHang.getSoDienThoai().equals(s)) {
 					return khachHang;
@@ -1397,7 +1396,7 @@ public class BanVeTau_Controller
 
 		if (maKhachHang == null || maKhachHang.equals("{trống}")) {
 			if (sttKH == 0) {
-				maKhachHang = taoMaKhachHang(KhachHang_DAO.getInstance().getMaKHMax());
+				maKhachHang = taoMaKhachHang(KhachHang_DAOImpl.getInstance().getMaKHMax());
 				sttKH++;
 			} else {
 				maKhachHang = taoMaVeTau(maKhachHang);
@@ -1450,7 +1449,7 @@ public class BanVeTau_Controller
 		if (confirm == JOptionPane.YES_OPTION) {
 
 			String maGheTau = (String) model.getValueAt(selectedRow, 3);
-			GheTau_DAO.getInstance().updateTrangThaiGheTau(maGheTau, "TRONG");
+			GheTau_DAOImpl.getInstance().updateTrangThaiGheTau(maGheTau, "TRONG");
 			this.maVeTau = (String) model.getValueAt(selectedRow, 1);
 			model.removeRow(selectedRow);
 			capNhatGiaoDienGheTau(toaTauChon.getMaToaTau());
@@ -1487,7 +1486,7 @@ public class BanVeTau_Controller
 		String soDienThoaiOrMaVe = hoanTien_view.getRdbtnMaVeTau().isSelected()
 				? hoanTien_view.getTxtMaVeTau().getText().trim()
 				: hoanTien_view.getTxtSDT().getText().trim();
-		ArrayList<model.ThongTinVe> thongTinVes = HoaDon_DAO.getInstance()
+		ArrayList<model.ThongTinVe> thongTinVes = HoaDon_DAOImpl.getInstance()
 				.getHoaDonBySoDienThoaiOrCCCD(soDienThoaiOrMaVe);
 		DefaultTableModel tableModel = (DefaultTableModel) hoanTien_view.getDanhSachVeTable().getModel();
 		tableModel.setRowCount(0);
@@ -1517,14 +1516,14 @@ public class BanVeTau_Controller
 
 	private void xuLyHienThiChuyenTauDoiVe(int index) {
 
-		String gaDi = VeTau_DAO.getInstance()
+		String gaDi = VeTau_DAOImpl.getInstance()
 				.getByMaVeTauChuyenTau((String) hoanTien_view.getDanhSachVeTable().getValueAt(index, 2)).getGheTau()
 				.getToaTau().getTau().getChuyenTau().getGaKhoiHanh();
-		String gaDen = VeTau_DAO.getInstance()
+		String gaDen = VeTau_DAOImpl.getInstance()
 				.getByMaVeTauChuyenTau((String) hoanTien_view.getDanhSachVeTable().getValueAt(index, 2)).getGheTau()
 				.getToaTau().getTau().getChuyenTau().getGaDen();
 		chonGhe_View.getLblSoChuyenTau().setText("Tổng số chuyến tàu: " + soChuyenTau);
-		updateDisplay(ChuyenTau_DAO.getInstance().timKiemChuyenTauTheoGa(gaDi, gaDen));
+		updateDisplay(ChuyenTau_DAOImpl.getInstance().timKiemChuyenTauTheoGa(gaDi, gaDen));
 	}
 
 	public void resetDoiVe() {
@@ -1559,7 +1558,7 @@ public class BanVeTau_Controller
 	private void xuLyTraVe() {
 		int selectedRow = hoanTien_view.getDanhSachVeTable().getSelectedRow();
 		if (selectedRow != -1) {
-			if (!VeTau_DAO.getInstance()
+			if (!VeTau_DAOImpl.getInstance()
 					.getByMaVeTau((String) hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 2)).isDaHuy()) {
 				// Hiển thị cửa sổ thông tin vé tàu
 				thongTinVe.getMaHoaDonLabel()
@@ -1600,7 +1599,7 @@ public class BanVeTau_Controller
 	private boolean checkTimeDoiVe() {
 		int index = hoanTien_view.getDanhSachVeTable().getSelectedRow();
 
-		LocalDateTime dateTime = VeTau_DAO.getInstance()
+		LocalDateTime dateTime = VeTau_DAOImpl.getInstance()
 				.getByMaVeTauChuyenTau((String) hoanTien_view.getDanhSachVeTable().getValueAt(index, 2)).getGheTau()
 				.getToaTau().getTau().getChuyenTau().getThoiGianKhoiHanh();
 		return dateTime.isBefore(LocalDateTime.now());
@@ -1608,7 +1607,7 @@ public class BanVeTau_Controller
 
 	private static double tinhTienHoaDon(String maHD) {
 		double tongTien = 0;
-		List<ChiTiet_HoaDon> dsChiTiet = ChiTiet_HoaDon_DAO.getInstance().getByMaHoaDon(maHD);
+		List<ChiTiet_HoaDon> dsChiTiet = ChiTiet_HoaDon_DAOImpl.getInstance().getByMaHoaDon(maHD);
 		for (ChiTiet_HoaDon chiTiet_HoaDon : dsChiTiet) {
 			double giaVe = chiTiet_HoaDon.getVeTau().getGheTau().getToaTau().getTau().getChuyenTau().getGiaVe()
 					.getGiaVeHienTai(chiTiet_HoaDon.getVeTau().getGheTau().getTenLoaiGheTau());
@@ -1633,7 +1632,7 @@ public class BanVeTau_Controller
 
 	private static double tinhTiLeHoanTien(String maHD) {
 		return kiemTraThoiGianMuaVe(
-				VeTau_DAO.getInstance().getByMaVeTauChuyenTau(VeTau_DAO.getInstance().getByMaHoaDon(maHD).getMaVeTau())
+				VeTau_DAOImpl.getInstance().getByMaVeTauChuyenTau(VeTau_DAOImpl.getInstance().getByMaHoaDon(maHD).getMaVeTau())
 						.getGheTau().getToaTau().getTau().getChuyenTau().getThoiGianKhoiHanh()) ? 0.8 : 0;
 	}
 
@@ -1655,7 +1654,7 @@ public class BanVeTau_Controller
 	}
 
 	private PhieuHoanTien taoPhieuHoanTien() {
-		String maPhieuHoanTienTemp = PhieuHoanTien_DAO.getInstance().getMaPhieuHoanTienMax();
+		String maPhieuHoanTienTemp = PhieuHoanTien_DAOImpl.getInstance().getMaPhieuHoanTienMax();
 		String maPhieuHoanTien = taoMaPhieuHoanTien(maPhieuHoanTienTemp);
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
@@ -1691,7 +1690,7 @@ public class BanVeTau_Controller
 
 	private boolean themPhieuHoanTienMoi(PhieuHoanTien phieuHoanTien) {
 		phieuHoanTien = taoPhieuHoanTien();
-		boolean daThem = PhieuHoanTien_DAO.getInstance().themPhieuHoanTien(phieuHoanTien);
+		boolean daThem = PhieuHoanTien_DAOImpl.getInstance().themPhieuHoanTien(phieuHoanTien);
 		if (daThem) {
 			thayDoiTrangThaiDaHuy(thongTinVe.getMaKhachHangLabel().getValue(),
 					thongTinVe.getMaHoaDonLabel().getValue());
@@ -1715,11 +1714,11 @@ public class BanVeTau_Controller
 	}
 
 	private boolean thayDoiTrangThaiDaHuy(String maKH, String maHoaDon) {
-		return VeTau_DAO.getInstance().capNhatTrangThaiVeTau(maKH, maHoaDon);
+		return VeTau_DAOImpl.getInstance().capNhatTrangThaiVeTau(maKH, maHoaDon);
 	}
 
 	private boolean kiemTraVeNhom(String maHoaDon) {
-		return HoaDon_DAO.getInstance().laySoLuongHoaDon(maHoaDon) > 1 ? true : false;
+		return HoaDon_DAOImpl.getInstance().laySoLuongHoaDon(maHoaDon) > 1 ? true : false;
 	}
 
 	public static void inPhieuHoanTien(String maPhieuHoanTien) {
@@ -1728,14 +1727,14 @@ public class BanVeTau_Controller
 			if (printServices.length > 0) {
 				PrintService printer = printServices[1];
 
-				PhieuHoanTien phieuHoanTien = PhieuHoanTien_DAO.getInstance().layPhieuHoanTienBangMa(maPhieuHoanTien);
+				PhieuHoanTien phieuHoanTien = PhieuHoanTien_DAOImpl.getInstance().layPhieuHoanTienBangMa(maPhieuHoanTien);
 				if (phieuHoanTien == null) {
 					System.out.println("Không tìm thấy phiếu hoàn tiền nào!");
 					return;
 				}
 
 				StringBuilder hoanTienContent = new StringBuilder();
-				String maHoaDon = PhieuHoanTien_DAO.getInstance().getMaHoaDonByMaPhieuHoanTien(maPhieuHoanTien);
+				String maHoaDon = PhieuHoanTien_DAOImpl.getInstance().getMaHoaDonByMaPhieuHoanTien(maPhieuHoanTien);
 				double tienHoan = tinhTienHoanVe(maHoaDon);
 
 				hoanTienContent.append("PHIEU HOAN TIEN\n\n");
@@ -2038,7 +2037,7 @@ public class BanVeTau_Controller
 
 		boolean temp = false;
 
-		hoaDon.setMaHoaDon(taoMaHoaDon(HoaDon_DAO.getInstance().getMaHoaDonMax()));
+		hoaDon.setMaHoaDon(taoMaHoaDon(HoaDon_DAOImpl.getInstance().getMaHoaDonMax()));
 		hoaDon.setNgayLapHoaDon(LocalDateTime.now());
 		hoaDon.setGhiChu(ghiChu == null || ghiChu.equals("") ? "trống" : ghiChu);
 		hoaDon.setThueVAT(10);
@@ -2050,7 +2049,7 @@ public class BanVeTau_Controller
 		hoaDon.setThongTinGiuCho(null);
 		this.maHoaDon = hoaDon.getMaHoaDon();
 
-		if (HoaDon_DAO.getInstance().addHoaDon(hoaDon)) {
+		if (HoaDon_DAOImpl.getInstance().addHoaDon(hoaDon)) {
 
 			for (int i = 0; i < jTable_Ds.getRowCount(); i++) {
 				VeTau veTau = new VeTau();
@@ -2061,15 +2060,15 @@ public class BanVeTau_Controller
 				veTau.setGheTau(new GheTau((String) jTable_Ds.getValueAt(i, 3)));
 				veTau.setKhachHang(new KhachHang((String) jTable_Ds.getValueAt(i, 4)));
 
-				GheTau_DAO.getInstance().updateTrangThaiGheTau((String) jTable_Ds.getValueAt(i, 3), "DA_THANH_TOAN");
+				GheTau_DAOImpl.getInstance().updateTrangThaiGheTau((String) jTable_Ds.getValueAt(i, 3), "DA_THANH_TOAN");
 
-				if (VeTau_DAO.getInstance().themVeTau(veTau)) {
+				if (VeTau_DAOImpl.getInstance().themVeTau(veTau)) {
 					ChiTiet_HoaDon chiTiet_HoaDon = new ChiTiet_HoaDon();
 					chiTiet_HoaDon.setHoaDon(hoaDon);
 					chiTiet_HoaDon.setSoLuong(1);
 					chiTiet_HoaDon.setKhuyenMai(null);
 					chiTiet_HoaDon.setVeTau(veTau);
-					if (ChiTiet_HoaDon_DAO.getInstance().add(chiTiet_HoaDon)) {
+					if (ChiTiet_HoaDon_DAOImpl.getInstance().add(chiTiet_HoaDon)) {
 						temp = true;
 					}
 				}
@@ -2109,10 +2108,10 @@ public class BanVeTau_Controller
 			khachHang.setNgaySinh(LocalDate.parse((String) jTable.getValueAt(i, 10), formatter));
 			khachHang.setLoaiKH(LoaiKhachHang.chuyenDoiLoaiKH(((String) jTable.getValueAt(i, 11)).trim()));
 			// Kiểm tra sự tồn tại của khách hàng
-			KhachHang existingCustomer = KhachHang_DAO.getInstance().findKhachHangByCCCDOrSDT(khachHang.getCCCD(),
+			KhachHang existingCustomer = KhachHang_DAOImpl.getInstance().findKhachHangByCCCDOrSDT(khachHang.getCCCD(),
 					khachHang.getSoDienThoai());
 			if (existingCustomer == null) {
-				if (KhachHang_DAO.getInstance().insertKhachHang(khachHang)) {
+				if (KhachHang_DAOImpl.getInstance().insertKhachHang(khachHang)) {
 					isSuccess = true;
 				}
 			}
@@ -2132,7 +2131,7 @@ public class BanVeTau_Controller
 			if (printServices.length > 0) {
 				PrintService printer = printServices[1];
 
-				List<Map<String, Object>> ticketInfoList = HoaDon_DAO.getInstance().getThongTinHoaDon(maHoaDon);
+				List<Map<String, Object>> ticketInfoList = HoaDon_DAOImpl.getInstance().getThongTinHoaDon(maHoaDon);
 
 				if (ticketInfoList.isEmpty()) {
 					System.out.println("Không có chi tiết hóa đơn nào để in.");
@@ -2340,7 +2339,7 @@ public class BanVeTau_Controller
 			if (isBtnClicked) {
 				locChuyenTau(danhSachChuyenTau);
 			} else {
-				danhSachChuyenTau = ChuyenTau_DAO.getInstance().getAll();
+				danhSachChuyenTau = ChuyenTau_DAOImpl.getInstance().getAll();
 				locChuyenTau(danhSachChuyenTau);
 			}
 		} else if (obj.equals(chonGhe_View.getBtn_ChonNhanh())) {
@@ -2444,7 +2443,7 @@ public class BanVeTau_Controller
 		} else if (obj.equals(hoanTien_view.getBtn_TraVe())) {
 			xuLyTraVe();
 		} else if (obj.equals(thongTinVe.getInPDFButton())) {
-			String maPhieuHoanTien = PhieuHoanTien_DAO.getInstance()
+			String maPhieuHoanTien = PhieuHoanTien_DAOImpl.getInstance()
 					.getMaPhieuHoanTienByMaHoaDon(thongTinVe.getMaHoaDonLabel().getValue());
 			try {
 				inPhieuHoanTien(maPhieuHoanTien);
@@ -2473,7 +2472,7 @@ public class BanVeTau_Controller
 		} else if (obj.equals(hoanTien_view.getBtn_DoiVe())) {
 			if (hoanTien_view.getDanhSachVeTable().getRowCount() > 0) {
 				if (hoanTien_view.getDanhSachVeTable().getSelectedRow() >= 0) {
-					if (!VeTau_DAO.getInstance().getByMaVeTau((String) hoanTien_view.getDanhSachVeTable()
+					if (!VeTau_DAOImpl.getInstance().getByMaVeTau((String) hoanTien_view.getDanhSachVeTable()
 							.getValueAt(hoanTien_view.getDanhSachVeTable().getSelectedRow(), 2)).isDaHuy()) {
 						if (!checkTimeDoiVe()) {
 							resetDoiVe_1();

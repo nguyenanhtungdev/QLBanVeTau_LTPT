@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import model.NhanVien;
-import model.NhanVien_DAO;
+import daos.dao_impl.NhanVien_DAOImpl;
 import view.DangXuat_View;
 import view.ThongTinCaNhan_View;
 import view.View;
@@ -108,7 +108,7 @@ public class CaiDat_Controller implements ActionListener, MouseListener, FocusLi
 
 		Object nhanVien[] = { maNV, hoTen, sdt, email, cccd, gioiTinh, chucVu, ngaySinh };
 
-		if (NhanVien_DAO.getInstance().insertNhanVien(nhanVien)) {
+		if (NhanVien_DAOImpl.getInstance().insertNhanVien(nhanVien)) {
 			return true;
 		}
 		return false;

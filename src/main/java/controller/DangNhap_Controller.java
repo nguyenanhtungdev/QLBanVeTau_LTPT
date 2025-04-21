@@ -13,14 +13,13 @@ import javax.swing.SwingWorker;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import constant.PasswordUtil;
-import model.NhanVien;
 import model.TaiKhoan;
-import model.TaiKhoan_DAO;
+import daos.dao_impl.TaiKhoan_DAOImpl;
 import view.ChoDangNhap;
 import view.DangNhap;
 
 public class DangNhap_Controller implements ActionListener, KeyListener {
-	private TaiKhoan_DAO taiKhoan_DAO;
+	private TaiKhoan_DAOImpl taiKhoan_DAO;
 	private DangNhap dangNhap;
 	private ChoDangNhap choDangNhap;
 	private HienThi_Controller controller;
@@ -34,7 +33,7 @@ public class DangNhap_Controller implements ActionListener, KeyListener {
 	}
 
 	public DangNhap_Controller() {
-		taiKhoan_DAO = new TaiKhoan_DAO();
+		taiKhoan_DAO = new TaiKhoan_DAOImpl();
 		dangNhap = new DangNhap();
 		choDangNhap = new ChoDangNhap();
 		dangNhap.setVisible(true);

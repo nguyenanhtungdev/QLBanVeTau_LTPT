@@ -1,5 +1,8 @@
 package model;
 
+import daos.dao_impl.HoaDon_DAOImpl;
+import daos.dao_impl.KhuyenMai_DAOImpl;
+import daos.dao_impl.VeTau_DAOImpl;
 import jakarta.persistence.*;
 
 @Entity
@@ -49,7 +52,7 @@ public class ChiTiet_HoaDon {
 	}
 
 	public HoaDon getHoaDon() {
-		return hoaDon.getNgayLapHoaDon() == null ? hoaDon = HoaDon_DAO.getInstance().getByMaHoaDon(hoaDon.getMaHoaDon())
+		return hoaDon.getNgayLapHoaDon() == null ? hoaDon = HoaDon_DAOImpl.getInstance().getByMaHoaDon(hoaDon.getMaHoaDon())
 				: hoaDon;
 	}
 
@@ -58,7 +61,7 @@ public class ChiTiet_HoaDon {
 	}
 
 	public VeTau getVeTau() {
-		return veTau.getNgayHetHan() == null ? veTau = VeTau_DAO.getInstance().getByMaVeTau(veTau.getMaVeTau()) : veTau;
+		return veTau.getNgayHetHan() == null ? veTau = VeTau_DAOImpl.getInstance().getByMaVeTau(veTau.getMaVeTau()) : veTau;
 	}
 
 	public void setVeTau(VeTau veTau) {
@@ -70,7 +73,7 @@ public class ChiTiet_HoaDon {
 			return khuyenMai;
 		} else {
 			return (khuyenMai.getTenKhuyenMai() == null)
-					? khuyenMai = KhuyenMai_DAO.getInstance().getByMaKhuyenMai(khuyenMai.getMaKhuyenMai())
+					? khuyenMai = KhuyenMai_DAOImpl.getInstance().getByMaKhuyenMai(khuyenMai.getMaKhuyenMai())
 					: khuyenMai;
 		}
 

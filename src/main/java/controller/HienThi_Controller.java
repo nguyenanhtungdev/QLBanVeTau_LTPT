@@ -6,17 +6,15 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import model.NhanVien;
 import model.TaiKhoan;
 import view.HomeView;
 import view.Left_Menu;
 import view.View;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
+
 import model.CaLam;
-import model.CaLam_DAO;
+import daos.dao_impl.CaLam_DAOImpl;
 
 public class HienThi_Controller {
 
@@ -98,7 +96,7 @@ public class HienThi_Controller {
 						LocalTime now = LocalTime.now();
 						Predicate<CaLam> pdDetermineCaLam = p -> (p.getThoiGianBatDau().equals(now)
 								|| p.getThoiGianBatDau().isBefore(now)) && p.getThoiGianKetThuc().isAfter(now);
-						CaLam caLam = CaLam_DAO.getInstance().getAll().stream().filter(pdDetermineCaLam).findFirst()
+						CaLam caLam = CaLam_DAOImpl.getInstance().getAll().stream().filter(pdDetermineCaLam).findFirst()
 								.orElse(null);
 						ThongKe_Controller.getInstance().loadSaleStaffData(taiKhoan.getNhanVien().getMaNV(),
 								caLam.getThoiGianBatDau(), caLam.getThoiGianKetThuc().plusSeconds(1));

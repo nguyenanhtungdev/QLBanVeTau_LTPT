@@ -1,5 +1,6 @@
 package model;
 
+import daos.dao_impl.ToaTau_DAOImpl;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
@@ -97,7 +98,7 @@ public class GheTau {
 	}
 
 	public ToaTau getToaTau() {
-		return toaTau.getLoaiToa() == null ? toaTau = ToaTau_DAO.getInstance().getByMaToaTau(toaTau.getMaToaTau())
+		return toaTau.getLoaiToa() == null ? toaTau = ToaTau_DAOImpl.getInstance().getByMaToaTau(toaTau.getMaToaTau())
 				: toaTau;
 	}
 

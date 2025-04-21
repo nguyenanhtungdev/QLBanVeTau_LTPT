@@ -17,7 +17,7 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import model.HoaDon;
-import model.HoaDon_DAO;
+import daos.dao_impl.HoaDon_DAOImpl;
 import other.CustomTitleLable;
 import other.PrimaryButton;
 
@@ -34,7 +34,6 @@ import java.awt.event.FocusEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JScrollPane;
@@ -43,7 +42,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.awt.Color;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -56,7 +54,7 @@ public class QuanLyHoaDon_View extends View implements Printable {
 	private DefaultTableModel modelTableHD;
 	private JTable tableHD;
 	private PrimaryButton btnInDS;
-	private static HoaDon_DAO hd_dao;
+	private static HoaDon_DAOImpl hd_dao;
 	private JPanel panel_ngayLap;
 	private JDateChooser dateBD;
 	private JDateChooser dateKT;
@@ -144,7 +142,7 @@ public class QuanLyHoaDon_View extends View implements Printable {
 	public QuanLyHoaDon_View(String name, String imagePath) {
 		super(name, imagePath);
 		FlatLightLaf.setup();
-		hd_dao = new HoaDon_DAO();
+		hd_dao = new HoaDon_DAOImpl();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1250, 800);
 		setLocationRelativeTo(null);

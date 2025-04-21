@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -29,7 +28,7 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import model.Tau;
-import model.Tau_DAO;
+import daos.dao_impl.Tau_DAOImpl;
 
 import other.CustomTitleLable;
 import other.PrimaryButton;
@@ -52,7 +51,7 @@ public class QuanLyTau_View extends View {
 	private JButton btnTrangSau;
 	public JPanel trainContainer;
 	private JLabel lblSoTau;
-	private static Tau_DAO t_dao;
+	private static Tau_DAOImpl t_dao;
 	private JPanel panelDS;
 	private DefaultTableModel modelTableTTau;
 	private JScrollPane tablePanelTTau;
@@ -123,7 +122,7 @@ public class QuanLyTau_View extends View {
 	public QuanLyTau_View(String name, String imagePath) {
 		super(name, imagePath);
 		FlatLightLaf.setup();
-		t_dao = new Tau_DAO();
+		t_dao = new Tau_DAOImpl();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1250, 800);
 		setLocationRelativeTo(null);

@@ -1,5 +1,6 @@
 package model;
 
+import daos.dao_impl.KhachHang_DAOImpl;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -97,7 +98,7 @@ public class PhieuHoanTien {
 
 	public KhachHang getKhachHang() {
 		return khachHang.getSoDienThoai() == null
-				? khachHang = KhachHang_DAO.getInstance().getByMaKhachHang(khachHang.getMaKhachHang())
+				? khachHang = KhachHang_DAOImpl.getInstance().getByMaKhachHang(khachHang.getMaKhachHang())
 				: khachHang;
 	}
 

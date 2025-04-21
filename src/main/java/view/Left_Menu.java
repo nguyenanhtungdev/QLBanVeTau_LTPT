@@ -9,7 +9,7 @@ import controller.DangNhap_Controller;
 import controller.HienThi_Controller;
 import controller.ThongKe_Controller;
 import model.CaLam;
-import model.CaLam_DAO;
+import daos.dao_impl.CaLam_DAOImpl;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -79,7 +79,7 @@ public class Left_Menu extends JFrame {
 							LocalTime now = LocalTime.now();
 							Predicate<CaLam> pdDetermineCaLam = p -> (p.getThoiGianBatDau().equals(now)
 									|| p.getThoiGianBatDau().isBefore(now)) && p.getThoiGianKetThuc().isAfter(now);
-							CaLam caLam = CaLam_DAO.getInstance().getAll().stream().filter(pdDetermineCaLam).findFirst()
+							CaLam caLam = CaLam_DAOImpl.getInstance().getAll().stream().filter(pdDetermineCaLam).findFirst()
 									.orElse(null);
 							ThongKe_Controller.getInstance().loadSaleStaffData(
 									HienThi_Controller.getInstance().getTaiKhoan().getNhanVien().getMaNV(),

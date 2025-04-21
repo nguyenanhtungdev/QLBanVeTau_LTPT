@@ -1,5 +1,6 @@
 package model;
 
+import daos.dao_impl.GiaVe_DAOImpl;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
@@ -123,7 +124,7 @@ public class ChuyenTau {
 	}
 
 	public GiaVe getGiaVe() {
-		return giaVe.getGiaVe() == 0 ? giaVe = GiaVe_DAO.getInstance().getByMaGiaVe(giaVe.getMaGiaVe()) : giaVe;
+		return giaVe.getGiaVe() == 0 ? giaVe = GiaVe_DAOImpl.getInstance().getByMaGiaVe(giaVe.getMaGiaVe()) : giaVe;
 	}
 
 	public void setGiaVe(GiaVe giaVe) {
