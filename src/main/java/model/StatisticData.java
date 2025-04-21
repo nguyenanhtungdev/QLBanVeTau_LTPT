@@ -1,6 +1,8 @@
 package model;
 
-public class StatisticData {
+import java.io.Serializable;
+
+public class StatisticData implements Serializable {
 
 	private Object target;
 	private double doanhThu;

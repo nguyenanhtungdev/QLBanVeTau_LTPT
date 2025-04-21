@@ -2,13 +2,14 @@ package model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "KhuyenMai")
-public class KhuyenMai {
+public class KhuyenMai implements Serializable {
 
 
 	public enum TinhTrangKhuyenMai {

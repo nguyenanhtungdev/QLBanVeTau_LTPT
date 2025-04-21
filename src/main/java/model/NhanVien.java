@@ -1,13 +1,15 @@
 package model;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
 @Entity
 @Table(name = "NhanVien")
-public class NhanVien {
+public class NhanVien implements Serializable {
 	@Id
 	@Column(name = "maNV", nullable = false, columnDefinition = "char(8)")
 	private String maNV;

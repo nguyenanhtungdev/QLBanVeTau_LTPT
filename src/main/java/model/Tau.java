@@ -4,11 +4,12 @@ import daos.dao_impl.ChuyenTau_DAOImpl;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Tau {
+public class Tau implements Serializable {
 	@Id
 	@EqualsAndHashCode.Include
 	@Column(name = "maTau", nullable = false, columnDefinition = "CHAR(7)")

@@ -2,11 +2,12 @@ package model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "ThongTinTram")
-public class ThongTinTram {
+public class ThongTinTram implements Serializable {
 
 	@Id
 	@Column(name = "maNhaGa", nullable = false, columnDefinition = "char(7)")

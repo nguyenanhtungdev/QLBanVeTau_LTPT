@@ -4,12 +4,13 @@ import daos.dao_impl.GiaVe_DAOImpl;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ChuyenTau {
+public class ChuyenTau implements Serializable {
 	@Id
 	@Column(name = "maChuyenTau", length = 6, columnDefinition = "CHAR(6)")
 	@EqualsAndHashCode.Include

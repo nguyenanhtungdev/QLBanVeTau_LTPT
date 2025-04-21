@@ -2,6 +2,7 @@ package model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -11,7 +12,7 @@ import javax.swing.JOptionPane;
 
 @Entity
 @Table(name = "KhachHang")
-public class KhachHang {
+public class KhachHang implements Serializable {
 
 	@Id
 	@Column(name = "maKH", length = 9, columnDefinition = "CHAR(9)")

@@ -5,6 +5,7 @@ import daos.dao_impl.NhanVien_DAOImpl;
 import daos.dao_impl.ThongTinTram_DAOImpl;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "HoaDon")
-public class HoaDon {
+public class HoaDon implements Serializable {
 
 	@Id
 	@Column(name = "maHoaDon", length = 11, columnDefinition = "CHAR(11)")
