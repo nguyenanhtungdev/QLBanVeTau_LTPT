@@ -2,16 +2,21 @@ package daos.dao_interface;
 
 import model.GheTau;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
-public interface GheTau_DAO {
-    public List<GheTau> getAll();
+public interface GheTau_DAO extends Remote {
+    List<GheTau> getAll() throws RemoteException;
 
-    public boolean add(GheTau gheTau);
+    GheTau getByMaGheTau(String maGheTau) throws RemoteException;
 
-    public boolean update(GheTau gheTau);
+    ArrayList<GheTau> getDsGheTau(String maToaTau) throws RemoteException;
 
-    public boolean delete(String maGheTau);
+    boolean updateTrangThaiGheTau(String maGheTau, String trangThaiMoi) throws RemoteException;
 
-    public GheTau getByMaGheTau(String maGheTau);
+    List<GheTau> getGheTauTheoMaToaTau(String maToaTau) throws RemoteException;
+
+
 }
