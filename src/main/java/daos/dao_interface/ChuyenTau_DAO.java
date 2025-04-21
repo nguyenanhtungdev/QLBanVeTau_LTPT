@@ -2,20 +2,22 @@ package daos.dao_interface;
 
 import model.ChuyenTau;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
-public interface ChuyenTau_DAO {
-    public List<ChuyenTau> getAll();
+public interface ChuyenTau_DAO extends Remote {
+    List<ChuyenTau> getAll() throws RemoteException;
 
-    public boolean add(ChuyenTau chuyenTau);
+    ChuyenTau getByMaChuyenTau(String id) throws RemoteException;
 
-    public boolean update(ChuyenTau chuyenTau);
+    boolean add(ChuyenTau entity) throws RemoteException;
 
-    public boolean delete(String maChuyenTau);
+    boolean update(ChuyenTau entity) throws RemoteException;
 
-    public ChuyenTau getByMaChuyenTau(String maChuyenTau);
+    ArrayList<ChuyenTau> timKiemChuyenTau(String gaDi, String gaDen, String ngayDi) throws RemoteException;
 
-    public List<ChuyenTau> getByGaDen(String gaDen);
+    ArrayList<ChuyenTau> timKiemChuyenTauTheoGa(String gaDi, String gaDen) throws RemoteException;
 
-    public List<ChuyenTau> getByGaKhoiHanh(String gaKhoiHanh);
 }

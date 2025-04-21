@@ -2,16 +2,16 @@ package daos.dao_interface;
 
 import model.GiaVe;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 
-public interface GiaVe_DAO {
-    public List<GiaVe> getAll();
+public interface GiaVe_DAO extends Remote {
+    List<GiaVe> getAll() throws RemoteException;
 
-    public boolean add(GiaVe giaVe);
+    GiaVe getByMaGiaVe(String maGiaVe) throws RemoteException;
 
-    public boolean update(GiaVe giaVe);
+    GiaVe getGiaVeTheoChuyenTau(String maGheTau, String maChuyenTau) throws RemoteException;
 
-    public boolean delete(String maGiaVe);
 
-    public GiaVe getByMaGiaVe(String maGiaVe);
 }

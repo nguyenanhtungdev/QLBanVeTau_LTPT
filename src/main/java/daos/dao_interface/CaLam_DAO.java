@@ -7,13 +7,13 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public interface CaLam_DAO extends Remote {
-    public List<CaLam> getAll() throws RemoteException;
+    List<CaLam> getAll() throws RemoteException;
 
-    public CaLam getByMaCa(String maCaLam) throws RemoteException;
+    CaLam getByMaCa(String maCaLam) throws RemoteException;
 
-    public boolean add(CaLam entity) throws RemoteException;
+    boolean add(CaLam entity) throws RemoteException;
 
-    public boolean update(CaLam entity) throws RemoteException;
+    boolean update(CaLam entity) throws RemoteException;
 
 
 

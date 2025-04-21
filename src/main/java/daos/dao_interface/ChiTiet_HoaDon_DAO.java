@@ -7,9 +7,13 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public interface ChiTiet_HoaDon_DAO extends Remote {
-    public List<ChiTiet_HoaDon> getAll() throws RemoteException;
+    List<ChiTiet_HoaDon> getAll() throws RemoteException;
 
-    public boolean add(ChiTiet_HoaDon ct) throws RemoteException;
+    boolean add(ChiTiet_HoaDon ct) throws RemoteException;
+
+    List<ChiTiet_HoaDon> getByMaHoaDon(String maHoaDon) throws RemoteException;
+
+    List<ChiTiet_HoaDon> getByMaHoaDon(List<String> maHoaDons) throws RemoteException;
 
 
 
