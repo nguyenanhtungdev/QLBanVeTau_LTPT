@@ -222,6 +222,4 @@ public String getTenKhachHangByMaPhieuHoanTien(String maPhieuHoanTien) {
     }
     return tenKhachHang;
 }
-
-
 }
