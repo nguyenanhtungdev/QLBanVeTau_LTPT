@@ -5,11 +5,12 @@ import daos.dao_impl.KhachHang_DAOImpl;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class VeTau {
+public class VeTau implements Serializable {
 	@Id
 	@EqualsAndHashCode.Include
 	@Column(name = "maVeTau", length = 8, columnDefinition = "CHAR(8)", nullable = false)

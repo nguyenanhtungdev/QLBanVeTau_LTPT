@@ -1,13 +1,15 @@
 package model;
 
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
 @IdClass(NhanVien_CaLamId.class)
 @Table(name = "NhanVien_CaLam")
-public class NhanVien_CaLam {
+public class NhanVien_CaLam implements Serializable {
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "maNV", nullable = false, columnDefinition = "CHAR(8)")

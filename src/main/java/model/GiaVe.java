@@ -9,12 +9,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class GiaVe {
+public class GiaVe implements Serializable {
 	@Id
 	@EqualsAndHashCode.Include
 	@Column(name = "maGiaVe", nullable = false, columnDefinition = "CHAR(6)")

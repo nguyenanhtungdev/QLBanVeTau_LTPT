@@ -5,10 +5,12 @@ import daos.dao_impl.KhuyenMai_DAOImpl;
 import daos.dao_impl.VeTau_DAOImpl;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "ChiTiet_HoaDon")
 @IdClass(ChiTiet_HoaDonId.class)
-public class ChiTiet_HoaDon {
+public class ChiTiet_HoaDon implements Serializable {
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "maHoaDon", nullable = false, columnDefinition = "CHAR(11)")

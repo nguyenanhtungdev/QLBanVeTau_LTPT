@@ -4,11 +4,12 @@ import daos.dao_impl.KhachHang_DAOImpl;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ThongTinGiuCho {
+public class ThongTinGiuCho implements Serializable {
 	@Id
 	@Column(name = "maThongTinGiuCho", columnDefinition = "char(7)")
 	@EqualsAndHashCode.Include

@@ -5,12 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "CaLam")
-public class CaLam {
+public class CaLam implements Serializable {
 
 	@Id
 	@Column(name = "maCa", columnDefinition = "char(4)", nullable = false)

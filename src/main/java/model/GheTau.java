@@ -4,11 +4,12 @@ import daos.dao_impl.ToaTau_DAOImpl;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class GheTau {
+public class GheTau implements Serializable {
 
 	@Id
 	@EqualsAndHashCode.Include

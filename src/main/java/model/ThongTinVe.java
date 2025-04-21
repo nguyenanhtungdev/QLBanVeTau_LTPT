@@ -1,6 +1,8 @@
 package model;
 
-public class ThongTinVe {
+import java.io.Serializable;
+
+public class ThongTinVe implements Serializable {
 	private HoaDon hoaDon;
 	private VeTau veTau;
 	private ChuyenTau chuyenTau;

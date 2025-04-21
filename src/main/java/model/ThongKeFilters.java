@@ -1,11 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import model.KhachHang.LoaiKhachHang;
 import model.Tau.TrangThaiTau;
 
-public class ThongKeFilters {
+public class ThongKeFilters implements Serializable {
 
 	private KhachHang[] khachHang;
 	private LoaiKhachHang[] khachHangCategory;

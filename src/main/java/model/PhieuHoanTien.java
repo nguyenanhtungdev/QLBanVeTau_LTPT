@@ -3,10 +3,11 @@ package model;
 import daos.dao_impl.KhachHang_DAOImpl;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 @Entity
 @Table(name = "PhieuHoanTien")
-public class PhieuHoanTien {
+public class PhieuHoanTien implements Serializable {
 
 	@Id
 	@Column(name = "maPhieuHoanTien", nullable = false,columnDefinition = "CHAR(8)")
