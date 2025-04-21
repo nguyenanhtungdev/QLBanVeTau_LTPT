@@ -1,5 +1,8 @@
 package model;
 
+import daos.dao_impl.KhachHang_DAOImpl;
+import daos.dao_impl.NhanVien_DAOImpl;
+import daos.dao_impl.ThongTinTram_DAOImpl;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -137,7 +140,7 @@ public class HoaDon {
 
 	public KhachHang getKhachHang() {
 		return khachHang.getHoTen() == null
-				? khachHang = KhachHang_DAO.getInstance().getByMaKhachHang(khachHang.getMaKhachHang())
+				? khachHang = KhachHang_DAOImpl.getInstance().getByMaKhachHang(khachHang.getMaKhachHang())
 				: khachHang;
 	}
 
@@ -147,7 +150,7 @@ public class HoaDon {
 
 	public ThongTinTram getThongTinTram() {
 		return thongTinTram.getTenNhaGa() == null
-				? thongTinTram = ThongTinTram_DAO.getInstance().getByMaNhaGa(thongTinTram.getMaNhaGa())
+				? thongTinTram = ThongTinTram_DAOImpl.getInstance().getByMaNhaGa(thongTinTram.getMaNhaGa())
 				: thongTinTram;
 	}
 
@@ -156,7 +159,7 @@ public class HoaDon {
 	}
 
 	public NhanVien getNhanVien() {
-		return nhanVien.getHoTenNV() == null ? nhanVien = NhanVien_DAO.getInstance().getByMaNhanVien(nhanVien.getMaNV())
+		return nhanVien.getHoTenNV() == null ? nhanVien = NhanVien_DAOImpl.getInstance().getByMaNhanVien(nhanVien.getMaNV())
 				: nhanVien;
 	}
 

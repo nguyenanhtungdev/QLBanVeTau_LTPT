@@ -3,7 +3,6 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
@@ -38,7 +37,7 @@ import ca.odell.glazedlists.BasicEventList;
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import model.KhuyenMai;
-import model.KhuyenMai_DAO;
+import daos.dao_impl.KhuyenMai_DAOImpl;
 import other.CustomTitleLable;
 import other.DangerPrimaryButton;
 import other.PrimaryButton;
@@ -60,7 +59,7 @@ public class QuanLyKhuyenMai_View extends View {
 	private JComboBox<String> comboBoxTrangThai;
 	private JButton btnReset;
 	private PrimaryButton btnSearch;
-	private static KhuyenMai_DAO km_dao;
+	private static KhuyenMai_DAOImpl km_dao;
 	private ImageIcon iconlich;
 	private JTextField txtTenKM;
 	private JTextField txtSLKM;
@@ -114,7 +113,7 @@ public class QuanLyKhuyenMai_View extends View {
 	public QuanLyKhuyenMai_View(String name, String imagePath) {
 		super(name, imagePath);
 		FlatLightLaf.setup();
-		km_dao = new KhuyenMai_DAO();
+		km_dao = new KhuyenMai_DAOImpl();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1250, 800);
 		setLocationRelativeTo(null);

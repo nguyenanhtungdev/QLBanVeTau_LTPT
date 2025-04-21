@@ -39,7 +39,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,38 +59,38 @@ import javax.swing.table.DefaultTableModel;
 import constant.ColorConstants;
 import constant.PasswordUtil;
 import model.CaLam;
-import model.CaLam_DAO;
+import daos.dao_impl.CaLam_DAOImpl;
 import model.ChiTiet_HoaDon;
-import model.ChiTiet_HoaDon_DAO;
+import daos.dao_impl.ChiTiet_HoaDon_DAOImpl;
 import model.ChuyenTau;
-import model.ChuyenTau_DAO;
+import daos.dao_impl.ChuyenTau_DAOImpl;
 import model.GheTau;
-import model.GheTau_DAO;
+import daos.dao_impl.GheTau_DAOImpl;
 import model.GiaVe;
-import model.GiaVe_DAO;
+import daos.dao_impl.GiaVe_DAOImpl;
 import model.HoaDon;
-import model.HoaDon_DAO;
+import daos.dao_impl.HoaDon_DAOImpl;
 import model.KhachHang;
 import model.KhachHang.LoaiKhachHang;
-import model.KhachHang_DAO;
+import daos.dao_impl.KhachHang_DAOImpl;
 import model.KhuyenMai;
 import model.KhuyenMai.TinhTrangKhuyenMai;
-import model.KhuyenMai_DAO;
+import daos.dao_impl.KhuyenMai_DAOImpl;
 import model.NhanVien;
 import model.NhanVien_CaLam;
-import model.NhanVien_CaLam_DAO;
-import model.NhanVien_DAO;
+import daos.dao_impl.NhanVien_CaLam_DAOImpl;
+import daos.dao_impl.NhanVien_DAOImpl;
 import model.TaiKhoan;
-import model.TaiKhoan_DAO;
+import daos.dao_impl.TaiKhoan_DAOImpl;
 import model.Tau;
 import model.Tau.TrangThaiTau;
-import model.Tau_DAO;
+import daos.dao_impl.Tau_DAOImpl;
 import model.ThongTinTram;
-import model.ThongTinTram_DAO;
+import daos.dao_impl.ThongTinTram_DAOImpl;
 import model.ToaTau;
-import model.ToaTau_DAO;
+import daos.dao_impl.ToaTau_DAOImpl;
 import model.VeTau;
-import model.VeTau_DAO;
+import daos.dao_impl.VeTau_DAOImpl;
 import other.CustomTitleLable;
 import other.CustomTrainStatusButton;
 
@@ -112,18 +111,18 @@ import view.QuanLyTau_View;
 import view.View;
 
 public class QuanLy_Controller implements ActionListener, FocusListener, KeyListener, MouseListener {
-	private HoaDon_DAO hoaDon_DAO;
-	private VeTau_DAO veTau_DAO;
-	private ChuyenTau_DAO chuyenTau_DAO;
-	private GiaVe_DAO giaVe_DAO;
-	private ChiTiet_HoaDon_DAO ctHD_DAO;
-	private Tau_DAO tau_DAO;
-	private ToaTau_DAO toaTau_DAO;
-	private GheTau_DAO gheTau_DAO;
-	private KhuyenMai_DAO kMai_DAO;
-	private CaLam_DAO caLam_DAO;
-	private NhanVien_DAO nhanVien_DAO;
-	private NhanVien_CaLam_DAO nhanVien_CaLam_DAO;
+	private HoaDon_DAOImpl hoaDon_DAOImpl;
+	private VeTau_DAOImpl veTau_DAOImpl;
+	private ChuyenTau_DAOImpl chuyenTau_DAOImpl;
+	private GiaVe_DAOImpl giaVe_DAOImpl;
+	private ChiTiet_HoaDon_DAOImpl ctHD_DAO;
+	private Tau_DAOImpl tau_DAOImpl;
+	private ToaTau_DAOImpl toaTau_DAOImpl;
+	private GheTau_DAOImpl gheTau_DAOImpl;
+	private KhuyenMai_DAOImpl kMai_DAO;
+	private CaLam_DAOImpl caLam_DAO;
+	private NhanVien_DAOImpl nhanVien_DAOImpl;
+	private NhanVien_CaLam_DAOImpl nhanVien_CaLam_DAOImpl;
 	private static final int ITEMS_PER_PAGE = 5;
 	private int currentIndex = 0;
 	private QuanLyTau_View qLTau_View;
@@ -197,27 +196,27 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		this.qlyKhachHang_View = new QuanLyKhachHang_View("Khách hàng", "/Image/user-cog.png");
 		this.qLNhanVien_View = new QuanLyNhanVien_View("Nhân viên", "/Image/user-square.png");
 
-		this.gheTau_DAO = new GheTau_DAO();
-		this.toaTau_DAO = new ToaTau_DAO();
-		this.tau_DAO = new Tau_DAO();
-		this.danhSachTau = tau_DAO.getAll();
+		this.gheTau_DAOImpl = new GheTau_DAOImpl();
+		this.toaTau_DAOImpl = new ToaTau_DAOImpl();
+		this.tau_DAOImpl = new Tau_DAOImpl();
+		this.danhSachTau = tau_DAOImpl.getAll();
 		this.soTau = danhSachTau.size();
 		initControllerTau();
 
-		this.kMai_DAO = new KhuyenMai_DAO();
+		this.kMai_DAO = new KhuyenMai_DAOImpl();
 		initControllerKM();
 
 		this.qlHoaDonChiTiet = new HoaDonChiTiet_View();
-		this.hoaDon_DAO = new HoaDon_DAO();
-		this.veTau_DAO = new VeTau_DAO();
-		this.chuyenTau_DAO = new ChuyenTau_DAO();
-		this.giaVe_DAO = new GiaVe_DAO();
-		this.ctHD_DAO = new ChiTiet_HoaDon_DAO();
+		this.hoaDon_DAOImpl = new HoaDon_DAOImpl();
+		this.veTau_DAOImpl = new VeTau_DAOImpl();
+		this.chuyenTau_DAOImpl = new ChuyenTau_DAOImpl();
+		this.giaVe_DAOImpl = new GiaVe_DAOImpl();
+		this.ctHD_DAO = new ChiTiet_HoaDon_DAOImpl();
 		initControllerHD();
 
-		this.nhanVien_DAO = new NhanVien_DAO();
-		this.nhanVien_CaLam_DAO = new NhanVien_CaLam_DAO();
-		this.caLam_DAO = new CaLam_DAO();
+		this.nhanVien_DAOImpl = new NhanVien_DAOImpl();
+		this.nhanVien_CaLam_DAOImpl = new NhanVien_CaLam_DAOImpl();
+		this.caLam_DAO = new CaLam_DAOImpl();
 		initControllerCaLam();
 
 		initControllerNV();
@@ -236,7 +235,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		updateTrainPanel(qLTau_View.trainContainer);
 		qLTau_View.getLblSoTrang().setText("trang: " + soTrang);
 		qLTau_View.getLblSoTau().setText("Tổng số tàu: " + soTau);
-		getDataTableDsKH(KhachHang_DAO.getInstance().getAll());
+		getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
 	}
 
 	private void themSuKien() {
@@ -369,7 +368,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		}
 
 		boolean found = false;
-		HoaDon hoaDon = hoaDon_DAO.layTTHoaDonTheoMa(maHD);
+		HoaDon hoaDon = hoaDon_DAOImpl.layTTHoaDonTheoMa(maHD);
 		if (hoaDon != null) {
 			xoaDuLieuTableHoaDon();
 			themHoaDonVaoBang(hoaDon);
@@ -401,7 +400,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 			return;
 		}
 
-		List<HoaDon> hoaDons = hoaDon_DAO.layTTHoaDonTheoSDT(soDT);
+		List<HoaDon> hoaDons = hoaDon_DAOImpl.layTTHoaDonTheoSDT(soDT);
 		xoaDuLieuTableHoaDon();
 		for (HoaDon hoaDon : hoaDons) {
 			themHoaDonVaoBang(hoaDon);
@@ -426,7 +425,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		}
 		LocalDateTime sqlStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 		LocalDateTime sqlEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-		List<HoaDon> hoaDons = hoaDon_DAO.layTTHoaDonTheoDate(sqlStartDate, sqlEndDate);
+		List<HoaDon> hoaDons = hoaDon_DAOImpl.layTTHoaDonTheoDate(sqlStartDate, sqlEndDate);
 		xoaDuLieuTableHoaDon();
 		for (HoaDon hoaDon : hoaDons) {
 			themHoaDonVaoBang(hoaDon);
@@ -486,18 +485,18 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	}
 
 	public void DocDuLieuVaoTableHoaDon() {
-		List<HoaDon> list = hoaDon_DAO.getalltbHDKH();
+		List<HoaDon> list = hoaDon_DAOImpl.getalltbHDKH();
 		for (HoaDon hd : list) {
 			themHoaDonVaoBang(hd);
 		}
 	}
 
 	public Map<String, Double> layTongTienHoaDon(String maHD) throws SQLException {
-		HoaDon_DAO hoaDonDAO = new HoaDon_DAO();
-		ChiTiet_HoaDon_DAO chiTietHoaDonDAO = ChiTiet_HoaDon_DAO.getInstance();
-		VeTau_DAO veTauDAO = new VeTau_DAO();
-		GiaVe_DAO giaVeDAO = new GiaVe_DAO();
-		KhuyenMai_DAO khuyenMaiDAO = new KhuyenMai_DAO();
+		HoaDon_DAOImpl hoaDonDAO = new HoaDon_DAOImpl();
+		ChiTiet_HoaDon_DAOImpl chiTietHoaDonDAO = ChiTiet_HoaDon_DAOImpl.getInstance();
+		VeTau_DAOImpl veTauDAO = new VeTau_DAOImpl();
+		GiaVe_DAOImpl giaVeDAO = new GiaVe_DAOImpl();
+		KhuyenMai_DAOImpl khuyenMaiDAO = new KhuyenMai_DAOImpl();
 
 		List<ChiTiet_HoaDon> chiTietHoaDons = chiTietHoaDonDAO.getAll().stream().filter(p -> {
 			return p.getHoaDon().getMaHoaDon().equals(maHD);
@@ -513,10 +512,10 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 			if (veTau == null) {
 				continue;
 			}
-			GheTau gheTau = gheTau_DAO.getByMaGheTau(veTau.getGheTau().getMaGheTau());
-			ToaTau toaTau = toaTau_DAO.getByMaToaTau(gheTau.getToaTau().getMaToaTau());
-			Tau tau = tau_DAO.getByMaTau(toaTau.getTau().getMaTau());
-			ChuyenTau chuyenTau = chuyenTau_DAO.getByMaChuyenTau(tau.getChuyenTau().getMaChuyenTau());
+			GheTau gheTau = gheTau_DAOImpl.getByMaGheTau(veTau.getGheTau().getMaGheTau());
+			ToaTau toaTau = toaTau_DAOImpl.getByMaToaTau(gheTau.getToaTau().getMaToaTau());
+			Tau tau = tau_DAOImpl.getByMaTau(toaTau.getTau().getMaTau());
+			ChuyenTau chuyenTau = chuyenTau_DAOImpl.getByMaChuyenTau(tau.getChuyenTau().getMaChuyenTau());
 			if (chuyenTau == null) {
 				continue;
 			}
@@ -564,9 +563,9 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		int rowCount = qLHoaDon_view.getTableHoaDon().getRowCount();
 		if (row != -1 && row < rowCount) {
 			String maHD = getSelectedMaHD();
-			HoaDon hoaDon = hoaDon_DAO.layTTHoaDonTheoMa(maHD);
-			ThongTinTram ttTram = ThongTinTram_DAO.getInstance().getByMaNhaGa(hoaDon.getThongTinTram().getMaNhaGa());
-			KhachHang kh = KhachHang_DAO.getInstance().getByMaKhachHang(hoaDon.getKhachHang().getMaKhachHang());
+			HoaDon hoaDon = hoaDon_DAOImpl.layTTHoaDonTheoMa(maHD);
+			ThongTinTram ttTram = ThongTinTram_DAOImpl.getInstance().getByMaNhaGa(hoaDon.getThongTinTram().getMaNhaGa());
+			KhachHang kh = KhachHang_DAOImpl.getInstance().getByMaKhachHang(hoaDon.getKhachHang().getMaKhachHang());
 			LocalDateTime ngayLapHoaDon = hoaDon.getNgayLapHoaDon();
 			DateTimeFormatter formatter = DateTimeFormatter
 					.ofPattern("'Ngày' dd 'tháng' MM 'năm' yyyy, HH 'giờ' mm 'phút' ss 'giây'");
@@ -601,15 +600,15 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 			xoaDuLieuTableHoaDonChiTiet();
 			for (int i = 0; i < ctHD1.size(); i++) {
 				ChiTiet_HoaDon ctHD = ctHD1.get(i);
-				VeTau veTau = veTau_DAO.getByMaVeTau(ctHD.getVeTau().getMaVeTau());
+				VeTau veTau = veTau_DAOImpl.getByMaVeTau(ctHD.getVeTau().getMaVeTau());
 				if (veTau == null) {
 					continue;
 				}
-				GheTau gheTau = gheTau_DAO.getByMaGheTau(veTau.getGheTau().getMaGheTau());
-				ToaTau toaTau = toaTau_DAO.getByMaToaTau(gheTau.getToaTau().getMaToaTau());
-				Tau tau = tau_DAO.getByMaTau(toaTau.getTau().getMaTau());
-				ChuyenTau chuyenTau = chuyenTau_DAO.getByMaChuyenTau(tau.getChuyenTau().getMaChuyenTau());
-				GiaVe giaVe = giaVe_DAO.getByMaGiaVe(chuyenTau.getGiaVe().getMaGiaVe());
+				GheTau gheTau = gheTau_DAOImpl.getByMaGheTau(veTau.getGheTau().getMaGheTau());
+				ToaTau toaTau = toaTau_DAOImpl.getByMaToaTau(gheTau.getToaTau().getMaToaTau());
+				Tau tau = tau_DAOImpl.getByMaTau(toaTau.getTau().getMaTau());
+				ChuyenTau chuyenTau = chuyenTau_DAOImpl.getByMaChuyenTau(tau.getChuyenTau().getMaChuyenTau());
+				GiaVe giaVe = giaVe_DAOImpl.getByMaGiaVe(chuyenTau.getGiaVe().getMaGiaVe());
 				if (giaVe == null) {
 					continue;
 				}
@@ -1073,7 +1072,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 				.toLocalDateTime();
 		double giamGia = Double.parseDouble(qLKhuyenMai_View.getTxtGiamGia().getText().replace("%", ""));
 
-		KhachHang_DAO kh_DAO = new KhachHang_DAO();
+		KhachHang_DAOImpl kh_DAO = new KhachHang_DAOImpl();
 		ArrayList<String> emailList = new ArrayList<>();
 		List<KhachHang> khachHangs = kh_DAO.getAll();
 		int maxEmails = 5;
@@ -1146,8 +1145,8 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		LocalDate tuNgay = selectedLocalDate.with(DayOfWeek.MONDAY);
 		LocalDate denNgay = selectedLocalDate.with(DayOfWeek.SUNDAY);
 
-		List<NhanVien> danhSachNhanVien = nhanVien_DAO.getAll();
-		List<NhanVien_CaLam> danhSachCaLam = nhanVien_CaLam_DAO.getAll().stream().filter(caLam -> {
+		List<NhanVien> danhSachNhanVien = nhanVien_DAOImpl.getAll();
+		List<NhanVien_CaLam> danhSachCaLam = nhanVien_CaLam_DAOImpl.getAll().stream().filter(caLam -> {
 			LocalDate ngayNhanCa = caLam.getThoiGianNhanCa().toLocalDate();
 			return !ngayNhanCa.isBefore(tuNgay) && !ngayNhanCa.isAfter(denNgay);
 		}).collect(Collectors.toList());
@@ -1172,7 +1171,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		int dayOfWeek = thoiGianNhanCa.getDayOfWeek().getValue();
 		int columnIndex = dayOfWeek;
 
-		NhanVien nv = nhanVien_DAO.getByMaNhanVien(maNV);
+		NhanVien nv = nhanVien_DAOImpl.getByMaNhanVien(maNV);
 		CaLam caLam = caLam_DAO.getByMaCa(maCaLam);
 
 		String tenCaFormatted = chuyenDoiTenCa(caLam.getTenCa());
@@ -1298,9 +1297,9 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 					String caLam = (String) qLCaLam_View.getModelTableLichLV().getValueAt(i, day);
 					if (caLam == null || caLam.trim().isEmpty()) {
 						LocalDate ngay = currentWeekStart.plusDays(day - 1);
-						List<NhanVien_CaLam> caLamHienTai = nhanVien_CaLam_DAO.getByNhanVienAndNgay(maNV, ngay);
+						List<NhanVien_CaLam> caLamHienTai = nhanVien_CaLam_DAOImpl.getByNhanVienAndNgay(maNV, ngay);
 						for (NhanVien_CaLam caHienTai : caLamHienTai) {
-							boolean deleted = nhanVien_CaLam_DAO.delete(caHienTai);
+							boolean deleted = nhanVien_CaLam_DAOImpl.delete(caHienTai);
 							if (!deleted) {
 								hasError = true;
 								System.err.println("Không thể xóa ca làm: " + caHienTai.getCaLam().getMaCa()
@@ -1339,9 +1338,9 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 						LocalTime gioKetThuc = caLamObject.getThoiGianKetThuc();
 						LocalDate ngay = currentWeekStart.plusDays(day - 1);
 						NhanVien_CaLam nhanVien_CaLam = new NhanVien_CaLam(ngay.atTime(gioBatDau),
-								ngay.atTime(gioKetThuc), nhanVien_DAO.getByMaNhanVien(maNV), caLamObject);
+								ngay.atTime(gioKetThuc), nhanVien_DAOImpl.getByMaNhanVien(maNV), caLamObject);
 
-						boolean result = nhanVien_CaLam_DAO.saveOrUpdate(nhanVien_CaLam);
+						boolean result = nhanVien_CaLam_DAOImpl.saveOrUpdate(nhanVien_CaLam);
 						if (!result) {
 							hasError = true;
 							System.err
@@ -1465,7 +1464,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 				continue;
 			}
 			String maNV = maNV_HoTen.split(" - ")[0].trim();
-			NhanVien nv = nhanVien_DAO.getByMaNhanVien(maNV);
+			NhanVien nv = nhanVien_DAOImpl.getByMaNhanVien(maNV);
 			if (nv == null) {
 				hasError = true;
 				continue;
@@ -1474,7 +1473,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 			for (int day = 1; day <= 7; day++) {
 				String caLam = (String) qLCaLam_View.getModelTableLichLV().getValueAt(i, day);
 				LocalDate ngay = tinhNgayTrongTuan(qLCaLam_View.getLichTuan().getDate(), day);
-				List<NhanVien_CaLam> caLamHienTai = nhanVien_CaLam_DAO.getByNhanVienAndNgay(maNV, ngay);
+				List<NhanVien_CaLam> caLamHienTai = nhanVien_CaLam_DAOImpl.getByNhanVienAndNgay(maNV, ngay);
 				Set<String> maCaLamMoi = new HashSet<>();
 				if (caLam != null && !caLam.trim().isEmpty()) {
 					String[] caLamArray = caLam.split(", ");
@@ -1489,7 +1488,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 				}
 				for (NhanVien_CaLam caHienTai : caLamHienTai) {
 					if (!maCaLamMoi.contains(caHienTai.getCaLam().getMaCa())) {
-						boolean deleted = nhanVien_CaLam_DAO.delete(caHienTai);
+						boolean deleted = nhanVien_CaLam_DAOImpl.delete(caHienTai);
 						if (!deleted) {
 							hasError = true;
 							System.err.println("Không thể xóa ca làm: " + caHienTai.getCaLam().getMaCa()
@@ -1510,7 +1509,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 					NhanVien_CaLam nhanVien_CaLam = new NhanVien_CaLam(ngay.atTime(gioBatDau), ngay.atTime(gioKetThuc),
 							nv, new CaLam(maCaLam));
 
-					boolean result = nhanVien_CaLam_DAO.saveOrUpdate(nhanVien_CaLam);
+					boolean result = nhanVien_CaLam_DAOImpl.saveOrUpdate(nhanVien_CaLam);
 					if (!result) {
 						hasError = true;
 					}
@@ -1542,7 +1541,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	private void reloadTau() {
 		xoaDuLieuTableTau();
 		List<Tau> tauList;
-		tauList = tau_DAO.getAll();
+		tauList = tau_DAOImpl.getAll();
 		for (Tau tau : tauList) {
 			themTauVaoBang(tau);
 		}
@@ -1561,7 +1560,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		List<Tau> danhSachTau = new ArrayList<>();
 
 		if (maTau != null && !maTau.isEmpty()) {
-			Tau tau = tau_DAO.layTTTauTheoMa(maTau);
+			Tau tau = tau_DAOImpl.layTTTauTheoMa(maTau);
 			if (tau != null) {
 				danhSachTau.add(tau);
 			} else {
@@ -1571,7 +1570,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		if (trangThai != null && !trangThai.isEmpty()) {
 			TrangThaiTau trangThaiEnum = chuyenDoiTrangThai(trangThai);
 			if (trangThaiEnum != null) {
-				List<Tau> tauList = tau_DAO.layTTTauTheoTrangThai(trangThaiEnum);
+				List<Tau> tauList = tau_DAOImpl.layTTTauTheoTrangThai(trangThaiEnum);
 				if (!tauList.isEmpty()) {
 					danhSachTau.addAll(tauList);
 				} else {
@@ -1624,7 +1623,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	public void DocDuLieuVaoTableTau() throws SQLException {
 		qLTau_View.getModelTau().setRowCount(0);
 		List<Tau> dsTau;
-		dsTau = tau_DAO.getAll();
+		dsTau = tau_DAOImpl.getAll();
 		for (Tau t : dsTau) {
 			themTauVaoBang(t);
 		}
@@ -1697,7 +1696,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	public void DocDuLieuVaoTableToaTau(String maTau) {
 		qLTau_View.getModelTTau().setRowCount(0);
 
-		ArrayList<ToaTau> dsTTau = toaTau_DAO.getToaTauTheoMaTau(maTau);
+		ArrayList<ToaTau> dsTTau = toaTau_DAOImpl.getToaTauTheoMaTau(maTau);
 		for (ToaTau tt : dsTTau) {
 			String trangThai = tt.isTrangThai() ? "Còn ghế" : "Đầy ghế";
 			String loaiToaDescription;
@@ -1732,7 +1731,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	private JButton selectedToaTauButton;
 
 	private void updateToaTau(JPanel toaTauPanel, String maTau) {
-		ArrayList<ToaTau> dsToaTau = toaTau_DAO.getToaTauTheoMaTau(maTau);
+		ArrayList<ToaTau> dsToaTau = toaTau_DAOImpl.getToaTauTheoMaTau(maTau);
 
 		toaTauPanel.removeAll();
 		for (int i = dsToaTau.size() - 1; i >= 0; i--) {
@@ -1815,7 +1814,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	}
 
 	private void updateGheTau(JPanel gheTauPanel, String maToaTau) {
-		List<GheTau> dsGheTau = gheTau_DAO.getGheTauTheoMaToaTau(maToaTau);
+		List<GheTau> dsGheTau = gheTau_DAOImpl.getGheTauTheoMaToaTau(maToaTau);
 
 		gheTauPanel.removeAll();
 
@@ -1872,7 +1871,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	public void DocDuLieuVaoTableGheTau(String maToaTau) {
 		qLTau_View.getModelGheTau().setRowCount(0);
 
-		List<GheTau> dsGTau = gheTau_DAO.getGheTauTheoMaToaTau(maToaTau);
+		List<GheTau> dsGTau = gheTau_DAOImpl.getGheTauTheoMaToaTau(maToaTau);
 
 		for (GheTau gt : dsGTau) {
 			String trangThaiHienThi;
@@ -2041,7 +2040,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 
 	private boolean timKiemTheoTieuChi(String tieuChi, Function<KhachHang, String> getter) {
 		List<KhachHang> khTim = new ArrayList<>();
-		for (KhachHang khachHang : KhachHang_DAO.getInstance().getAll()) {
+		for (KhachHang khachHang : KhachHang_DAOImpl.getInstance().getAll()) {
 			if (getter.apply(khachHang).equals(tieuChi)) {
 				khTim.add(khachHang);
 			}
@@ -2103,7 +2102,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		KhachHang.LoaiKhachHang loaiKH = KhachHang.LoaiKhachHang.chuyenDoiLoaiKH(loaiKhachHangStr);
 		khachHang.setLoaiKH(loaiKH);
 
-		if (KhachHang_DAO.getInstance().updateKhachHang(khachHang)) {
+		if (KhachHang_DAOImpl.getInstance().updateKhachHang(khachHang)) {
 			return true;
 		}
 
@@ -2138,8 +2137,8 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	public void loadDataToTable() {
 
 		try {
-			NhanVien_DAO nhanVien_DAO = new NhanVien_DAO();
-			List<NhanVien> nhanVienList = nhanVien_DAO.getAll();
+			NhanVien_DAOImpl nhanVien_DAOImpl = new NhanVien_DAOImpl();
+			List<NhanVien> nhanVienList = nhanVien_DAOImpl.getAll();
 			DefaultTableModel model = (DefaultTableModel) qLNhanVien_View.getDanhSachNhanVienJtable().getModel(); // Lấy
 			// JTable
 			model.setRowCount(0); 
@@ -2172,21 +2171,21 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		try {
 			List<NhanVien> danhSachNV = new ArrayList<>();
 			if (qLNhanVien_View.getRdbtn_TenNV().isSelected()) {
-				List<NhanVien> dsTenNhanVien = NhanVien_DAO.getInstance().findNhanVienByTen(timKiemText);
+				List<NhanVien> dsTenNhanVien = NhanVien_DAOImpl.getInstance().findNhanVienByTen(timKiemText);
 				if (!dsTenNhanVien.isEmpty()) {
 					danhSachNV.addAll(dsTenNhanVien);
 				} else {
 					JOptionPane.showMessageDialog(null, "Không tìm thấy tên nhân viên");
 				}
 			} else if (qLNhanVien_View.getRdbtn_DienThoai().isSelected()) {
-				List<NhanVien> dsSdtNhanVien = NhanVien_DAO.getInstance().findNhanVienBySdt(timKiemText);
+				List<NhanVien> dsSdtNhanVien = NhanVien_DAOImpl.getInstance().findNhanVienBySdt(timKiemText);
 				if (!dsSdtNhanVien.isEmpty()) {
 					danhSachNV.addAll(dsSdtNhanVien);
 				} else {
 					JOptionPane.showMessageDialog(null, "Không tìm thấy số nhân viên");
 				}
 			} else if (qLNhanVien_View.getRdbtn_CCCD().isSelected()) {
-				List<NhanVien> dsCCCDNhanVien = NhanVien_DAO.getInstance().findNhanVienByCCCD(timKiemText);
+				List<NhanVien> dsCCCDNhanVien = NhanVien_DAOImpl.getInstance().findNhanVienByCCCD(timKiemText);
 				if (!dsCCCDNhanVien.isEmpty()) {
 					danhSachNV.addAll(dsCCCDNhanVien);
 				} else {
@@ -2216,7 +2215,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	private void reLoadSearchNV() {
 		xoaDuLieuTableNV();
 		try {
-			for (NhanVien nv : NhanVien_DAO.getInstance().getAll()) {
+			for (NhanVien nv : NhanVien_DAOImpl.getInstance().getAll()) {
 				themNhanVienVaoBang(nv);
 			}
 		} catch (Exception e) {
@@ -2246,14 +2245,14 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	}
 	
 	private String createMaNV() {
-		String so = NhanVien_DAO.getInstance().getMaNVMax().trim().substring(2); 
+		String so = NhanVien_DAOImpl.getInstance().getMaNVMax().trim().substring(2);
 	    int soMoi = Integer.parseInt(so) + 1;
 	    
 	    return "NV" + String.format("%05d", soMoi);
 	}
 	
 	private String createMaTK() {
-		String so = TaiKhoan_DAO.getInstance().getMaTKMax().trim().substring(2); 
+		String so = TaiKhoan_DAOImpl.getInstance().getMaTKMax().trim().substring(2);
 	    int soMoi = Integer.parseInt(so) + 1;
 	    return "TK" + String.format("%05d", soMoi);
 	}
@@ -2270,14 +2269,14 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	} 
 	
 	private boolean themTaiKhoan(String maNV) {
-		return TaiKhoan_DAO.getInstance().getInstance().insertTaiKhoan(new TaiKhoan(createMaTK(), 
+		return TaiKhoan_DAOImpl.getInstance().getInstance().insertTaiKhoan(new TaiKhoan(createMaTK(),
 				maNV,PasswordUtil.hashPassword(maNV+"A@" ) , true, LocalDateTime.now(), new NhanVien(maNV)));
 	}
 	
 	
 	public boolean themNhanVien() {
 		NhanVien nv = getDateInputNV();
-		if(NhanVien_DAO.getInstance().insertNhanVien(nv)) {
+		if(NhanVien_DAOImpl.getInstance().insertNhanVien(nv)) {
 			if(themTaiKhoan(nv.getMaNV())) {
 				return true;
 			}
@@ -2391,7 +2390,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		// TODO Auto-generated method stub
 		Object ob = e.getSource();
 		if (ob.equals(qlyKhachHang_View.getBtn_XoaTrang())) {
-			getDataTableDsKH(KhachHang_DAO.getInstance().getAll());
+			getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
 			xoaTrangInPut();
 		} else if (ob.equals(qlyKhachHang_View.getBtn_TimKiem())) {
 			if (qlyKhachHang_View.getRdbtn_DienThoai().isSelected()) {
@@ -2406,23 +2405,23 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		} else if (ob.equals(qlyKhachHang_View.getComboBox_LocLoaiKH())) {
 			qlyKhachHang_View.getDanhSachKhachHangModel().setRowCount(0);
 			if (qlyKhachHang_View.getComboBox_LocLoaiKH().getSelectedIndex() == 0) {
-				getDataTableDsKH(KhachHang_DAO.getInstance().getAll());
+				getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
 			} else {
-				timKiemLoaiKH(KhachHang_DAO.getInstance().getAll());
+				timKiemLoaiKH(KhachHang_DAOImpl.getInstance().getAll());
 			}
 		} else if (ob.equals(qlyKhachHang_View.getBtn_CapNhatTT())) {
 			if (capNhatThongTinKH()) {
 				JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công!");
 				xoaTrangInPut();
 				qlyKhachHang_View.getDanhSachKhachHangModel().setRowCount(0);
-				getDataTableDsKH(KhachHang_DAO.getInstance().getAll());
+				getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
 			} else {
 				JOptionPane.showMessageDialog(null, "Cập nhật thông tin không thành công!");
 			}
 		} else if (ob.equals(qlyKhachHang_View.getBtn_XemDsHD())) {
 			String filePath = "C:\\Users\\Admin\\Documents\\DanhSachKhachHang.xlsx";
 
-			List<KhachHang> khachHangList = KhachHang_DAO.getInstance().getAll();
+			List<KhachHang> khachHangList = KhachHang_DAOImpl.getInstance().getAll();
 
 			boolean isSuccess = ExportExcel.exportKhachHangToExcel(filePath, khachHangList);
 			if (isSuccess) {

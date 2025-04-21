@@ -1,5 +1,6 @@
 package model;
 
+import daos.dao_impl.ChuyenTau_DAOImpl;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
@@ -211,7 +212,7 @@ public class Tau {
 
 	public ChuyenTau getChuyenTau() {
 		return chuyenTau.getGaKhoiHanh() == null
-				? chuyenTau = ChuyenTau_DAO.getInstance().getByMaChuyenTau(chuyenTau.getMaChuyenTau())
+				? chuyenTau = ChuyenTau_DAOImpl.getInstance().getByMaChuyenTau(chuyenTau.getMaChuyenTau())
 				: chuyenTau;
 	}
 

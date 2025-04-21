@@ -24,27 +24,27 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import component.thongke.ThongKeListSelectorDialog;
 import component.thongke.ThongKeTableSelectorDialog;
 import model.CaLam;
-import model.CaLam_DAO;
+import daos.dao_impl.CaLam_DAOImpl;
 import model.ChiTiet_HoaDon;
-import model.ChiTiet_HoaDon_DAO;
+import daos.dao_impl.ChiTiet_HoaDon_DAOImpl;
 import model.ChuyenTau;
-import model.ChuyenTau_DAO;
+import daos.dao_impl.ChuyenTau_DAOImpl;
 import model.GheTau;
-import model.GheTau_DAO;
+import daos.dao_impl.GheTau_DAOImpl;
 import model.HoaDon;
-import model.HoaDon_DAO;
+import daos.dao_impl.HoaDon_DAOImpl;
 import model.KhachHang;
-import model.KhachHang_DAO;
+import daos.dao_impl.KhachHang_DAOImpl;
 import model.KhuyenMai;
-import model.KhuyenMai_DAO;
+import daos.dao_impl.KhuyenMai_DAOImpl;
 import model.NhanVien;
-import model.NhanVien_DAO;
+import daos.dao_impl.NhanVien_DAOImpl;
 import model.StatisticData;
 import model.Tau;
-import model.Tau_DAO;
+import daos.dao_impl.Tau_DAOImpl;
 import model.ThongKeFilters;
 import model.ToaTau;
-import model.ToaTau_DAO;
+import daos.dao_impl.ToaTau_DAOImpl;
 import model.KhachHang.LoaiKhachHang;
 import model.Tau.TrangThaiTau;
 import view.View;
@@ -139,7 +139,7 @@ public class ThongKe_Controller {
 
 			LocalDateTime from = filter.getTuLuc();
 			LocalDateTime to = filter.getDenLuc();
-			List<HoaDon> hoaDons = HoaDon_DAO.getInstance().getByFilters(from, to, filter.getKhachHang(),
+			List<HoaDon> hoaDons = HoaDon_DAOImpl.getInstance().getByFilters(from, to, filter.getKhachHang(),
 					filter.getNhanVien());
 			if (filter.getKhachHangCategory() != null && filter.getKhachHangCategory().length > 0) {
 				hoaDons = hoaDons.stream().filter(
@@ -213,7 +213,7 @@ public class ThongKe_Controller {
 	}
 
 	private void addChartsToTaoMoiView(String groupBy, List<String> maHoaDons, ThongKeKetQua_View ketQuaView) {
-		List<ChiTiet_HoaDon> chiTiets = ChiTiet_HoaDon_DAO.getInstance().getByMaHoaDon(maHoaDons);
+		List<ChiTiet_HoaDon> chiTiets = ChiTiet_HoaDon_DAOImpl.getInstance().getByMaHoaDon(maHoaDons);
 		if (filter.getKhuyenMai() != null && filter.getKhuyenMai().length > 0) {
 			if (filter.getKhuyenMai()[0] == null) {
 				chiTiets = chiTiets.stream().filter(p -> p.getKhuyenMai() == null).toList();
@@ -335,12 +335,12 @@ public class ThongKe_Controller {
 		Predicate<HoaDon> pdHoaDonInWeek = p -> p.getNgayLapHoaDon().toLocalDate().isAfter(fromDate)
 				&& (p.getNgayLapHoaDon().toLocalDate().isBefore(toDate)
 						|| p.getNgayLapHoaDon().toLocalDate().isEqual(toDate));
-		Stream<HoaDon> hoaDonInWeek = HoaDon_DAO.getInstance().getAll().stream().filter(pdHoaDonInWeek);
+		Stream<HoaDon> hoaDonInWeek = HoaDon_DAOImpl.getInstance().getAll().stream().filter(pdHoaDonInWeek);
 		List<String> maHoaDonInWeek = hoaDonInWeek.map(HoaDon::getMaHoaDon).toList();
 		if (maHoaDonInWeek.isEmpty()) {
 			tongQuanView.setWeekData(null, fromDate, toDate);
 		} else {
-			List<ChiTiet_HoaDon> chiTietInWeek = ChiTiet_HoaDon_DAO.getInstance().getByMaHoaDon(maHoaDonInWeek);
+			List<ChiTiet_HoaDon> chiTietInWeek = ChiTiet_HoaDon_DAOImpl.getInstance().getByMaHoaDon(maHoaDonInWeek);
 			Map<LocalDate, List<ChiTiet_HoaDon>> chiTietGroupByDate = chiTietInWeek.stream()
 					.collect(Collectors.groupingBy(m -> m.getHoaDon().getNgayLapHoaDon().toLocalDate(), TreeMap::new,
 							Collectors.toList()));
@@ -370,12 +370,12 @@ public class ThongKe_Controller {
 
 		// Tổng quan trong NGÀY dành cho Nhân viên Quản lý
 		Predicate<HoaDon> pdHoaDonInDay = p -> p.getNgayLapHoaDon().toLocalDate().equals(today);
-		Stream<HoaDon> hoaDonInDay = HoaDon_DAO.getInstance().getAll().stream().filter(pdHoaDonInDay);
+		Stream<HoaDon> hoaDonInDay = HoaDon_DAOImpl.getInstance().getAll().stream().filter(pdHoaDonInDay);
 		List<String> maHoaDonInDay = hoaDonInDay.map(HoaDon::getMaHoaDon).toList();
 		if (maHoaDonInDay.isEmpty()) {
 			tongQuanView.setManagerSummaryData(new StatisticData(today, 0, 0, 0, 0, 0));
 		} else {
-			List<ChiTiet_HoaDon> chiTietInDay = ChiTiet_HoaDon_DAO.getInstance().getByMaHoaDon(maHoaDonInDay);
+			List<ChiTiet_HoaDon> chiTietInDay = ChiTiet_HoaDon_DAOImpl.getInstance().getByMaHoaDon(maHoaDonInDay);
 			double doanhThu = chiTietInDay.stream()
 					.map(ct -> ct.getVeTau().getGheTau().getToaTau().getTau().getChuyenTau().getGiaVe().getGiaVe())
 					.collect(Collectors.summingDouble(Double::doubleValue));
@@ -398,12 +398,12 @@ public class ThongKe_Controller {
 		LocalDateTime toDateTime = today.with(toTime);
 		Predicate<HoaDon> pdHoaDonInShift = p -> p.getNgayLapHoaDon().isAfter(fromDateTime)
 				&& p.getNgayLapHoaDon().isBefore(toDateTime);
-		Stream<HoaDon> hoaDonInShiftByHour = HoaDon_DAO.getInstance().getAll().stream().filter(pdHoaDonInShift);
+		Stream<HoaDon> hoaDonInShiftByHour = HoaDon_DAOImpl.getInstance().getAll().stream().filter(pdHoaDonInShift);
 		List<String> maHoaDonInShiftByHour = hoaDonInShiftByHour.map(HoaDon::getMaHoaDon).toList();
 		if (maHoaDonInShiftByHour.isEmpty()) {
 			tongQuanView.setHourData(null, fromTime, toTime);
 		} else {
-			List<ChiTiet_HoaDon> chiTietInShiftByHour = ChiTiet_HoaDon_DAO.getInstance()
+			List<ChiTiet_HoaDon> chiTietInShiftByHour = ChiTiet_HoaDon_DAOImpl.getInstance()
 					.getByMaHoaDon(maHoaDonInShiftByHour);
 			Map<LocalTime, List<ChiTiet_HoaDon>> chiTietGroupByHour = chiTietInShiftByHour.stream()
 					.collect(Collectors.groupingBy(
@@ -437,13 +437,13 @@ public class ThongKe_Controller {
 		Predicate<HoaDon> pHoaDonTheoNhanVien = p -> p.getNhanVien().getMaNV().equals(maNV);
 		Predicate<HoaDon> pHoaDonTheoCaLam = p -> p.getNgayLapHoaDon().toLocalTime().isAfter(fromTime)
 				&& p.getNgayLapHoaDon().toLocalTime().isBefore(toTime);
-		Stream<HoaDon> hoaDonInShift = HoaDon_DAO.getInstance().getAll().stream().filter(pHoaDonInDay)
+		Stream<HoaDon> hoaDonInShift = HoaDon_DAOImpl.getInstance().getAll().stream().filter(pHoaDonInDay)
 				.filter(pHoaDonTheoNhanVien).filter(pHoaDonTheoCaLam);
 		List<String> maHoaDonInShift = hoaDonInShift.map(HoaDon::getMaHoaDon).toList();
 		if (maHoaDonInShift.isEmpty()) {
 			tongQuanView.setSaleStaffSummaryData(new StatisticData(today, 0, 0, 0, 0, 0), fromTime, toTime);
 		} else {
-			List<ChiTiet_HoaDon> chiTietInShift = ChiTiet_HoaDon_DAO.getInstance().getByMaHoaDon(maHoaDonInShift);
+			List<ChiTiet_HoaDon> chiTietInShift = ChiTiet_HoaDon_DAOImpl.getInstance().getByMaHoaDon(maHoaDonInShift);
 			double doanhThu = chiTietInShift.stream()
 					.map(ct -> ct.getVeTau().getGheTau().getToaTau().getTau().getChuyenTau().getGiaVe().getGiaVe())
 					.collect(Collectors.summingDouble(Double::doubleValue));
@@ -459,7 +459,7 @@ public class ThongKe_Controller {
 	}
 
 	private void onBtnKhachHangSelector() {
-		List<KhachHang> list = KhachHang_DAO.getInstance().getAll();
+		List<KhachHang> list = KhachHang_DAOImpl.getInstance().getAll();
 
 		String[] columns = { "Mã khách hàng", "Tên khách hàng", "Giới tính", "Ngày sinh", "Loại khách hàng" };
 		Object[][] rows = list.stream().map(x -> new Object[] { x.getMaKhachHang(), x.getHoTen(),
@@ -497,7 +497,7 @@ public class ThongKe_Controller {
 	}
 
 	private void onBtnNhanVienSelector() {
-		List<NhanVien> list = NhanVien_DAO.getInstance().getAll();
+		List<NhanVien> list = NhanVien_DAOImpl.getInstance().getAll();
 
 		String[] columns = { "Mã nhân viên", "Họ tên nhân viên", "Giới tính", "Số điện thoại", "Ngày sinh" };
 		Object[][] rows = list.stream().map(x -> new Object[] { x.getMaNV(), x.getHoTenNV(),
@@ -517,7 +517,7 @@ public class ThongKe_Controller {
 	}
 
 	private void onBtnCaLamSelector() {
-		List<CaLam> list = CaLam_DAO.getInstance().getAll();
+		List<CaLam> list = CaLam_DAOImpl.getInstance().getAll();
 
 		String[] columns = { "Mã ca làm", "Tên ca", "Thời gian bắt đầu", "Thời gian kết thúc", "Ghi chú" };
 		Object[][] rows = list.stream().map(x -> new Object[] { x.getMaCa(), x.getTenCa(), x.getThoiGianBatDau(),
@@ -536,7 +536,7 @@ public class ThongKe_Controller {
 	}
 
 	private void onBtnKhuyenMaiSelector() {
-		List<model.KhuyenMai> list = KhuyenMai_DAO.getInstance().getAll();
+		List<model.KhuyenMai> list = KhuyenMai_DAOImpl.getInstance().getAll();
 
 		String[] columns = { "Mã khuyến mãi", "Tên khuyến mãi", "Trị giá", "Nội dung khuyến mãi", "Số lượng tối đa",
 				"Thời gian hiệu lực", "Hạn sử dụng", "Tình trạng khuyến mãi" };
@@ -577,7 +577,7 @@ public class ThongKe_Controller {
 	}
 
 	private void onBtnChuyenTauSelector() {
-		List<ChuyenTau> list = ChuyenTau_DAO.getInstance().getAll();
+		List<ChuyenTau> list = ChuyenTau_DAOImpl.getInstance().getAll();
 
 		String[] columns = { "Mã chuyến tàu", "Ga khởi hành", "Ga đến", "Thời gian khởi hành", "Thời gian đến dự kiến",
 				"Ghi chú" };
@@ -598,7 +598,7 @@ public class ThongKe_Controller {
 	}
 
 	private void onBtnTauSelector() {
-		List<Tau> list = Tau_DAO.getInstance().getAll();
+		List<Tau> list = Tau_DAOImpl.getInstance().getAll();
 
 		String[] columns = { "Mã tàu", "Tên tàu", "Số toa", "Năm sản xuất", "Trạng thái", "Ghi chú" };
 		Object[][] rows = list.stream().map(x -> new Object[] { x.getMaTau(), x.getTenTau(), x.getSoToa(),
@@ -633,7 +633,7 @@ public class ThongKe_Controller {
 	}
 
 	private void onBtnToaTauSelector() {
-		List<ToaTau> list = ToaTau_DAO.getInstance().getAll();
+		List<ToaTau> list = ToaTau_DAOImpl.getInstance().getAll();
 
 		String[] columns = { "Mã toa tàu", "Tên toa tàu", "Số thứ tự toa", "Số lượng ghế", "Trạng thái" };
 		Object[][] rows = list.stream().map(x -> new Object[] { x.getMaToaTau(), x.getTenToaTau(), x.getSoThuTuToa(),
@@ -668,7 +668,7 @@ public class ThongKe_Controller {
 	}
 
 	private void onBtnGheTauSelector() {
-		List<GheTau> list = GheTau_DAO.getInstance().getAll();
+		List<GheTau> list = GheTau_DAOImpl.getInstance().getAll();
 
 		String[] columns = { "Mã ghế tàu", "Loại ghế tàu", "Số thứ tự toa", "Trạng thái" };
 		Object[][] rows = list.stream().map(x -> new Object[] { x.getMaGheTau(), x.getTenLoaiGheTau(),
