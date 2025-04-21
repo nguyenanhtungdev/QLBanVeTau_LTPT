@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,14 +17,14 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import connectDB.Database;
-import model.KhachHang.LoaiKhachHang;
+import model.*;
 
-public class HoaDon_DAO {
+public class HoaDon_DAOImpl {
 
-	private static HoaDon_DAO instance;
+	private static HoaDon_DAOImpl instance;
 
-	public static HoaDon_DAO getInstance() {
-		return instance == null ? instance = new HoaDon_DAO() : instance;
+	public static HoaDon_DAOImpl getInstance() {
+		return instance == null ? instance = new HoaDon_DAOImpl() : instance;
 	}
 
 	// Lấy hóa đơn theo số điện thoại hoặc CCCD
@@ -54,8 +54,8 @@ public class HoaDon_DAO {
 				hoaDon.setNgayLapHoaDon(ngayLapHoaDon);
 				hoaDon.setThueVAT(rs.getFloat("thueVAT"));
 
-				hoaDon.setKhachHang(KhachHang_DAO.getInstance().getByMaKhachHang(rs.getString("maKH")));
-				VeTau veTau = VeTau_DAO.getInstance().getByMaVeTau(rs.getString("maVeTau"));
+				hoaDon.setKhachHang(KhachHang_DAOImpl.getInstance().getByMaKhachHang(rs.getString("maKH")));
+				VeTau veTau = VeTau_DAOImpl.getInstance().getByMaVeTau(rs.getString("maVeTau"));
 
 				// Thêm hóa đơn vào danh sách kết quả
 				thongTinVes.add(new ThongTinVe(hoaDon, veTau));

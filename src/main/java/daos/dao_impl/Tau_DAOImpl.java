@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -13,14 +13,16 @@ import java.util.List;
 import java.util.Map;
 
 import connectDB.Database;
+import model.ChuyenTau;
+import model.Tau;
 import model.Tau.TrangThaiTau;
 
-public class Tau_DAO {
+public class Tau_DAOImpl {
 
-	private static Tau_DAO instance;
+	private static Tau_DAOImpl instance;
 
-	public static Tau_DAO getInstance() {
-		return instance == null ? instance = new Tau_DAO() : instance;
+	public static Tau_DAOImpl getInstance() {
+		return instance == null ? instance = new Tau_DAOImpl() : instance;
 	}
 
 	public List<Tau> getAll() {

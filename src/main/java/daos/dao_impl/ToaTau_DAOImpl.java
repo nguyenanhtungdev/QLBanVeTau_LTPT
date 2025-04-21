@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,13 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import model.Tau;
+import model.ToaTau;
 
-public class ToaTau_DAO {
+public class ToaTau_DAOImpl {
 
-	private static ToaTau_DAO instance;
+	private static ToaTau_DAOImpl instance;
 
-	public static ToaTau_DAO getInstance() {
-		return instance == null ? instance = new ToaTau_DAO() : instance;
+	public static ToaTau_DAOImpl getInstance() {
+		return instance == null ? instance = new ToaTau_DAOImpl() : instance;
 	}
 
 	public List<ToaTau> getAll() {

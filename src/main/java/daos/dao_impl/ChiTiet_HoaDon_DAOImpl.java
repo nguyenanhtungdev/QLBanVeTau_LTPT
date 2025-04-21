@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +10,17 @@ import java.util.Collections;
 import java.util.List;
 
 import connectDB.Database;
+import model.ChiTiet_HoaDon;
+import model.HoaDon;
+import model.KhuyenMai;
+import model.VeTau;
 
-public class ChiTiet_HoaDon_DAO {
+public class ChiTiet_HoaDon_DAOImpl {
 
-	private static ChiTiet_HoaDon_DAO instance;
+	private static ChiTiet_HoaDon_DAOImpl instance;
 
-	public static ChiTiet_HoaDon_DAO getInstance() {
-		return instance == null ? instance = new ChiTiet_HoaDon_DAO() : instance;
+	public static ChiTiet_HoaDon_DAOImpl getInstance() {
+		return instance == null ? instance = new ChiTiet_HoaDon_DAOImpl() : instance;
 	}
 
 	public List<ChiTiet_HoaDon> getAll() {

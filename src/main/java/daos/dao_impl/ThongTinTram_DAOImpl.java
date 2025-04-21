@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,13 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import connectDB.Database;
+import model.ThongTinTram;
 
-public class ThongTinTram_DAO {
+public class ThongTinTram_DAOImpl {
 
-	private static ThongTinTram_DAO instance;
+	private static ThongTinTram_DAOImpl instance;
 
-	public static ThongTinTram_DAO getInstance() {
-		return instance == null ? instance = new ThongTinTram_DAO() : instance;
+	public static ThongTinTram_DAOImpl getInstance() {
+		return instance == null ? instance = new ThongTinTram_DAOImpl() : instance;
 	}
 
 	public ThongTinTram getByMaNhaGa(String maNhaGa) {

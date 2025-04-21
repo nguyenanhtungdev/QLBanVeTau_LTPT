@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import model.NhanVien;
 
-public class NhanVien_DAO {
+public class NhanVien_DAOImpl {
 
-	private static NhanVien_DAO instance;
+	private static NhanVien_DAOImpl instance;
 
-	public static NhanVien_DAO getInstance() {
-		return instance == null ? instance = new NhanVien_DAO() : instance;
+	public static NhanVien_DAOImpl getInstance() {
+		return instance == null ? instance = new NhanVien_DAOImpl() : instance;
 	}
 
 	public List<NhanVien> getAll() {

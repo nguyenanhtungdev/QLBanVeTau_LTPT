@@ -1,4 +1,4 @@
-package model;
+package daos.dao_impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import model.GiaVe;
 
-public class GiaVe_DAO {
+public class GiaVe_DAOImpl {
 
-	private static GiaVe_DAO instance;
+	private static GiaVe_DAOImpl instance;
 
-	public static GiaVe_DAO getInstance() {
-		return instance == null ? instance = new GiaVe_DAO() : instance;
+	public static GiaVe_DAOImpl getInstance() {
+		return instance == null ? instance = new GiaVe_DAOImpl() : instance;
 	}
 
 	public List<GiaVe> getAll() {
