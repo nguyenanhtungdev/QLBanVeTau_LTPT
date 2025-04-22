@@ -5,6 +5,8 @@ import lombok.Getter;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.time.LocalDateTime;
+
 @Getter
 public class AllDaoImpl extends UnicastRemoteObject implements AllDao {
 
@@ -23,6 +25,7 @@ public class AllDaoImpl extends UnicastRemoteObject implements AllDao {
     private final Tau_DAO tauDao = new Tau_DAOImpl();
     private final ToaTau_DAO toaTauDao = new ToaTau_DAOImpl();
     private final VeTau_DAO veTauDao = new VeTau_DAOImpl();
+    private final GhiNhanLogin ghiNhanLogin = new GhiNhanLoginImpl();
 
     public AllDaoImpl() throws RemoteException{
     }
@@ -100,5 +103,10 @@ public class AllDaoImpl extends UnicastRemoteObject implements AllDao {
     @Override
     public VeTau_DAO getVeTau_DAO() throws RemoteException {
         return null;
+    }
+
+    @Override
+    public void ghiNhanLogin(String tenNguoiDung, LocalDateTime thoiGian, String noiDung) throws RemoteException {
+        ghiNhanLogin.ghiNhanLogin(tenNguoiDung, thoiGian, noiDung);
     }
 }

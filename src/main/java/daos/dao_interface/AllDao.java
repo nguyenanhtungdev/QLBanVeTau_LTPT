@@ -5,6 +5,7 @@ import model.ChiTiet_HoaDon;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AllDao extends Remote {
@@ -23,4 +24,6 @@ public interface AllDao extends Remote {
     Tau_DAO getTau_DAO() throws RemoteException;
     ToaTau_DAO getToaTau_DAO() throws RemoteException;
     VeTau_DAO getVeTau_DAO() throws RemoteException;
+
+    void ghiNhanLogin(String tenNguoiDung, LocalDateTime thoiGian, String noiDung) throws RemoteException;
 }
