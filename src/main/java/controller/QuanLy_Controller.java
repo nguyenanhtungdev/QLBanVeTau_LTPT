@@ -21,6 +21,7 @@ import java.awt.event.MouseListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -149,8 +150,10 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 				instance = new QuanLy_Controller();
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}
-		return instance;
+			} catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        return instance;
 	}
 
 	private CustomTrainStatusButton selectedButton;
@@ -188,7 +191,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 //	}
 
 	// QL_Tau
-	public QuanLy_Controller() throws SQLException {
+	public QuanLy_Controller() throws SQLException, RemoteException {
 		this.qLHoaDon_view = new QuanLyHoaDon_View("Hóa đơn", "/Image/iconHoaDon.png");
 		this.qLTau_View = new QuanLyTau_View("Tàu", "/Image/tabler-icon-file-settings.png");
 		this.qLKhuyenMai_View = new QuanLyKhuyenMai_View("Khuyến mãi", "/Image/Sales.png");
@@ -229,7 +232,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	}
 
 	// QL_Tau
-	private void initControllerTau() throws SQLException {
+	private void initControllerTau() throws SQLException, RemoteException {
 		themSuKien();
 		DocDuLieuVaoTableTau();
 		updateTrainPanel(qLTau_View.trainContainer);
@@ -261,7 +264,13 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		qLKhuyenMai_View.addButtonCapNhapListener(e -> CapNhapKM());
 		qLKhuyenMai_View.addButtonTimListener(e -> searchKM());
 		qLKhuyenMai_View.addButtonReloadListener(e -> reLoadSearchKM());
-		qLKhuyenMai_View.addButtonThongBaoListener(e -> guiTBTxtKM());
+		qLKhuyenMai_View.addButtonThongBaoListener(e -> {
+            try {
+                guiTBTxtKM();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        });
 	}
 
 	// QL_CaLam
@@ -289,21 +298,44 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 	}
 
 	// QL_HoaDon
-	private void initControllerHD() {
+	private void initControllerHD() throws RemoteException {
 		themSuKienHD();
 		DocDuLieuVaoTableHoaDon();
 
 	}
 
 	private void themSuKienHD() {
-		qLHoaDon_view.addButtonReloadListener(e -> reloadHoaDon());
-		qLHoaDon_view.addButtonMaHDItem(e -> locTheoMaHD());
-		qLHoaDon_view.addButtonDateItem(e -> locTheoDate());
-		qLHoaDon_view.addButtonSDTItem(e -> locTheoSDT());
+		qLHoaDon_view.addButtonReloadListener(e -> {
+            try {
+                reloadHoaDon();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        });
+		qLHoaDon_view.addButtonMaHDItem(e -> {
+            try {
+                locTheoMaHD();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        });
+		qLHoaDon_view.addButtonDateItem(e -> {
+            try {
+                locTheoDate();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        });
+		qLHoaDon_view.addButtonSDTItem(e -> {
+            try {
+                locTheoSDT();
+            } catch (RemoteException ex) {ex.printStackTrace();
+            }
+        });
 		qLHoaDon_view.addButtonXemHDCT(e -> {
 			try {
 				xemHDCT();
-			} catch (SQLException e1) {
+			} catch (SQLException | RemoteException e1) {
 				e1.printStackTrace();
 			}
 		});
@@ -349,7 +381,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		}, "In Hoá Đơn");
 	}
 
-	private void locTheoMaHD() {
+	private void locTheoMaHD() throws RemoteException {
 		qLHoaDon_view.getCombSDT().setSelectedItem(null);
 		qLHoaDon_view.getDateBD().setDate(null);
 		JTextField dateField = (JTextField) qLHoaDon_view.getDateBD().getDateEditor().getUiComponent();
@@ -382,7 +414,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		}
 	}
 
-	private void locTheoSDT() {
+	private void locTheoSDT() throws RemoteException {
 		qLHoaDon_view.getCombMaHD().setSelectedItem(null);
 		qLHoaDon_view.getDateBD().setDate(null);
 		JTextField dateField = (JTextField) qLHoaDon_view.getDateBD().getDateEditor().getUiComponent();
@@ -410,7 +442,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		}
 	}
 
-	private void locTheoDate() {
+	private void locTheoDate() throws RemoteException {
 		qLHoaDon_view.getCombMaHD().setSelectedItem(null);
 		qLHoaDon_view.getCombSDT().setSelectedItem(null);
 		Date startDate = qLHoaDon_view.getDateBD().getDate();
@@ -435,7 +467,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		}
 	}
 
-	public void reloadHoaDon() {
+	public void reloadHoaDon() throws RemoteException {
 		xoaDuLieuTableHoaDon();
 		DocDuLieuVaoTableHoaDon();
 		qLHoaDon_view.getCombMaHD().setSelectedItem(null);
@@ -456,7 +488,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		dateField1.setForeground(Color.GRAY);
 	}
 
-	private void themHoaDonVaoBang(HoaDon hd) {
+	private void themHoaDonVaoBang(HoaDon hd) throws RemoteException {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		String ngayLapHoaDonFormatted = hd.getNgayLapHoaDon().format(formatter);
 		String loaiHoaDon = "";
@@ -470,7 +502,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		try {
 			Map<String, Double> result = layTongTienHoaDon(hd.getMaHoaDon());
 			tongTienSauThue = result.getOrDefault("tongTienSauThue", 0.0);
-		} catch (SQLException e) {
+		} catch (SQLException | RemoteException e) {
 			e.printStackTrace();
 		}
 		qLHoaDon_view.getModelHD()
@@ -484,14 +516,14 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		dm.getDataVector().removeAllElements();
 	}
 
-	public void DocDuLieuVaoTableHoaDon() {
+	public void DocDuLieuVaoTableHoaDon() throws RemoteException {
 		List<HoaDon> list = hoaDon_DAOImpl.getalltbHDKH();
 		for (HoaDon hd : list) {
 			themHoaDonVaoBang(hd);
 		}
 	}
 
-	public Map<String, Double> layTongTienHoaDon(String maHD) throws SQLException {
+	public Map<String, Double> layTongTienHoaDon(String maHD) throws SQLException, RemoteException {
 		HoaDon_DAOImpl hoaDonDAO = new HoaDon_DAOImpl();
 		ChiTiet_HoaDon_DAOImpl chiTietHoaDonDAO = ChiTiet_HoaDon_DAOImpl.getInstance();
 		VeTau_DAOImpl veTauDAO = new VeTau_DAOImpl();
@@ -499,8 +531,13 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		KhuyenMai_DAOImpl khuyenMaiDAO = new KhuyenMai_DAOImpl();
 
 		List<ChiTiet_HoaDon> chiTietHoaDons = chiTietHoaDonDAO.getAll().stream().filter(p -> {
-			return p.getHoaDon().getMaHoaDon().equals(maHD);
-		}).collect(Collectors.toList());
+            try {
+                return p.getHoaDon().getMaHoaDon().equals(maHD);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }).collect(Collectors.toList());
 		if (chiTietHoaDons.isEmpty()) {
 			return Collections.emptyMap();
 		}
@@ -558,7 +595,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		return null;
 	}
 
-	private void xemHDCT() throws SQLException {
+	private void xemHDCT() throws SQLException, RemoteException {
 		int row = qLHoaDon_view.getTableHoaDon().getSelectedRow();
 		int rowCount = qLHoaDon_view.getTableHoaDon().getRowCount();
 		if (row != -1 && row < rowCount) {
@@ -595,8 +632,13 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 			double tongTienSauThue = tongTienHoaDon.get("tongTienSauThue");
 
 			List<ChiTiet_HoaDon> ctHD1 = ctHD_DAO.getAll().stream().filter(p -> {
-				return p.getHoaDon().getMaHoaDon().equals(maHD);
-			}).collect(Collectors.toList());
+                try {
+                    return p.getHoaDon().getMaHoaDon().equals(maHD);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }).collect(Collectors.toList());
 			xoaDuLieuTableHoaDonChiTiet();
 			for (int i = 0; i < ctHD1.size(); i++) {
 				ChiTiet_HoaDon ctHD = ctHD1.get(i);
@@ -1058,7 +1100,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		qLKhuyenMai_View.getTxtTenkm().requestFocus();
 	}
 
-	private void guiTBTxtKM() {
+	private void guiTBTxtKM() throws RemoteException {
 		int selectedRow = qLKhuyenMai_View.getTableKM().getSelectedRow();
 		if (selectedRow < 0) {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn khuyến mãi thông báo!");
@@ -1676,8 +1718,12 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 			panel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					togglePanelToaTau(tau);
-					if (selectedButton != null) {
+                    try {
+                        togglePanelToaTau(tau);
+                    } catch (RemoteException ex) {
+                        ex.printStackTrace();
+                    }
+                    if (selectedButton != null) {
 						selectedButton.deselectButton();
 					}
 					selectedButton = panel;
@@ -1730,7 +1776,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 
 	private JButton selectedToaTauButton;
 
-	private void updateToaTau(JPanel toaTauPanel, String maTau) {
+	private void updateToaTau(JPanel toaTauPanel, String maTau) throws RemoteException {
 		ArrayList<ToaTau> dsToaTau = toaTau_DAOImpl.getToaTauTheoMaTau(maTau);
 
 		toaTauPanel.removeAll();
@@ -1920,7 +1966,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		}
 	}
 
-	private void togglePanelToaTau(Tau tau) {
+	private void togglePanelToaTau(Tau tau) throws RemoteException {
 		if (qLTau_View.getPanel_TableTau().isVisible()) {
 			qLTau_View.getQLTau_View().remove(qLTau_View.getPanel_TableTau());
 			qLTau_View.getQLTau_View().remove(qLTau_View.getPanel_GheTau());
@@ -2038,7 +2084,7 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		getDataTableDsKH(khTim);
 	}
 
-	private boolean timKiemTheoTieuChi(String tieuChi, Function<KhachHang, String> getter) {
+	private boolean timKiemTheoTieuChi(String tieuChi, Function<KhachHang, String> getter) throws RemoteException {
 		List<KhachHang> khTim = new ArrayList<>();
 		for (KhachHang khachHang : KhachHang_DAOImpl.getInstance().getAll()) {
 			if (getter.apply(khachHang).equals(tieuChi)) {
@@ -2053,17 +2099,17 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		return false;
 	}
 
-	private boolean timKiemTheoCCCD() {
+	private boolean timKiemTheoCCCD() throws RemoteException {
 		String cccd = qlyKhachHang_View.getTxt_LocSDT().getText();
 		return timKiemTheoTieuChi(cccd, KhachHang::getCCCD);
 	}
 
-	private boolean timKiemTheoSDT() {
+	private boolean timKiemTheoSDT() throws RemoteException {
 		String sdt = qlyKhachHang_View.getTxt_LocSDT().getText();
 		return timKiemTheoTieuChi(sdt, KhachHang::getSoDienThoai);
 	}
 
-	private boolean capNhatThongTinKH() {
+	private boolean capNhatThongTinKH() throws RemoteException {
 		KhachHang khachHang = new KhachHang();
 
 		String maKH = qlyKhachHang_View.getTxt_MaKH().getText().trim();
@@ -2244,20 +2290,20 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 				nhanVien.getTenChucVu(), nhanVien.isTrangThai() ? "Đang làm" : "Đã nghỉ", nhanVien.getNgayVaoLam() });
 	}
 	
-	private String createMaNV() {
+	private String createMaNV() throws RemoteException {
 		String so = NhanVien_DAOImpl.getInstance().getMaNVMax().trim().substring(2);
 	    int soMoi = Integer.parseInt(so) + 1;
 	    
 	    return "NV" + String.format("%05d", soMoi);
 	}
 	
-	private String createMaTK() {
+	private String createMaTK() throws RemoteException {
 		String so = TaiKhoan_DAOImpl.getInstance().getMaTKMax().trim().substring(2);
 	    int soMoi = Integer.parseInt(so) + 1;
 	    return "TK" + String.format("%05d", soMoi);
 	}
 	
-	private NhanVien getDateInputNV() {
+	private NhanVien getDateInputNV() throws RemoteException {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate ngaySinh = LocalDate.parse(qLNhanVien_View.getTxt_NgaySinh().getText().trim(), formatter);
 		return new NhanVien(createMaNV(), qLNhanVien_View.getTxt_HoTen().getText().trim(),
@@ -2268,13 +2314,13 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 								LocalDate.now());
 	} 
 	
-	private boolean themTaiKhoan(String maNV) {
+	private boolean themTaiKhoan(String maNV) throws RemoteException {
 		return TaiKhoan_DAOImpl.getInstance().getInstance().insertTaiKhoan(new TaiKhoan(createMaTK(),
 				maNV,PasswordUtil.hashPassword(maNV+"A@" ) , true, LocalDateTime.now(), new NhanVien(maNV)));
 	}
 	
 	
-	public boolean themNhanVien() {
+	public boolean themNhanVien() throws RemoteException {
 		NhanVien nv = getDateInputNV();
 		if(NhanVien_DAOImpl.getInstance().insertNhanVien(nv)) {
 			if(themTaiKhoan(nv.getMaNV())) {
@@ -2390,40 +2436,73 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 		// TODO Auto-generated method stub
 		Object ob = e.getSource();
 		if (ob.equals(qlyKhachHang_View.getBtn_XoaTrang())) {
-			getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
-			xoaTrangInPut();
+            try {
+                getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+            xoaTrangInPut();
 		} else if (ob.equals(qlyKhachHang_View.getBtn_TimKiem())) {
 			if (qlyKhachHang_View.getRdbtn_DienThoai().isSelected()) {
-				if (!timKiemTheoSDT()) {
-					JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng");
-				}
-			} else {
-				if (!timKiemTheoCCCD()) {
-					JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng");
-				}
-			}
+                try {
+                    if (!timKiemTheoSDT()) {
+                        JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng");
+                    }
+                } catch (RemoteException ex) {
+					ex.printStackTrace();
+                }
+            } else {
+                try {
+                    if (!timKiemTheoCCCD()) {
+                        JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng");
+                    }
+                } catch (RemoteException ex) {
+					ex.printStackTrace();
+                }
+            }
 		} else if (ob.equals(qlyKhachHang_View.getComboBox_LocLoaiKH())) {
 			qlyKhachHang_View.getDanhSachKhachHangModel().setRowCount(0);
 			if (qlyKhachHang_View.getComboBox_LocLoaiKH().getSelectedIndex() == 0) {
-				getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
-			} else {
-				timKiemLoaiKH(KhachHang_DAOImpl.getInstance().getAll());
-			}
+                try {
+                    getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                try {
+                    timKiemLoaiKH(KhachHang_DAOImpl.getInstance().getAll());
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
 		} else if (ob.equals(qlyKhachHang_View.getBtn_CapNhatTT())) {
-			if (capNhatThongTinKH()) {
-				JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công!");
-				xoaTrangInPut();
-				qlyKhachHang_View.getDanhSachKhachHangModel().setRowCount(0);
-				getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
-			} else {
-				JOptionPane.showMessageDialog(null, "Cập nhật thông tin không thành công!");
-			}
-		} else if (ob.equals(qlyKhachHang_View.getBtn_XemDsHD())) {
+            try {
+                if (capNhatThongTinKH()) {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công!");
+                    xoaTrangInPut();
+                    qlyKhachHang_View.getDanhSachKhachHangModel().setRowCount(0);
+try {
+getDataTableDsKH(KhachHang_DAOImpl.getInstance().getAll());
+} catch (RemoteException ex) {
+ex.printStackTrace();
+}
+} else {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin không thành công!");
+                }
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        } else if (ob.equals(qlyKhachHang_View.getBtn_XemDsHD())) {
 			String filePath = "C:\\Users\\Admin\\Documents\\DanhSachKhachHang.xlsx";
 
-			List<KhachHang> khachHangList = KhachHang_DAOImpl.getInstance().getAll();
+            List<KhachHang> khachHangList = null;
+            try {
+                khachHangList = KhachHang_DAOImpl.getInstance().getAll();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
 
-			boolean isSuccess = ExportExcel.exportKhachHangToExcel(filePath, khachHangList);
+            boolean isSuccess = ExportExcel.exportKhachHangToExcel(filePath, khachHangList);
 			if (isSuccess) {
 				JOptionPane.showMessageDialog(null, "Xuất file Excel thành công: ", "Thông báo",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -2431,14 +2510,17 @@ public class QuanLy_Controller implements ActionListener, FocusListener, KeyList
 				JOptionPane.showMessageDialog(null, "Xuất file Excel thất bại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
 			}
 		} else if(ob.equals(qLNhanVien_View.getbtn_ThemNV())) {
-			if(themNhanVien()) {
-				JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công: ", "Thông báo",
-						JOptionPane.INFORMATION_MESSAGE);
-			} else {
-				JOptionPane.showMessageDialog(null, "Thêm nhân viên không thành công: ", "Thông báo",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
-		} else if(ob.equals(qLNhanVien_View.getBtnHuybo())) {
+            try {
+                if(themNhanVien()) {
+                    JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công: ", "Thông báo",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Thêm nhân viên không thành công: ", "Thông báo",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (RemoteException ex) {ex.printStackTrace();
+            }
+        } else if(ob.equals(qLNhanVien_View.getBtnHuybo())) {
 			huyBoNV();
 		}
 	}

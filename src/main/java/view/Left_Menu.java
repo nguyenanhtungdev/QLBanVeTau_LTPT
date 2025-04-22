@@ -7,13 +7,14 @@ import constant.ColorConstants;
 import controller.BanVeTau_Controller;
 import controller.DangNhap_Controller;
 import controller.HienThi_Controller;
-import controller.ThongKe_Controller;
+//import controller.ThongKe_Controller;
 import model.CaLam;
 import daos.dao_impl.CaLam_DAOImpl;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.rmi.RemoteException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.function.Predicate;
@@ -54,9 +55,16 @@ public class Left_Menu extends JFrame {
 								"Xác nhận", JOptionPane.YES_NO_OPTION);
 						if (confirm == JOptionPane.YES_OPTION) {
 							home.dispose();
-							DangNhap_Controller.getInstance().resetLogin();
-							new DangNhap_Controller();
-						}
+                            try {
+                                DangNhap_Controller.getInstance().resetLogin();
+                            } catch (RemoteException ex) {ex.printStackTrace();
+                            }
+                            try {
+                                new DangNhap_Controller();
+                            } catch (RemoteException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
 					} else if (BanVeTau_Controller.getInstance().isDoiVe()) {
 						int confirm = JOptionPane.showConfirmDialog(null, "Mọi thay đổi sẽ bị hủy bỏ nếu rời khỏi!",
 								"Xác nhận", JOptionPane.YES_NO_OPTION);
@@ -74,16 +82,21 @@ public class Left_Menu extends JFrame {
 						// Xác định dữ liệu cần load
 						if (HienThi_Controller.getInstance().getTaiKhoan().getNhanVien().getTenChucVu().trim()
 								.equals("NVQL")) {
-							ThongKe_Controller.getInstance().loadManagerData();
+//							ThongKe_Controller.getInstance().loadManagerData();
 						} else {
 							LocalTime now = LocalTime.now();
 							Predicate<CaLam> pdDetermineCaLam = p -> (p.getThoiGianBatDau().equals(now)
 									|| p.getThoiGianBatDau().isBefore(now)) && p.getThoiGianKetThuc().isAfter(now);
-							CaLam caLam = CaLam_DAOImpl.getInstance().getAll().stream().filter(pdDetermineCaLam).findFirst()
-									.orElse(null);
-							ThongKe_Controller.getInstance().loadSaleStaffData(
-									HienThi_Controller.getInstance().getTaiKhoan().getNhanVien().getMaNV(),
-									caLam.getThoiGianBatDau(), caLam.getThoiGianKetThuc().plusSeconds(1));
+                            CaLam caLam = null;
+                            try {
+                                caLam = CaLam_DAOImpl.getInstance().getAll().stream().filter(pdDetermineCaLam).findFirst()
+                                        .orElse(null);
+                            } catch (RemoteException ex) {
+                                ex.printStackTrace();
+                            }
+//                            ThongKe_Controller.getInstance().loadSaleStaffData(
+//									HienThi_Controller.getInstance().getTaiKhoan().getNhanVien().getMaNV(),
+//									caLam.getThoiGianBatDau(), caLam.getThoiGianKetThuc().plusSeconds(1));
 						}
 					}
 				}

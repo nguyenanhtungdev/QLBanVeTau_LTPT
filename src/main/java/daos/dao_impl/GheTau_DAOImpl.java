@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,14 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import daos.dao_interface.GheTau_DAO;
+import lombok.Getter;
 import model.GheTau;
 import model.ToaTau;
+@Getter
+public class GheTau_DAOImpl extends UnicastRemoteObject implements GheTau_DAO {
 
-public class GheTau_DAOImpl {
-
+	public GheTau_DAOImpl() throws RemoteException {
+	}
 	private static GheTau_DAOImpl instance;
 
-	public static GheTau_DAOImpl getInstance() {
+	public static GheTau_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new GheTau_DAOImpl() : instance;
 	}
 

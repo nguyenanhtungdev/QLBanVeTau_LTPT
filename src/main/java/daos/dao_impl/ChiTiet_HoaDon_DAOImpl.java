@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,16 +12,21 @@ import java.util.Collections;
 import java.util.List;
 
 import connectDB.Database;
+import daos.dao_interface.ChiTiet_HoaDon_DAO;
+import lombok.Getter;
 import model.ChiTiet_HoaDon;
 import model.HoaDon;
 import model.KhuyenMai;
 import model.VeTau;
+@Getter
+public class ChiTiet_HoaDon_DAOImpl extends UnicastRemoteObject implements ChiTiet_HoaDon_DAO {
 
-public class ChiTiet_HoaDon_DAOImpl {
+	public ChiTiet_HoaDon_DAOImpl() throws RemoteException{
 
+	}
 	private static ChiTiet_HoaDon_DAOImpl instance;
 
-	public static ChiTiet_HoaDon_DAOImpl getInstance() {
+	public static ChiTiet_HoaDon_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new ChiTiet_HoaDon_DAOImpl() : instance;
 	}
 
@@ -87,7 +94,9 @@ public class ChiTiet_HoaDon_DAOImpl {
 			return count == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
+		} catch (RemoteException e) {
+            e.printStackTrace();
+        } finally {
 			try {
 				if (statement != null)
 					statement.close();

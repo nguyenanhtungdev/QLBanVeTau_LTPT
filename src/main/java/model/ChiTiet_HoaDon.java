@@ -6,6 +6,7 @@ import daos.dao_impl.VeTau_DAOImpl;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 @Entity
 @Table(name = "ChiTiet_HoaDon")
@@ -53,7 +54,7 @@ public class ChiTiet_HoaDon implements Serializable {
 		this.soLuong = soLuong;
 	}
 
-	public HoaDon getHoaDon() {
+	public HoaDon getHoaDon() throws RemoteException {
 		return hoaDon.getNgayLapHoaDon() == null ? hoaDon = HoaDon_DAOImpl.getInstance().getByMaHoaDon(hoaDon.getMaHoaDon())
 				: hoaDon;
 	}
@@ -62,7 +63,7 @@ public class ChiTiet_HoaDon implements Serializable {
 		this.hoaDon = hoaDon;
 	}
 
-	public VeTau getVeTau() {
+	public VeTau getVeTau() throws RemoteException {
 		return veTau.getNgayHetHan() == null ? veTau = VeTau_DAOImpl.getInstance().getByMaVeTau(veTau.getMaVeTau()) : veTau;
 	}
 
@@ -70,7 +71,7 @@ public class ChiTiet_HoaDon implements Serializable {
 		this.veTau = veTau;
 	}
 
-	public KhuyenMai getKhuyenMai() {
+	public KhuyenMai getKhuyenMai() throws RemoteException {
 		if (khuyenMai == null) {
 			return khuyenMai;
 		} else {

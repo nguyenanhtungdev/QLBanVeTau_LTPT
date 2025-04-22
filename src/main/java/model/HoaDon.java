@@ -6,6 +6,7 @@ import daos.dao_impl.ThongTinTram_DAOImpl;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,7 +140,7 @@ public class HoaDon implements Serializable {
 		this.loaiHoaDon = loaiHoaDon;
 	}
 
-	public KhachHang getKhachHang() {
+	public KhachHang getKhachHang() throws RemoteException {
 		return khachHang.getHoTen() == null
 				? khachHang = KhachHang_DAOImpl.getInstance().getByMaKhachHang(khachHang.getMaKhachHang())
 				: khachHang;
@@ -149,7 +150,7 @@ public class HoaDon implements Serializable {
 		this.khachHang = khachHang;
 	}
 
-	public ThongTinTram getThongTinTram() {
+	public ThongTinTram getThongTinTram() throws RemoteException {
 		return thongTinTram.getTenNhaGa() == null
 				? thongTinTram = ThongTinTram_DAOImpl.getInstance().getByMaNhaGa(thongTinTram.getMaNhaGa())
 				: thongTinTram;
@@ -159,7 +160,7 @@ public class HoaDon implements Serializable {
 		this.thongTinTram = thongTinTram;
 	}
 
-	public NhanVien getNhanVien() {
+	public NhanVien getNhanVien() throws RemoteException {
 		return nhanVien.getHoTenNV() == null ? nhanVien = NhanVien_DAOImpl.getInstance().getByMaNhanVien(nhanVien.getMaNV())
 				: nhanVien;
 	}

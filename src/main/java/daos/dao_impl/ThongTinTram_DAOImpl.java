@@ -1,18 +1,23 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import connectDB.Database;
+import daos.dao_interface.ThongTinTram_DAO;
+import lombok.Getter;
 import model.ThongTinTram;
+@Getter
+public class ThongTinTram_DAOImpl extends UnicastRemoteObject implements ThongTinTram_DAO {
 
-public class ThongTinTram_DAOImpl {
-
+	public ThongTinTram_DAOImpl() throws RemoteException{}
 	private static ThongTinTram_DAOImpl instance;
 
-	public static ThongTinTram_DAOImpl getInstance() {
+	public static ThongTinTram_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new ThongTinTram_DAOImpl() : instance;
 	}
 

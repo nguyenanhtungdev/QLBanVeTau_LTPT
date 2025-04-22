@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -124,7 +125,7 @@ public class ChuyenTau implements Serializable {
 		this.ghiChu = ghiChu;
 	}
 
-	public GiaVe getGiaVe() {
+	public GiaVe getGiaVe() throws RemoteException {
 		return giaVe.getGiaVe() == 0 ? giaVe = GiaVe_DAOImpl.getInstance().getByMaGiaVe(giaVe.getMaGiaVe()) : giaVe;
 	}
 

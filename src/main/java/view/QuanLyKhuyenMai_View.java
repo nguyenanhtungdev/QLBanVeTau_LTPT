@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import javax.swing.border.CompoundBorder;
@@ -110,7 +111,7 @@ public class QuanLyKhuyenMai_View extends View {
 	}
 
 	@SuppressWarnings("unused")
-	public QuanLyKhuyenMai_View(String name, String imagePath) {
+	public QuanLyKhuyenMai_View(String name, String imagePath) throws RemoteException {
 		super(name, imagePath);
 		FlatLightLaf.setup();
 		km_dao = new KhuyenMai_DAOImpl();

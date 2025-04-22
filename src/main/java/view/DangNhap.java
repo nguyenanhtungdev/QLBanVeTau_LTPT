@@ -23,6 +23,7 @@ import other.TextFont;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -51,8 +52,10 @@ public class DangNhap extends JFrame {
 				| UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
+		} catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
 	/**
 	 * Create the frame.

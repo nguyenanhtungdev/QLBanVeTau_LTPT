@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
 @Entity
@@ -211,7 +212,7 @@ public class Tau implements Serializable {
 		this.ghiChu = ghiChu;
 	}
 
-	public ChuyenTau getChuyenTau() {
+	public ChuyenTau getChuyenTau() throws RemoteException {
 		return chuyenTau.getGaKhoiHanh() == null
 				? chuyenTau = ChuyenTau_DAOImpl.getInstance().getByMaChuyenTau(chuyenTau.getMaChuyenTau())
 				: chuyenTau;

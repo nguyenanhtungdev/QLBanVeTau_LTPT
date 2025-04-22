@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.rmi.RemoteException;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
@@ -25,14 +26,14 @@ public class DangNhap_Controller implements ActionListener, KeyListener {
 	private HienThi_Controller controller;
 	private static DangNhap_Controller instance;
 
-	public static DangNhap_Controller getInstance() {
+	public static DangNhap_Controller getInstance() throws RemoteException {
 		if (instance == null) {
 			instance = new DangNhap_Controller();
 		}
 		return instance;
 	}
 
-	public DangNhap_Controller() {
+	public DangNhap_Controller() throws RemoteException {
 		taiKhoan_DAO = new TaiKhoan_DAOImpl();
 		dangNhap = new DangNhap();
 		choDangNhap = new ChoDangNhap();

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 
 @Entity
@@ -74,7 +75,7 @@ public class ThongTinGiuCho implements Serializable {
 		this.ghiChu = ghiChu;
 	}
 
-	public KhachHang getKhachHang() {
+	public KhachHang getKhachHang() throws RemoteException {
 		return khachHang.getSoDienThoai() == null
 				? khachHang = KhachHang_DAOImpl.getInstance().getByMaKhachHang(khachHang.getMaKhachHang())
 				: khachHang;

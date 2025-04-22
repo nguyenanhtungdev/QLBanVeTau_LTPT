@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,13 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import daos.dao_interface.GiaVe_DAO;
+import lombok.Getter;
 import model.GiaVe;
+@Getter
+public class GiaVe_DAOImpl extends UnicastRemoteObject implements GiaVe_DAO {
 
-public class GiaVe_DAOImpl {
-
+	public GiaVe_DAOImpl() throws RemoteException {
+    }
 	private static GiaVe_DAOImpl instance;
 
-	public static GiaVe_DAOImpl getInstance() {
+	public static GiaVe_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new GiaVe_DAOImpl() : instance;
 	}
 

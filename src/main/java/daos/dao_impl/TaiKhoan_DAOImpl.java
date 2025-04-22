@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,13 +12,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import connectDB.Database;
+import daos.dao_interface.TaiKhoan_DAO;
+import lombok.Getter;
 import model.TaiKhoan;
+@Getter
+public class TaiKhoan_DAOImpl extends UnicastRemoteObject implements TaiKhoan_DAO {
 
-public class TaiKhoan_DAOImpl {
-
+	public TaiKhoan_DAOImpl() throws RemoteException{}
 	public static TaiKhoan_DAOImpl instance;
 
-	public static TaiKhoan_DAOImpl getInstance() {
+	public static TaiKhoan_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new TaiKhoan_DAOImpl() : instance;
 	}
 
@@ -50,7 +55,9 @@ public class TaiKhoan_DAOImpl {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
+		} catch (RemoteException e) {
+            e.printStackTrace();
+        } finally {
 			try {
 				if (resultSet != null)
 					resultSet.close();

@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,15 +15,19 @@ import java.util.List;
 import java.util.Map;
 
 import connectDB.Database;
+import daos.dao_interface.Tau_DAO;
+import lombok.Getter;
 import model.ChuyenTau;
 import model.Tau;
 import model.Tau.TrangThaiTau;
+@Getter
+public class Tau_DAOImpl extends UnicastRemoteObject implements Tau_DAO {
 
-public class Tau_DAOImpl {
-
+	public Tau_DAOImpl() throws RemoteException {
+	}
 	private static Tau_DAOImpl instance;
 
-	public static Tau_DAOImpl getInstance() {
+	public static Tau_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new Tau_DAOImpl() : instance;
 	}
 

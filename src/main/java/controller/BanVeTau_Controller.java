@@ -10,6 +10,7 @@ import java.awt.Image;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.text.Normalizer;
 import java.text.NumberFormat;
@@ -115,8 +116,10 @@ public class BanVeTau_Controller
 				instance = new BanVeTau_Controller();
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}
-		return instance;
+			} catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        return instance;
 	}
 
 	private static int ITEMS_PER_PAGE = 5;
@@ -178,7 +181,7 @@ public class BanVeTau_Controller
 	}
 
 	// Hàm khởi tạo
-	public BanVeTau_Controller() throws SQLException {
+	public BanVeTau_Controller() throws SQLException, RemoteException {
 		this.danhSachChuyenTau = ChuyenTau_DAOImpl.getInstance().getAll();
 
 		pageList.add(chonGhe_View = new ChonGhe_View("Chọn ghế", "/Image/armchair.png"));
@@ -203,7 +206,7 @@ public class BanVeTau_Controller
 //		});
 //	}
 
-	private void initController() throws SQLException {
+	private void initController() throws SQLException, RemoteException {
 		themSuKien();
 		updateTrainPanel(chonGhe_View.panel_dsChuyenTau, danhSachChuyenTau);
 		chonGhe_View.getLblSoTrang().setText("trang: " + soTrang);
@@ -257,12 +260,12 @@ public class BanVeTau_Controller
 		try {
 			updateTrainPanel(chonGhe_View.getPanel_dsChuyenTau(), dsChuyenTaus);
 			chonGhe_View.getLblSoTrang().setText("trang: " + soTrang);
-		} catch (SQLException e1) {
+		} catch (SQLException | RemoteException e1) {
 			e1.printStackTrace();
 		}
 	}
 
-	private void updateTrainPanel(JPanel trainPanel, List<ChuyenTau> dsChuyenTaus) throws SQLException {
+	private void updateTrainPanel(JPanel trainPanel, List<ChuyenTau> dsChuyenTaus) throws SQLException, RemoteException {
 		trainPanel.removeAll();
 		for (int i = currentIndex; i < Math.min(currentIndex + ITEMS_PER_PAGE, dsChuyenTaus.size()); i++) {
 			ChuyenTau chuyenTau = dsChuyenTaus.get(i);
@@ -275,7 +278,7 @@ public class BanVeTau_Controller
 		trainPanel.repaint();
 	}
 
-	private void updateSoLuongGheTrongChuyen(Tau tau) {
+	private void updateSoLuongGheTrongChuyen(Tau tau) throws RemoteException {
 		Map<String, Integer> thongTinGhe = Tau_DAOImpl.getInstance().layThongTinGhe(tau.getMaTau());
 		soLuongGheTrongChuyen.setText(thongTinGhe.get("soGheConLai") + "/" + thongTinGhe.get("tongSoGhe") + "");
 		soLuongGheTrongChuyen.revalidate();
@@ -283,7 +286,7 @@ public class BanVeTau_Controller
 	}
 
 	// Tạo phần tử tàu
-	private JPanel createTau(ChuyenTau chuyenTau) {
+	private JPanel createTau(ChuyenTau chuyenTau) throws RemoteException {
 		Tau tau = Tau_DAOImpl.getInstance().getTauByMaChuyenTau(chuyenTau.getMaChuyenTau());
 		RoundedPanel panel_chyentau = new RoundedPanel(20);
 		panel_chyentau.setBorder(new EmptyBorder(0, 20, 15, 20));
@@ -367,11 +370,21 @@ public class BanVeTau_Controller
 				// Ghi nhận chuyến tàu được chọn
 				chuyenTauChon = chuyenTau;
 
-				ArrayList<ToaTau> dsToaTau = ToaTau_DAOImpl.getInstance().getDsToaTau(tau.getMaTau());
+                ArrayList<ToaTau> dsToaTau = null;
+                try {
+                    dsToaTau = ToaTau_DAOImpl.getInstance().getDsToaTau(tau.getMaTau());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
 
-				if (dsToaTau != null && !dsToaTau.isEmpty()) {
-					JPanel panelToaTau = themDsToaTau(dsToaTau);
-					toaTauChon = dsToaTau.get(0);
+                if (dsToaTau != null && !dsToaTau.isEmpty()) {
+                    JPanel panelToaTau = null;
+                    try {
+                        panelToaTau = themDsToaTau(dsToaTau);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    toaTauChon = dsToaTau.get(0);
 					// Cập nhật giao diện
 					chonGhe_View.panel_DsToaTau.removeAll();
 					chonGhe_View.panel_DsToaTau.add(panelToaTau);
@@ -409,7 +422,7 @@ public class BanVeTau_Controller
 	}
 
 	// Thêm danh sách toa tàu
-	public JPanel themDsToaTau(ArrayList<ToaTau> dsToaTau) {
+	public JPanel themDsToaTau(ArrayList<ToaTau> dsToaTau) throws RemoteException {
 		int count = 0;
 
 		JPanel panel = new RoundedPanel(10);
@@ -440,7 +453,7 @@ public class BanVeTau_Controller
 	}
 
 	// Phương thức tính số tàu còn lại
-	private int tinhSoGheTauConLai(String maToaTau) {
+	private int tinhSoGheTauConLai(String maToaTau) throws RemoteException {
 		int sl = 0;
 		for (GheTau gheTau : GheTau_DAOImpl.getInstance().getDsGheTau(maToaTau)) {
 			if (gheTau.getTrangThai().equals("TRONG")) {
@@ -497,18 +510,27 @@ public class BanVeTau_Controller
 				// Ghi nhận chuyến tàu được chọn
 				toaTauChon = toaTau;
 
-				ArrayList<GheTau> dsGheTau = GheTau_DAOImpl.getInstance().getDsGheTau(toaTau.getMaToaTau());
-				if (dsGheTau != null && !dsGheTau.isEmpty()) {
+                ArrayList<GheTau> dsGheTau = null;
+                try {
+                    dsGheTau = GheTau_DAOImpl.getInstance().getDsGheTau(toaTau.getMaToaTau());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+                if (dsGheTau != null && !dsGheTau.isEmpty()) {
 					JPanel panelGheTau = themDsGheTau(dsGheTau);
 					// Cập nhật giao diện
 					chonGhe_View.panel_DsGheTau.removeAll();
 					chonGhe_View.panel_DsGheTau.add(panelGheTau);
 					chonGhe_View.panel_DsGheTau.revalidate();
 					chonGhe_View.panel_DsGheTau.repaint();
-					chonGhe_View.getLbl_SoGheTau()
-							.setText(tinhSoGheTauConLai(toaTauChon.getMaToaTau()) + "/" + dsGheTau.size());
+                    try {
+                        chonGhe_View.getLbl_SoGheTau()
+                                .setText(tinhSoGheTauConLai(toaTauChon.getMaToaTau()) + "/" + dsGheTau.size());
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
 
-					if (count < 4) {
+                    if (count < 4) {
 						chonGhe_View.getLbl_TenToaTau().setText("Toa tàu số " + count + ":" + " Toa tàu VIP");
 					} else {
 						chonGhe_View.getLbl_TenToaTau().setText("Toa tàu số " + count + ":" + " Toa tàu thường");
@@ -640,8 +662,10 @@ public class BanVeTau_Controller
 			updateDisplay(danhSachChuyenTau);
 		} catch (ParseException e) {
 			e.printStackTrace();
-		}
-	}
+		} catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
 	public void timKiemChuyenTauDi(String ngayDi) {
 		timKiemChuyenTau(ngayDi, true);
@@ -756,7 +780,7 @@ public class BanVeTau_Controller
 	}
 
 	// Làm mới chuyến tàu lại như ban đầu và ô nhập dữ liệu
-	private void lamMoi() {
+	private void lamMoi() throws RemoteException {
 		lamMoiInput();
 		soChuyenTau = 0;
 		chonGhe_View.getCombobox_KhungGio().setSelectedIndex(0);
@@ -804,7 +828,7 @@ public class BanVeTau_Controller
 		chonGhe_View.getLblTTChuyenTauTimKiem().setText("Danh sách chuyến tàu đề xuất");
 	}
 
-	private void capNhatGiaoDienGheTau(String maToaTau) {
+	private void capNhatGiaoDienGheTau(String maToaTau) throws RemoteException {
 		JPanel panelGheTau = themDsGheTau(GheTau_DAOImpl.getInstance().getDsGheTau(maToaTau));
 
 		chonGhe_View.panel_DsGheTau.removeAll();
@@ -821,7 +845,7 @@ public class BanVeTau_Controller
 		return true;
 	}
 
-	private boolean chonNhanhGheTauNgauNhien() {
+	private boolean chonNhanhGheTauNgauNhien() throws RemoteException {
 		String input = JOptionPane.showInputDialog(null, "Nhập số lượng ghế muốn chọn:", "Chọn nhanh ghế tàu",
 				JOptionPane.QUESTION_MESSAGE);
 
@@ -869,7 +893,7 @@ public class BanVeTau_Controller
 		return true;
 	}
 
-	private ArrayList<GheTau> layDanhSachGheTrong() {
+	private ArrayList<GheTau> layDanhSachGheTrong() throws RemoteException {
 		ArrayList<GheTau> danhSachGheTrong = new ArrayList<>();
 		for (GheTau ghe : GheTau_DAOImpl.getInstance().getDsGheTau(toaTauChon.getMaToaTau())) {
 			if ("TRONG".equals(ghe.getTrangThai())) {
@@ -913,7 +937,7 @@ public class BanVeTau_Controller
 		}
 	}
 
-	private void capNhatThongTinVeTau(ArrayList<GheTau> danhSachGheDuocChon, int soLuongGhe) {
+	private void capNhatThongTinVeTau(ArrayList<GheTau> danhSachGheDuocChon, int soLuongGhe) throws RemoteException {
 		for (GheTau ghe : danhSachGheDuocChon) {
 			ghe.setTrangThai(isDoiVe ? "DA_THANH_TOAN" : "DANG_GIU_CHO");
 			GheTau_DAOImpl.getInstance().updateTrangThaiGheTau(ghe.getMaGheTau(), ghe.getTrangThai());
@@ -930,7 +954,7 @@ public class BanVeTau_Controller
 		}
 	}
 
-	private void capNhatGiaoDienSauKhiChon() {
+	private void capNhatGiaoDienSauKhiChon() throws RemoteException {
 		capNhatGiaoDienGheTau(toaTauChon.getMaToaTau());
 		if (!isDoiVe) {
 			HienThi_Controller.getInstance().getHomeView().showView("Vé tàu");
@@ -938,7 +962,7 @@ public class BanVeTau_Controller
 		}
 	}
 
-	private void capNhatVeTauKhuHoi(ArrayList<GheTau> danhSachGheDuocChon) {
+	private void capNhatVeTauKhuHoi(ArrayList<GheTau> danhSachGheDuocChon) throws RemoteException {
 		JTable jTable = veTau_Page.getDanhSachVeTau();
 		int i = 0;
 		for (GheTau gheTau : danhSachGheDuocChon) {
@@ -958,7 +982,7 @@ public class BanVeTau_Controller
 		return Math.abs(ghe1.getsoThuTuGhe() - ghe2.getsoThuTuGhe()) == 1;
 	}
 
-	private void themVeTauChonNhanh(GheTau gheTau) {
+	private void themVeTauChonNhanh(GheTau gheTau) throws RemoteException {
 		JTable jTable = veTau_Page.getDanhSachVeTau();
 		DefaultTableModel model = (DefaultTableModel) jTable.getModel();
 
@@ -989,7 +1013,7 @@ public class BanVeTau_Controller
 
 	// Xử lý lớp vé tàu tạm thời
 	// Them ve tau
-	public boolean themVeTau() {
+	public boolean themVeTau() throws RemoteException {
 		if (gheTauChon == null) {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn ghế tàu trước khi thêm vé!", "Lỗi",
 					JOptionPane.ERROR_MESSAGE);
@@ -1095,7 +1119,7 @@ public class BanVeTau_Controller
 	}
 
 	// Xử lý vé tàu tạm thời
-	public void themDataTableVeTau() {
+	public void themDataTableVeTau() throws RemoteException {
 		boolean loaiVe;
 		String chiTietChuyenTau = chuyenTauChon.getGaKhoiHanh() + " - " + chuyenTauChon.getGaDen() + " "
 				+ formatterNgayGio.format(chuyenTauChon.getThoiGianKhoiHanh());
@@ -1165,7 +1189,7 @@ public class BanVeTau_Controller
 	}
 
 	// Cập nhật trạng thái ghế tàu
-	private void capNhatTrangThaiGheTau(String maGheTau) {
+	private void capNhatTrangThaiGheTau(String maGheTau) throws RemoteException {
 		for (GheTau gheTau : GheTau_DAOImpl.getInstance().getAll()) {
 			if (gheTau.getMaGheTau().equals(maGheTau)) {
 				gheTau.setTrangThai("DANG_GIU_CHO");
@@ -1175,7 +1199,7 @@ public class BanVeTau_Controller
 	}
 
 	// Xử lý hủy danh sách vé tàu tạm thời
-	private boolean xuLyHuyBoVeTam() {
+	private boolean xuLyHuyBoVeTam() throws RemoteException {
 		JTable jTable = veTau_Page.getDanhSachVeTau();
 		int count = jTable.getRowCount();
 		if (count > 0) {
@@ -1189,7 +1213,7 @@ public class BanVeTau_Controller
 		}
 	}
 
-	public void resetHuyBoVe() {
+	public void resetHuyBoVe() throws RemoteException {
 		stopTimers();
 		isThemVeTau = false;
 
@@ -1229,7 +1253,7 @@ public class BanVeTau_Controller
 	}
 
 	// Tìm kiếm khách hàng
-	private KhachHang timKiemKhachHang(String s, boolean b) { // true: sdt, false: cccd
+	private KhachHang timKiemKhachHang(String s, boolean b) throws RemoteException { // true: sdt, false: cccd
 		for (KhachHang khachHang : KhachHang_DAOImpl.getInstance().getAll()) {
 			if (b) {
 				if (khachHang.getSoDienThoai().equals(s)) {
@@ -1287,11 +1311,19 @@ public class BanVeTau_Controller
 				} else {
 					((Timer) e.getSource()).stop();
 					veTau_Page.getLbl_ThoiGianGiuVe().setText("Thời gian đã hết!");
-					xuLyHuyBoVeTam();
-					JOptionPane.showMessageDialog(null, "Hủy bỏ danh sách vé tàu tạm thời thành công!", "Thông báo",
+                    try {
+                        xuLyHuyBoVeTam();
+                    } catch (RemoteException ex) {
+                        ex.printStackTrace();
+                    }
+                    JOptionPane.showMessageDialog(null, "Hủy bỏ danh sách vé tàu tạm thời thành công!", "Thông báo",
 							JOptionPane.INFORMATION_MESSAGE);
-					resetHuyBoVe();
-				}
+                    try {
+                        resetHuyBoVe();
+                    } catch (RemoteException ex) {
+                        ex.printStackTrace();
+                    }
+                }
 			}
 		});
 
@@ -1348,7 +1380,7 @@ public class BanVeTau_Controller
 		return giaVeTamTinh;
 	}
 
-	private void capNhatTTVeTau() {
+	private void capNhatTTVeTau() throws RemoteException {
 		KhachHang kh = getThongTinKHInput();
 
 		JTable jTable = veTau_Page.getDanhSachVeTau();
@@ -1390,7 +1422,7 @@ public class BanVeTau_Controller
 		}
 	}
 
-	private KhachHang getThongTinKHInput() {
+	private KhachHang getThongTinKHInput() throws RemoteException {
 		KhachHang khachHang = new KhachHang();
 		maKhachHang = veTau_Page.getTxt_MaKH().getText();
 
@@ -1432,7 +1464,7 @@ public class BanVeTau_Controller
 		return khachHang;
 	}
 
-	private void xoaVeTau() {
+	private void xoaVeTau() throws RemoteException {
 		DefaultTableModel model = (DefaultTableModel) veTau_Page.getDanhSachVeTau().getModel();
 		JTable jTable = veTau_Page.getDanhSachVeTau();
 		int selectedRow = jTable.getSelectedRow();
@@ -1482,7 +1514,7 @@ public class BanVeTau_Controller
 	}
 
 	// Xử lý hoàn vé
-	private boolean timKiemHoaDon() {
+	private boolean timKiemHoaDon() throws RemoteException {
 		String soDienThoaiOrMaVe = hoanTien_view.getRdbtnMaVeTau().isSelected()
 				? hoanTien_view.getTxtMaVeTau().getText().trim()
 				: hoanTien_view.getTxtSDT().getText().trim();
@@ -1514,7 +1546,7 @@ public class BanVeTau_Controller
 		return !thongTinVes.isEmpty();
 	}
 
-	private void xuLyHienThiChuyenTauDoiVe(int index) {
+	private void xuLyHienThiChuyenTauDoiVe(int index) throws RemoteException {
 
 		String gaDi = VeTau_DAOImpl.getInstance()
 				.getByMaVeTauChuyenTau((String) hoanTien_view.getDanhSachVeTable().getValueAt(index, 2)).getGheTau()
@@ -1555,7 +1587,7 @@ public class BanVeTau_Controller
 		hoanTien_view.getLbl_TongVeMotChieu().setText(soVeKhuHoi + "");
 	}
 
-	private void xuLyTraVe() {
+	private void xuLyTraVe() throws RemoteException {
 		int selectedRow = hoanTien_view.getDanhSachVeTable().getSelectedRow();
 		if (selectedRow != -1) {
 			if (!VeTau_DAOImpl.getInstance()
@@ -1596,7 +1628,7 @@ public class BanVeTau_Controller
 		}
 	}
 
-	private boolean checkTimeDoiVe() {
+	private boolean checkTimeDoiVe() throws RemoteException {
 		int index = hoanTien_view.getDanhSachVeTable().getSelectedRow();
 
 		LocalDateTime dateTime = VeTau_DAOImpl.getInstance()
@@ -1605,7 +1637,7 @@ public class BanVeTau_Controller
 		return dateTime.isBefore(LocalDateTime.now());
 	}
 
-	private static double tinhTienHoaDon(String maHD) {
+	private static double tinhTienHoaDon(String maHD) throws RemoteException {
 		double tongTien = 0;
 		List<ChiTiet_HoaDon> dsChiTiet = ChiTiet_HoaDon_DAOImpl.getInstance().getByMaHoaDon(maHD);
 		for (ChiTiet_HoaDon chiTiet_HoaDon : dsChiTiet) {
@@ -1630,13 +1662,13 @@ public class BanVeTau_Controller
 		return duration.toHours() <= 24;
 	}
 
-	private static double tinhTiLeHoanTien(String maHD) {
+	private static double tinhTiLeHoanTien(String maHD) throws RemoteException {
 		return kiemTraThoiGianMuaVe(
 				VeTau_DAOImpl.getInstance().getByMaVeTauChuyenTau(VeTau_DAOImpl.getInstance().getByMaHoaDon(maHD).getMaVeTau())
 						.getGheTau().getToaTau().getTau().getChuyenTau().getThoiGianKhoiHanh()) ? 0.8 : 0;
 	}
 
-	private static double tinhTienHoanVe(String maHD) {
+	private static double tinhTienHoanVe(String maHD) throws RemoteException {
 		double tiLeHoanTien = tinhTiLeHoanTien(maHD);
 		return tinhTienHoaDon(maHD) * tiLeHoanTien;
 	}
@@ -1653,7 +1685,7 @@ public class BanVeTau_Controller
 		return maPhieu;
 	}
 
-	private PhieuHoanTien taoPhieuHoanTien() {
+	private PhieuHoanTien taoPhieuHoanTien() throws RemoteException {
 		String maPhieuHoanTienTemp = PhieuHoanTien_DAOImpl.getInstance().getMaPhieuHoanTienMax();
 		String maPhieuHoanTien = taoMaPhieuHoanTien(maPhieuHoanTienTemp);
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -1688,7 +1720,7 @@ public class BanVeTau_Controller
 		return "trống";
 	}
 
-	private boolean themPhieuHoanTienMoi(PhieuHoanTien phieuHoanTien) {
+	private boolean themPhieuHoanTienMoi(PhieuHoanTien phieuHoanTien) throws RemoteException {
 		phieuHoanTien = taoPhieuHoanTien();
 		boolean daThem = PhieuHoanTien_DAOImpl.getInstance().themPhieuHoanTien(phieuHoanTien);
 		if (daThem) {
@@ -1713,11 +1745,11 @@ public class BanVeTau_Controller
 		((DefaultTableModel) hoanTien_view.getDanhSachVeTable().getModel()).setRowCount(0);
 	}
 
-	private boolean thayDoiTrangThaiDaHuy(String maKH, String maHoaDon) {
+	private boolean thayDoiTrangThaiDaHuy(String maKH, String maHoaDon) throws RemoteException {
 		return VeTau_DAOImpl.getInstance().capNhatTrangThaiVeTau(maKH, maHoaDon);
 	}
 
-	private boolean kiemTraVeNhom(String maHoaDon) {
+	private boolean kiemTraVeNhom(String maHoaDon) throws RemoteException {
 		return HoaDon_DAOImpl.getInstance().laySoLuongHoaDon(maHoaDon) > 1 ? true : false;
 	}
 
@@ -1985,7 +2017,7 @@ public class BanVeTau_Controller
 		return panel;
 	}
 
-	public boolean xuLyThuTien() {
+	public boolean xuLyThuTien() throws RemoteException {
 		themDanhSachKhachHangDB();
 
 		if (themDataHoaDon()) {
@@ -1995,7 +2027,7 @@ public class BanVeTau_Controller
 		return false;
 	}
 
-	private void resetSauThanhToan() {
+	private void resetSauThanhToan() throws RemoteException {
 
 		veTau_Page.getDanhSachVeTauModel().setRowCount(0);
 
@@ -2028,7 +2060,7 @@ public class BanVeTau_Controller
 		veTau_Page.getComboBox_LoaiKH().setSelectedIndex(0);
 	}
 
-	public boolean themDataHoaDon() {
+	public boolean themDataHoaDon() throws RemoteException {
 		ThongTinTram thongTinTram = new ThongTinTram("NG0002");
 		JTable jTable_Ds = veTau_Page.getDanhSachVeTau();
 		NhanVien nhanVien = new NhanVien("NV00001");
@@ -2092,7 +2124,7 @@ public class BanVeTau_Controller
 		return maHoaDon;
 	}
 
-	public boolean themDanhSachKhachHangDB() {
+	public boolean themDanhSachKhachHangDB() throws RemoteException {
 		KhachHang khachHang = new KhachHang();
 		JTable jTable = veTau_Page.getDanhSachVeTau();
 		boolean isSuccess = false;
@@ -2334,34 +2366,46 @@ public class BanVeTau_Controller
 			chonGhe_View.getLbl_TongSoVeTamThoi().setVisible(false);
 			chonGhe_View.getDateChooser_NgayVe().setEnabled(true);
 		} else if (obj.equals(chonGhe_View.getBtn_LamMoi())) {
-			lamMoi();
-		} else if (obj.equals(chonGhe_View.getCombobox_KhungGio())) {
+            try {
+                lamMoi();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        } else if (obj.equals(chonGhe_View.getCombobox_KhungGio())) {
 			if (isBtnClicked) {
 				locChuyenTau(danhSachChuyenTau);
 			} else {
-				danhSachChuyenTau = ChuyenTau_DAOImpl.getInstance().getAll();
-				locChuyenTau(danhSachChuyenTau);
+                try {
+                    danhSachChuyenTau = ChuyenTau_DAOImpl.getInstance().getAll();
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+                locChuyenTau(danhSachChuyenTau);
 			}
 		} else if (obj.equals(chonGhe_View.getBtn_ChonNhanh())) {
 			if (chuyenTauChon != null) {
-				if (chonNhanhGheTauNgauNhien()) {
-					if (!isThemVeTau) {
-						if (chonGhe_View.getRdbtn_KhuHoi().isSelected()) {
-							if (isBtnTiepTheoClick) {
-								isThemVeTau = true;
-							}
-							isThemVeTau = false;
-						} else {
-							isThemVeTau = true;
-						}
-						if (isDoiVe) {
-							chonGhe_View.getLbl_ThongBao().setText("");
-						} else {
-							startCountdownTimer();
-						}
-					}
-				}
-			} else {
+                try {
+                    if (chonNhanhGheTauNgauNhien()) {
+                        if (!isThemVeTau) {
+                            if (chonGhe_View.getRdbtn_KhuHoi().isSelected()) {
+                                if (isBtnTiepTheoClick) {
+                                    isThemVeTau = true;
+                                }
+                                isThemVeTau = false;
+                            } else {
+                                isThemVeTau = true;
+                            }
+                            if (isDoiVe) {
+                                chonGhe_View.getLbl_ThongBao().setText("");
+                            } else {
+                                startCountdownTimer();
+                            }
+                        }
+                    }
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
 				JOptionPane.showMessageDialog(null, "Vui lòng chọn chuyến tàu!", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 			}
@@ -2382,8 +2426,12 @@ public class BanVeTau_Controller
 				JOptionPane.showMessageDialog(null, "Danh sách vé tàu tạm thời trống!", "Thông báo",
 						JOptionPane.WARNING_MESSAGE);
 			} else {
-				xoaVeTau();
-			}
+                try {
+                    xoaVeTau();
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
 		} else if (obj.equals(veTau_Page.getBtn_CapNhatTT())) {
 			if (veTau_Page.getDanhSachVeTauModel().getRowCount() == 0) {
 				JOptionPane.showMessageDialog(null, "Danh sách vé tàu tạm thời trống!", "Thông báo",
@@ -2395,23 +2443,31 @@ public class BanVeTau_Controller
 				JOptionPane.showMessageDialog(null, "Vui lòng điền đủ thông tin!", "Thông báo",
 						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				capNhatTTVeTau();
-			}
+                try {
+                    capNhatTTVeTau();
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
 		}
 		// Xử lý sự kiện hủy bỏ vé tạm thời
 		else if (obj.equals(veTau_Page.getBtn_HuyBo())) {
 			int response = JOptionPane.showConfirmDialog(null, "Bạn có muốn tiếp tục?", "Xác nhận",
 					JOptionPane.YES_NO_OPTION);
 			if (response == JOptionPane.YES_OPTION) {
-				if (xuLyHuyBoVeTam()) {
-					JOptionPane.showMessageDialog(null, "Hủy bỏ danh sách vé tàu tạm thời thành công!", "Thông báo",
-							JOptionPane.INFORMATION_MESSAGE);
-					resetHuyBoVe();
-				} else {
-					JOptionPane.showMessageDialog(null, "Hủy bỏ danh sách vé tàu tạm thời không thành công!",
-							"Thông báo", JOptionPane.INFORMATION_MESSAGE);
-				}
-			}
+                try {
+                    if (xuLyHuyBoVeTam()) {
+                        JOptionPane.showMessageDialog(null, "Hủy bỏ danh sách vé tàu tạm thời thành công!", "Thông báo",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        resetHuyBoVe();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Hủy bỏ danh sách vé tàu tạm thời không thành công!",
+                                "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
 		} else if (obj.equals(veTau_Page.getBtn_XoaTrang())) {
 			if (veTau_Page.getDanhSachVeTau().getRowCount() > 0) {
 				xoaTrangInputVeTauTam1();
@@ -2420,32 +2476,53 @@ public class BanVeTau_Controller
 
 		// Xử lý sự kiện hoàn vé
 		else if (obj.equals(hoanTien_view.getTimKiemButton())) {
-			if (!timKiemHoaDon()) {
-				JOptionPane.showMessageDialog(null, "Không tìm thấy vé tàu nào!", "Thông báo",
-						javax.swing.JOptionPane.INFORMATION_MESSAGE);
-			}
-			loadDataLblViewHoanTien();
+            try {
+                if (!timKiemHoaDon()) {
+                    JOptionPane.showMessageDialog(null, "Không tìm thấy vé tàu nào!", "Thông báo",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+            loadDataLblViewHoanTien();
 
 		} else if (obj.equals(thongTinVe.getHoanVeButton())) {
-			PhieuHoanTien phieuHoanTien = taoPhieuHoanTien();
-			if (themPhieuHoanTienMoi(phieuHoanTien)) {
-				JOptionPane.showMessageDialog(null, "Thêm phiếu hoàn tiền thành công!", "Thông báo",
-						JOptionPane.INFORMATION_MESSAGE);
-				timKiemHoaDon();
-				thongTinVe.setVisible(false);
+            PhieuHoanTien phieuHoanTien = null;
+            try {
+                phieuHoanTien = taoPhieuHoanTien();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+            try {
+                if (themPhieuHoanTienMoi(phieuHoanTien)) {
+                    JOptionPane.showMessageDialog(null, "Thêm phiếu hoàn tiền thành công!", "Thông báo",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    timKiemHoaDon();
+                    thongTinVe.setVisible(false);
 
-			} else {
-				JOptionPane.showMessageDialog(null, "Thêm phiếu hoàn tiền thất bại!", "Thông báo",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		} else if (obj.equals(hoanTien_view.getLamMoiButton())) {
+                } else {
+                    JOptionPane.showMessageDialog(null, "Thêm phiếu hoàn tiền thất bại!", "Thông báo",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (RemoteException ex) {ex.printStackTrace();
+            }
+        } else if (obj.equals(hoanTien_view.getLamMoiButton())) {
 			lamMoiDoiTraVe();
 		} else if (obj.equals(hoanTien_view.getBtn_TraVe())) {
-			xuLyTraVe();
-		} else if (obj.equals(thongTinVe.getInPDFButton())) {
-			String maPhieuHoanTien = PhieuHoanTien_DAOImpl.getInstance()
-					.getMaPhieuHoanTienByMaHoaDon(thongTinVe.getMaHoaDonLabel().getValue());
-			try {
+            try {
+                xuLyTraVe();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        } else if (obj.equals(thongTinVe.getInPDFButton())) {
+            String maPhieuHoanTien = null;
+            try {
+                maPhieuHoanTien = PhieuHoanTien_DAOImpl.getInstance()
+                        .getMaPhieuHoanTienByMaHoaDon(thongTinVe.getMaHoaDonLabel().getValue());
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+            try {
 				inPhieuHoanTien(maPhieuHoanTien);
 				thongTinVe.setVisible(false);
 			} catch (Exception e2) {
@@ -2472,23 +2549,26 @@ public class BanVeTau_Controller
 		} else if (obj.equals(hoanTien_view.getBtn_DoiVe())) {
 			if (hoanTien_view.getDanhSachVeTable().getRowCount() > 0) {
 				if (hoanTien_view.getDanhSachVeTable().getSelectedRow() >= 0) {
-					if (!VeTau_DAOImpl.getInstance().getByMaVeTau((String) hoanTien_view.getDanhSachVeTable()
-							.getValueAt(hoanTien_view.getDanhSachVeTable().getSelectedRow(), 2)).isDaHuy()) {
-						if (!checkTimeDoiVe()) {
-							resetDoiVe_1();
-							HienThi_Controller.getInstance().getHomeView().showView("Chọn ghế");
-							isDoiVe = true;
-							lamMoi_ChuyenTau_Tau_ToaTau_GheTau();
-							xuLyHienThiChuyenTauDoiVe(hoanTien_view.getDanhSachVeTable().getSelectedRow());
-						} else {
-							JOptionPane.showMessageDialog(null, "Đã quá thời gian đổi vé", "Thông báo",
-									JOptionPane.ERROR_MESSAGE);
-						}
-					} else {
-						JOptionPane.showMessageDialog(null, "Vé tàu đã hủy, không thể đổi vé", "Thông báo",
-								JOptionPane.ERROR_MESSAGE);
-					}
-				} else {
+                    try {
+                        if (!VeTau_DAOImpl.getInstance().getByMaVeTau((String) hoanTien_view.getDanhSachVeTable()
+                                .getValueAt(hoanTien_view.getDanhSachVeTable().getSelectedRow(), 2)).isDaHuy()) {
+                            if (!checkTimeDoiVe()) {
+                                resetDoiVe_1();
+                                HienThi_Controller.getInstance().getHomeView().showView("Chọn ghế");
+                                isDoiVe = true;
+                                lamMoi_ChuyenTau_Tau_ToaTau_GheTau();
+                                xuLyHienThiChuyenTauDoiVe(hoanTien_view.getDanhSachVeTable().getSelectedRow());
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Đã quá thời gian đổi vé", "Thông báo",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Vé tàu đã hủy, không thể đổi vé", "Thông báo",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (RemoteException ex) {ex.printStackTrace();
+                    }
+                } else {
 					JOptionPane.showMessageDialog(null, "Vui lòng chọn vé tàu!", "Thông báo",
 							JOptionPane.ERROR_MESSAGE);
 				}
@@ -2506,8 +2586,12 @@ public class BanVeTau_Controller
 			if (isDoiVe) {
 				resetDoiVe();
 				JOptionPane.showMessageDialog(null, "Xử lý đổi vé thành công!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-				lamMoi();
-				HienThi_Controller.getInstance().getHomeView().showView("Đổi trả vé");
+                try {
+                    lamMoi();
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+                HienThi_Controller.getInstance().getHomeView().showView("Đổi trả vé");
 			} else {
 				JOptionPane.showMessageDialog(null, "Xử lý đổi vé không thành công!", "Thông báo",
 						JOptionPane.ERROR_MESSAGE);
@@ -2519,23 +2603,31 @@ public class BanVeTau_Controller
 			thanhToan_Page.setVisible(false);
 		} else if (obj.equals(thanhToan_Page.getBtn_ThuTien())) {
 
-			if (xuLyThuTien()) {
-				int response = JOptionPane.showConfirmDialog(null, "Bạn có muốn tiếp tục?", "Xác nhận",
-						JOptionPane.YES_NO_OPTION);
-				if (response == JOptionPane.YES_OPTION) {
-					JOptionPane.showMessageDialog(null, "Thu thanh toán thành công!", "Thông báo",
-							JOptionPane.INFORMATION_MESSAGE);
-					if (thanhToan_Page.getChekBox_Invetau().isSelected()) {
-						inVeTau(maHoaDon);
-					}
-					resetSauThanhToan();
-					thanhToan_Page.setVisible(false);
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "Thu thanh toán không thành công!", "Thông báo",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
-		} else if (obj.equals(thanhToan_Page.getBtn_ThemGhiChu())) {
+            try {
+                if (xuLyThuTien()) {
+                    int response = JOptionPane.showConfirmDialog(null, "Bạn có muốn tiếp tục?", "Xác nhận",
+                            JOptionPane.YES_NO_OPTION);
+                    if (response == JOptionPane.YES_OPTION) {
+                        JOptionPane.showMessageDialog(null, "Thu thanh toán thành công!", "Thông báo",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        if (thanhToan_Page.getChekBox_Invetau().isSelected()) {
+                            inVeTau(maHoaDon);
+                        }
+try {
+resetSauThanhToan();
+} catch (RemoteException ex) {
+ex.printStackTrace();
+}
+thanhToan_Page.setVisible(false);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Thu thanh toán không thành công!", "Thông báo",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (RemoteException ex) {
+				ex.printStackTrace();
+            }
+        } else if (obj.equals(thanhToan_Page.getBtn_ThemGhiChu())) {
 			String note = thanhToan_Page.showNoteInputDialog(null, "Nhập ghi chú", "Vui lòng nhập ghi chú:", ghiChu);
 
 			if (note != null && !note.isEmpty()) {
@@ -2562,11 +2654,15 @@ public class BanVeTau_Controller
 			int selectedRow = hoanTien_view.getDanhSachVeTable().getSelectedRow();
 			if (selectedRow != -1) {
 				String maHoaDon = hoanTien_view.getDanhSachVeTable().getValueAt(selectedRow, 1).toString();
-				if (kiemTraVeNhom(maHoaDon)) {
-					JOptionPane.showMessageDialog(null, "Vé nhóm không được hoàn tiền!", "Thông báo",
-							JOptionPane.INFORMATION_MESSAGE);
-				}
-			}
+                try {
+                    if (kiemTraVeNhom(maHoaDon)) {
+                        JOptionPane.showMessageDialog(null, "Vé nhóm không được hoàn tiền!", "Thông báo",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
 		}
 
 	}
@@ -2662,10 +2758,18 @@ public class BanVeTau_Controller
 		if (obj.equals(veTau_Page.getTxt_SDT()) || obj.equals(veTau_Page.getTxt_CCCD())) {
 			KhachHang khachHang = null;
 			if (obj.equals(veTau_Page.getTxt_SDT())) {
-				khachHang = timKiemKhachHang(veTau_Page.getTxt_SDT().getText(), true);
-			} else if (obj.equals(veTau_Page.getTxt_CCCD())) {
-				khachHang = timKiemKhachHang(veTau_Page.getTxt_CCCD().getText(), false);
-			}
+                try {
+                    khachHang = timKiemKhachHang(veTau_Page.getTxt_SDT().getText(), true);
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            } else if (obj.equals(veTau_Page.getTxt_CCCD())) {
+                try {
+                    khachHang = timKiemKhachHang(veTau_Page.getTxt_CCCD().getText(), false);
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
 
 			if (khachHang != null) {
 				themThongTinKHInput(khachHang);

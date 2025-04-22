@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -119,7 +120,7 @@ public class QuanLyTau_View extends View {
 		btnSearch.addActionListener(listener);
 	}
 
-	public QuanLyTau_View(String name, String imagePath) {
+	public QuanLyTau_View(String name, String imagePath) throws RemoteException {
 		super(name, imagePath);
 		FlatLightLaf.setup();
 		t_dao = new Tau_DAOImpl();

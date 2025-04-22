@@ -4,6 +4,7 @@ import daos.dao_impl.KhachHang_DAOImpl;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 @Entity
 @Table(name = "PhieuHoanTien")
@@ -97,7 +98,7 @@ public class PhieuHoanTien implements Serializable {
 		}
 	}
 
-	public KhachHang getKhachHang() {
+	public KhachHang getKhachHang() throws RemoteException {
 		return khachHang.getSoDienThoai() == null
 				? khachHang = KhachHang_DAOImpl.getInstance().getByMaKhachHang(khachHang.getMaKhachHang())
 				: khachHang;
