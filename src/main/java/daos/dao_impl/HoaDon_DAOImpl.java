@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,13 +19,17 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import connectDB.Database;
+import daos.dao_interface.HoaDon_DAO;
+import lombok.Getter;
 import model.*;
+@Getter
+public class HoaDon_DAOImpl extends UnicastRemoteObject implements HoaDon_DAO {
 
-public class HoaDon_DAOImpl {
-
+	public HoaDon_DAOImpl() throws RemoteException {
+	}
 	private static HoaDon_DAOImpl instance;
 
-	public static HoaDon_DAOImpl getInstance() {
+	public static HoaDon_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new HoaDon_DAOImpl() : instance;
 	}
 
@@ -63,7 +69,9 @@ public class HoaDon_DAOImpl {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
+		} catch (RemoteException e) {
+            e.printStackTrace();
+        } finally {
 			try {
 				if (rs != null)
 					rs.close();
@@ -466,9 +474,11 @@ public class HoaDon_DAOImpl {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
-		return false;
+        return false;
 	}
 
 	public List<Map<String, Object>> getThongTinHoaDon(String maHoaDon) {

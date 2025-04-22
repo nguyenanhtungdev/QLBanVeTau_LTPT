@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,14 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import daos.dao_interface.ChuyenTau_DAO;
+import lombok.Getter;
 import model.ChuyenTau;
 import model.GiaVe;
+@Getter
+public class ChuyenTau_DAOImpl extends UnicastRemoteObject implements ChuyenTau_DAO {
 
-public class ChuyenTau_DAOImpl {
-
+	public ChuyenTau_DAOImpl() throws RemoteException {
+	}
 	private static ChuyenTau_DAOImpl instance;
 
-	public static ChuyenTau_DAOImpl getInstance() {
+	public static ChuyenTau_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new ChuyenTau_DAOImpl() : instance;
 	}
 
@@ -125,7 +131,9 @@ public class ChuyenTau_DAOImpl {
 			return count == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
+		} catch (RemoteException e) {
+            e.printStackTrace();
+        } finally {
 			try {
 				if (statement != null)
 					statement.close();
@@ -151,15 +159,17 @@ public class ChuyenTau_DAOImpl {
 			statement.setTimestamp(4, Timestamp.valueOf(entity.getThoiGianDuKien()));
 			statement.setNString(5, entity.getGhiChu());
 			statement.setNString(6, entity.getGiaVe().getMaGiaVe());
-			statement.setString(8, entity.getMaChuyenTau());
+			statement.setString(7, entity.getMaChuyenTau());
 			int count = statement.executeUpdate();
 
 			return count > 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
-		return false;
+        return false;
 	}
 
 	public ArrayList<ChuyenTau> timKiemChuyenTau(String gaDi, String gaDen, String ngayDi) {

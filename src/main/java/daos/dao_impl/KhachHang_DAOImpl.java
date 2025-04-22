@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,14 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import daos.dao_interface.KhachHang_DAO;
+import lombok.Getter;
 import model.KhachHang;
 import model.VeTau;
+@Getter
+public class KhachHang_DAOImpl extends UnicastRemoteObject implements KhachHang_DAO {
 
-public class KhachHang_DAOImpl {
-
+	public KhachHang_DAOImpl() throws RemoteException {
+	}
 	private static KhachHang_DAOImpl instance;
 
-	public static KhachHang_DAOImpl getInstance() {
+	public static KhachHang_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new KhachHang_DAOImpl() : instance;
 	}
 

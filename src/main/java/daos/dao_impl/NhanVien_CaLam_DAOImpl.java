@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,15 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import daos.dao_interface.NhanVien_CaLam_DAO;
+import lombok.Getter;
 import model.CaLam;
 import model.NhanVien;
 import model.NhanVien_CaLam;
+@Getter
+public class NhanVien_CaLam_DAOImpl extends UnicastRemoteObject implements NhanVien_CaLam_DAO {
 
-public class NhanVien_CaLam_DAOImpl {
-
+	public NhanVien_CaLam_DAOImpl() throws RemoteException {
+	}
 	public static NhanVien_CaLam_DAOImpl instance;
 
-	public static NhanVien_CaLam_DAOImpl getInstance() {
+	public static NhanVien_CaLam_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new NhanVien_CaLam_DAOImpl() : instance;
 	}
 

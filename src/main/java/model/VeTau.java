@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 
 @Entity
@@ -98,11 +99,11 @@ public class VeTau implements Serializable {
 		this.daHuy = daHuy;
 	}
 
-	public GheTau getGheTau() {
+	public GheTau getGheTau() throws RemoteException {
 		return gheTau.getTenLoaiGheTau() == null ? gheTau = GheTau_DAOImpl.getInstance().getByMaGheTau(gheTau.getMaGheTau())
 				: gheTau;
 	}
-	public KhachHang getKhachHang() {
+	public KhachHang getKhachHang() throws RemoteException {
 		return khachHang = KhachHang_DAOImpl.getInstance().getByMaKhachHang(khachHang.getMaKhachHang());
 	}
 	

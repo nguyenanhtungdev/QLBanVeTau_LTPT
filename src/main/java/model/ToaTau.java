@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.List;
 
 @Entity
@@ -56,7 +57,7 @@ public class ToaTau implements Serializable {
 		this.maToaTau = maToaTau;
 	}
 
-	public Tau getTau() {
+	public Tau getTau() throws RemoteException {
 		return tau.getTenTau() == null ? tau = Tau_DAOImpl.getInstance().getByMaTau(tau.getMaTau()) : tau;
 	}
 

@@ -34,6 +34,7 @@ import java.awt.event.FocusEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import javax.swing.JScrollPane;
@@ -112,7 +113,7 @@ public class QuanLyHoaDon_View extends View implements Printable {
 		sdtItem.addActionListener(listener);
 	}
 
-	public static JComboBox<String> timKiemSDT() {
+	public static JComboBox<String> timKiemSDT() throws RemoteException {
 		JComboBox<String> comboBox = new JComboBox<>();
 		EventList<String> soDienThoaiList = new BasicEventList<>();
 		List<HoaDon> danhSachKhachHang = hd_dao.getalltbHDKH();
@@ -139,7 +140,7 @@ public class QuanLyHoaDon_View extends View implements Printable {
 		return comboBox;
 	}
 
-	public QuanLyHoaDon_View(String name, String imagePath) {
+	public QuanLyHoaDon_View(String name, String imagePath) throws RemoteException {
 		super(name, imagePath);
 		FlatLightLaf.setup();
 		hd_dao = new HoaDon_DAOImpl();

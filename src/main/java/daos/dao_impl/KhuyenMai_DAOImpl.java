@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,14 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connectDB.Database;
+import daos.dao_interface.KhuyenMai_DAO;
+import lombok.Getter;
 import model.KhuyenMai;
 import model.KhuyenMai.TinhTrangKhuyenMai;
+@Getter
+public class KhuyenMai_DAOImpl extends UnicastRemoteObject implements KhuyenMai_DAO {
 
-public class KhuyenMai_DAOImpl {
-
+	public KhuyenMai_DAOImpl() throws RemoteException {
+	}
 	private static KhuyenMai_DAOImpl instance;
 
-	public static KhuyenMai_DAOImpl getInstance() {
+	public static KhuyenMai_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new KhuyenMai_DAOImpl() : instance;
 	}
 

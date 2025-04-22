@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -66,7 +67,7 @@ public class CaiDat_Controller implements ActionListener, MouseListener, FocusLi
 		thongTinCaNhan_View.addSuKienCD(this, this, this);
 	}
 
-	private boolean capNhatThongTinNV() {
+	private boolean capNhatThongTinNV() throws RemoteException {
 		String maNV = thongTinCaNhan_View.getTxt_MaNhanVien().getText().trim();
 		String hoTen = thongTinCaNhan_View.getTxt_HoTen().getText().trim();
 		String sdt = thongTinCaNhan_View.getTxt_SDT().getText().trim();
@@ -165,14 +166,18 @@ public class CaiDat_Controller implements ActionListener, MouseListener, FocusLi
 			int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn chỉnh sửa?", "Xác nhận",
 					JOptionPane.YES_NO_OPTION);
 			if (confirm == JOptionPane.YES_OPTION) {
-				if (capNhatThongTinNV()) {
-					JOptionPane.showMessageDialog(null, "Cập nhật thành công!", "Thông báo",
-							JOptionPane.INFORMATION_MESSAGE);
-				} else {
-					JOptionPane.showMessageDialog(null, "Cập nhật không thành công!", "Thông báo",
-							JOptionPane.INFORMATION_MESSAGE);
-				}
-			}
+                try {
+                    if (capNhatThongTinNV()) {
+                        JOptionPane.showMessageDialog(null, "Cập nhật thành công!", "Thông báo",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cập nhật không thành công!", "Thông báo",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
 		} else if (obj.equals(thongTinCaNhan_View.getBtnHuyBo())) {
 			thongTinCaNhan_View.getBtnHoanThanh().setVisible(false);
 			thongTinCaNhan_View.getBtnHuyBo().setVisible(false);

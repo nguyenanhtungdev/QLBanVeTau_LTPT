@@ -1,5 +1,7 @@
 package daos.dao_impl;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,13 +10,18 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import connectDB.Database;
+import daos.dao_interface.PhieuHoanTien_DAO;
+import lombok.Getter;
 import model.KhachHang;
 import model.PhieuHoanTien;
+@Getter
+public class PhieuHoanTien_DAOImpl extends UnicastRemoteObject implements PhieuHoanTien_DAO {
 
-public class PhieuHoanTien_DAOImpl {
+    public PhieuHoanTien_DAOImpl() throws RemoteException{
+    }
 	private static PhieuHoanTien_DAOImpl instance;
 	
-	public static PhieuHoanTien_DAOImpl getInstance() {
+	public static PhieuHoanTien_DAOImpl getInstance() throws RemoteException {
 		return instance == null ? instance = new PhieuHoanTien_DAOImpl() : instance;
 	}
 	
@@ -38,8 +45,10 @@ public class PhieuHoanTien_DAOImpl {
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}
-		return false;
+		} catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return false;
 	}
 
 	public String getMaPhieuHoanTienMax() {
