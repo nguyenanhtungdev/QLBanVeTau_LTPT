@@ -1,10 +1,9 @@
 package daos.dao_interface;
 
+import model.NhanVien;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
-
-import model.NhanVien;
 
 public interface NhanVien_DAO extends Remote{
     List<NhanVien> getAll() throws RemoteException;

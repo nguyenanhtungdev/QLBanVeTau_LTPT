@@ -1,14 +1,15 @@
 package daos.dao_interface;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 import model.PhieuHoanTien;
 
-public interface PhieuHoanTien_DAO extends Remote{
-    boolean themPhieuHoanTien(PhieuHoanTien phieuHoanTien) throws Exception;
-    String getMaPhieuHoanTienMax() throws Exception;
-    PhieuHoanTien layPhieuHoanTienBangMa(String maPhieuHoanTien) throws Exception;
-    String getMaPhieuHoanTienByMaHoaDon(String maHoaDon) throws Exception;
-    String getMaHoaDonByMaPhieuHoanTien(String maPhieuHoanTien) throws Exception;
-    String getTenKhachHangByMaPhieuHoanTien(String maPhieuHoanTien) throws Exception;
+public interface PhieuHoanTien_DAO extends Remote {
+    boolean themPhieuHoanTien(PhieuHoanTien phieuHoanTien) throws RemoteException;
+    String getMaPhieuHoanTienMax() throws RemoteException;
+    PhieuHoanTien layPhieuHoanTienBangMa(String maPhieuHoanTien) throws RemoteException;
+    String getMaPhieuHoanTienByMaHoaDon(String maHoaDon) throws RemoteException;
+    String getMaHoaDonByMaPhieuHoanTien(String maPhieuHoanTien) throws RemoteException;
+    String getTenKhachHangByMaPhieuHoanTien(String maPhieuHoanTien) throws RemoteException;
 }
